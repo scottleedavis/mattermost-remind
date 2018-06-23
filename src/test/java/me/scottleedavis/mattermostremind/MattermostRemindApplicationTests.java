@@ -1,4 +1,4 @@
-package scottleedavis.mattermost.remind.mattermostremind;
+package me.scottleedavis.mattermostremind;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

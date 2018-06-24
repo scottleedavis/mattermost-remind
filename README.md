@@ -1,4 +1,4 @@
-# mattermost-remind
+# mattermost-remind [![Build Status](https://travis-ci.org/scottleedavis/mattermost-remind.svg?branch=master)](https://travis-ci.org/scottleedavis/mattermost-remind)
 A /remind slash command for mattermost built with [Spring Boot](https://spring.io/projects/spring-boot)
 
 `/remind [@someone or #channel] [what] [when]`

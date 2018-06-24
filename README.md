@@ -76,7 +76,5 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 ### notes
 * You can’t set recurring reminders for other members.
 * Channel reminders can’t be snoozed.
-
-### troubleshooting
 * Message buttons don’t show up for `/remind` in channels others than with yourself
   * [This is because Ephemeral messages do not have a state, and therefore do not support interactive message buttons at this time.](https://docs.mattermost.com/developer/interactive-message-buttons.html#troubleshooting)

@@ -40,6 +40,9 @@ public class Scheduler {
     @Autowired
     Webhook webhook;
 
+    @Autowired
+    ReminderOptions reminderOptions;
+
     @Resource
     ReminderRepository reminderRepository;
 
@@ -57,17 +60,9 @@ public class Scheduler {
                 String actualMessage = message.replace(target, "").replace(when, "").trim();
 
                 if (channelName.contains(userId)) {
-                    Context context = new Context();
-                    context.setAction("delete");
-                    Integration integration = new Integration();
-                    integration.setContext(context);
-                    integration.setUrl("http://fooo.com");
-                    Action action = new Action();
-                    action.setIntegration(integration);
-                    action.setName("View Reminders");
 
                     Attachment attachment = new Attachment();
-                    attachment.setActions(Arrays.asList(action));
+                    attachment.setActions(reminderOptions.remindActions());
                     attachment.setText(scheduleReminder(target, userName, when, actualMessage));
                     response.setAttachments(Arrays.asList(attachment));
 

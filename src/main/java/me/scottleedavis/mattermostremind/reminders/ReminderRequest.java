@@ -1,8 +1,8 @@
 package me.scottleedavis.mattermostremind.reminders;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class ReminderRequest {
 
     public String findTarget(String text) throws Exception {

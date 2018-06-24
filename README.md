@@ -17,7 +17,7 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 ### setup 
 ##### Datasource
 * Default database is [h2](http://www.h2database.com/html/main.html) (an in-memory database)
-* Alternatively use [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx)by editing [application.properties](src/main/resources/application.properties)
+* Alternatively use [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) by editing [application.properties](src/main/resources/application.properties)
   ```$xslt
     spring.datasource.url=jdbc:sqlserver://YOUR_DATABASE_SERVER;databaseName=YOUR_DATABASE_NAME
     spring.datasource.username=YOUR_DATABASE_USER

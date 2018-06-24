@@ -8,13 +8,20 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
     * `mvn package`
 * Running [Java8 JRE](http://openjdk.java.net/install/)
 * Using [Mattermost](https://mattermost.com/) 
-  * Tested agaist  Version: 5.0.0-rc1  
-  * (other versions could likely work great too)
+  * Tested against Version: 5.0.0-rc1  
+  * (other versions could likely work)
 
 ### setup 
 ##### Datasource
 * Default database is [h2](http://www.h2database.com/html/main.html) (an in-memory database)
-* To use another database edit [application.properties](src/main/resources/application.properties) with datasource details
+* Alternatively use [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) by editing [application.properties](src/main/resources/application.properties)
+  ```$xslt
+    spring.datasource.url=jdbc:sqlserver://YOUR_DATABASE_SERVER;databaseName=YOUR_DATABASE_NAME
+    spring.datasource.username=YOUR_DATABASE_USER
+    spring.datasource.password=YOUR_DATABASE_PASSWORD
+    spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+    spring.jpa.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
+  ```
 
 ##### Mattermost Integration
 (requires a slash command and webhook)
@@ -39,7 +46,7 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 * Running via java
   * `java -jar target/mattermost-remind-0.0.1-SNAPSHOT.jar`
 * Running via tomcat
-  * _todo_
+  * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
 * Running via docker
   * _todo_
 
@@ -49,31 +56,39 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 * /remind help
 * /remind list
 * /remind [who] [what] [in # (seconds|minutes|hours|days|weeks|months|years)]
-  * example: `/remind me Do the dishes in 2 days`
+  * examples
+    * `/remind me Do the dishes in 2 days`
+    * `/remind @jessica about the interview in 3 hours`
 
 ##### todos
 * set system icon for webhook
+* handle single 'in' occurrences (day, hour, etc)
 * button/link interactions on reminders
 * manage past & incomplete reminders
 * planned supported features
-  * /remind me Drink water Everyday
-  * /remind @lima	Submit report May 30
-  * /remind #design Join the meeting Monday
-  * /remind me to drink water at 3pm every day
-  * /remind me on June 1st to wish Linda happy birthday
-  * /remind #team-alpha to update the project status every Monday at 9am
-  * /remind @jessica about the interview in 3 hours
-  * /remind @peter tomorrow "Please review the office seating plan"
-  * /remind @lima Lunch time! at 12:30pm
-  * /remind #management Send annual salary review report on December 15
-  * /remind #design Design critique meeting every Thursday
-  * /remind me Physiotherapy after work every other Wednesday
-  * /remind me to update the team meeting agenda on Mondays
-  * /remind me to attend the team meeting at 11:00 every Tuesday
-  * /remind me to schedule annual reviews every January 25
+  * Times
+    * `/remind @lima Lunch time! at 12:30pm`
+  * Days of the week
+    * `/remind #design Join the meeting Monday`
+    * `/remind me Go to movies on Friday`
+  * Dates
+    * `/remind @lima Submit report May 30`
+    * `/remind #management Send annual salary review report on December 15`
+  * Recurring reminders
+    * `/remind me Drink water Everyday`
+    * `/remind me to schedule annual reviews every January 25`
+    * `/remind #design Design critique meeting every Thursday`
+    * `/remind me Physiotherapy after work every other Wednesday`
+    * `/remind me to update the team meeting agenda on Mondays`
+    * `/remind me to attend the team meeting at 11:00 every Tuesday`
+    * `/remind me to drink water at 3pm every day`
+    * `/remind #team-alpha to update the project status every Monday at 9am`
+  * Alternate ordering `/remind [who] [when] [what]`
+    * `/remind me on June 1st to wish Linda happy birthday`
+    * `/remind @peter tomorrow "Please review the office seating plan"`
 
 ### notes
 * You can’t set recurring reminders for other members.
 * Channel reminders can’t be snoozed.
-* Message buttons don’t show up for `/remind` in channels others than with yourself
+* Message buttons don’t show up for `/remind` in channels other than with yourself
   * [This is because Ephemeral messages do not have a state, and therefore do not support interactive message buttons at this time.](https://docs.mattermost.com/developer/interactive-message-buttons.html#troubleshooting)

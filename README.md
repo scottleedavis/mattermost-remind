@@ -16,7 +16,7 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 * Default database is [h2](http://www.h2database.com/html/main.html) (an in-memory database)
 * To use another database edit [application.properties](src/main/resources/application.properties) with datasource details
 
-##### Integration into Mattermost 
+##### Mattermost Integration
 (requires a slash command and webhook)
 * Ensure Custom Integrations (in System Console) has the following enabled
   * `Enable Incoming Webhooks`

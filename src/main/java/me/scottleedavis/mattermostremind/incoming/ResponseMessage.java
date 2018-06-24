@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind.reminders;
+package me.scottleedavis.mattermostremind.incoming;
 
 /*
  * Copyright 2017 Google Inc.

@@ -33,15 +33,29 @@ public class ReminderRequest {
 
     public String findWhen(String text) throws Exception {
         //find in, at, on, every starting from the back
-        String whenString = "";
         int subString = -1;
 
-        subString = text.lastIndexOf("at");
+        subString = text.indexOf(" at ");
         if( subString > -1 ) {
-            whenString = text.substring(subString);
+            return text.substring(subString).trim();
         }
 
+        subString = text.indexOf(" in ");
+        if( subString > -1 ) {
+            return text.substring(subString).trim();
+        }
 
-        return "foo";
+        subString = text.indexOf(" on ");
+        if( subString > -1 ) {
+            return text.substring(subString).trim();
+        }
+
+        subString = text.indexOf(" every ");
+        if( subString > -1 ) {
+            return text.substring(subString).trim();
+        }
+
+        throw new Exception("No when found");
+
     }
 }

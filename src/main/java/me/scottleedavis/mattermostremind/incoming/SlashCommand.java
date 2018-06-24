@@ -1,6 +1,5 @@
 package me.scottleedavis.mattermostremind.incoming;
 
-import me.scottleedavis.mattermostremind.reminders.ResponseMessage;
 import me.scottleedavis.mattermostremind.reminders.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

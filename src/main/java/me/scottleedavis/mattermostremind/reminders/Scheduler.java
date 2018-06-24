@@ -1,7 +1,7 @@
 package me.scottleedavis.mattermostremind.reminders;
 
 import me.scottleedavis.mattermostremind.entities.Reminder;
-import me.scottleedavis.mattermostremind.incoming.ResponseMessage;
+import me.scottleedavis.mattermostremind.messages.*;
 import me.scottleedavis.mattermostremind.outgoing.Webhook;
 import me.scottleedavis.mattermostremind.parser.ReminderRequest;
 import me.scottleedavis.mattermostremind.repositories.ReminderRepository;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -30,6 +31,10 @@ public class Scheduler {
             "• `/remind @peter tomorrow \"Please review the office seating plan\"`\n" +
             "Or, use `/remind list` to see the list of all your reminders.";
 
+    private static String exceptionText = "Sorry, I didn’t quite get that. I’m easily confused. " +
+            "Perhaps try the words in a different order? This usually works: " +
+            "`/remind [@someone or #channel] [what] [when]`.\n";
+
     @Autowired
     ReminderRequest reminderRequest;
 
@@ -39,28 +44,46 @@ public class Scheduler {
     @Resource
     ReminderRepository reminderRepository;
 
-    public ResponseMessage setReminder(String userName, String message) {
+    public Response setReminder(String userName, String message, String userId, String channelName) {
 
-        ResponseMessage responseMessage = new ResponseMessage();
+        Response response = new Response();
         try {
             String target = reminderRequest.findTarget(message);
             if( target.equals("help") ) {
-                responseMessage.setText(helpMessage);
+                response.setText(helpMessage);
             } else if( target.equals("list") ) {
-                responseMessage.setText(listReminders(userName));
+                response.setText(listReminders(userName));
             } else {
                 String when = reminderRequest.findWhen(message);
                 String actualMessage = message.replace(target, "").replace(when, "").trim();
-                responseMessage.setText(scheduleReminder(target, userName, when, actualMessage));
+
+                if (channelName.contains(userId)) {
+                    Context context = new Context();
+                    context.setAction("foo");
+                    Integration integration = new Integration();
+                    integration.setContext(context);
+                    integration.setUrl("http://fooo.com");
+                    Action action = new Action();
+                    action.setIntegration(integration);
+                    action.setName("foo action");
+                    Attachment attachment = new Attachment();
+                    attachment.setActions(Arrays.asList(action));
+                    attachment.setText(scheduleReminder(target, userName, when, actualMessage));
+                    response.setAttachments(Arrays.asList(attachment));
+
+                } else {
+                    response.setText(scheduleReminder(target, userName, when, actualMessage));
+                }
             }
 
         } catch( Exception e ) {
-            responseMessage.setText("Sorry, I didn’t quite get that. I’m easily confused. Perhaps try the words in a different order? This usually works: `/remind [@someone or #channel] [what] [when]`.\n");
+            response.setText(exceptionText);
         }
 
-        responseMessage.setResponseType(ResponseMessage.ResponseType.EPHEMERAL);
 
-        return responseMessage;
+        response.setResponseType(channelName.contains(userId) ? Response.ResponseType.IN_CHANNEL : Response.ResponseType.EPHEMERAL);
+
+        return response;
     }
 
     private String scheduleReminder(String target, String userName, String when, String message) throws Exception {

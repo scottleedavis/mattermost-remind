@@ -1,5 +1,6 @@
 package me.scottleedavis.mattermostremind.incoming;
 
+import me.scottleedavis.mattermostremind.messages.Response;
 import me.scottleedavis.mattermostremind.reminders.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,7 @@ public class SlashCommand {
     Scheduler scheduler;
 
     @RequestMapping(value = "/remind", produces = "application/json")
-    public ResponseMessage remind(
+    public Response remind(
             @ModelAttribute("token") String token,
             @ModelAttribute("team_id") String teamId,
             @ModelAttribute("team_domain") String teamDomain,
@@ -34,7 +35,7 @@ public class SlashCommand {
             throw new Exception("forbidden");
         }
 
-        return scheduler.setReminder(userName, text);
+        return scheduler.setReminder(userName, text, userId, channelName);
     }
 
 }

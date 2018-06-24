@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind.parser;
+package me.scottleedavis.mattermostremind.reminders;
 
 import org.springframework.stereotype.Service;
 

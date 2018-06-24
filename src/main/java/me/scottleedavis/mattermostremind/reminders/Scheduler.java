@@ -1,10 +1,9 @@
 package me.scottleedavis.mattermostremind.reminders;
 
-import me.scottleedavis.mattermostremind.entities.Reminder;
+import me.scottleedavis.mattermostremind.jpa.Reminder;
 import me.scottleedavis.mattermostremind.messages.*;
-import me.scottleedavis.mattermostremind.outgoing.Webhook;
-import me.scottleedavis.mattermostremind.parser.ReminderRequest;
-import me.scottleedavis.mattermostremind.repositories.ReminderRepository;
+import me.scottleedavis.mattermostremind.io.Webhook;
+import me.scottleedavis.mattermostremind.jpa.ReminderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,13 +58,14 @@ public class Scheduler {
 
                 if (channelName.contains(userId)) {
                     Context context = new Context();
-                    context.setAction("foo");
+                    context.setAction("delete");
                     Integration integration = new Integration();
                     integration.setContext(context);
                     integration.setUrl("http://fooo.com");
                     Action action = new Action();
                     action.setIntegration(integration);
-                    action.setName("foo action");
+                    action.setName("View Reminders");
+
                     Attachment attachment = new Attachment();
                     attachment.setActions(Arrays.asList(action));
                     attachment.setText(scheduleReminder(target, userName, when, actualMessage));

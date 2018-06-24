@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind.outgoing;
+package me.scottleedavis.mattermostremind.io;
 
 import org.springframework.beans.factory.annotation.Value;
 import com.github.seratch.jslack.*;

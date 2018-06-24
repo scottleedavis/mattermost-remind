@@ -65,8 +65,8 @@
 
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>sqljdbc4</artifactId>
-			<version>4.0</version>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>6.5.3.jre8-preview</version>
 		</dependency>
 
 	</dependencies>

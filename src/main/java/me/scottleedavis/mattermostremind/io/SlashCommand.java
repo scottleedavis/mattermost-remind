@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind.incoming;
+package me.scottleedavis.mattermostremind.io;
 
 import me.scottleedavis.mattermostremind.messages.Response;
 import me.scottleedavis.mattermostremind.reminders.Scheduler;

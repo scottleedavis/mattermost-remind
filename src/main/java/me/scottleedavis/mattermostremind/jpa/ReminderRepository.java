@@ -1,6 +1,5 @@
-package me.scottleedavis.mattermostremind.repositories;
+package me.scottleedavis.mattermostremind.jpa;
 
-import me.scottleedavis.mattermostremind.entities.Reminder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

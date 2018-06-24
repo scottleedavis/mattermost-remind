@@ -4,7 +4,12 @@ A /remind slash command for mattermost
 `/remind [@someone or #channel] [what] [when]`
 
 ### installation
+* By default an in memory database is used (h2).  To use another database edit [application.properties](src/main/resources/application.properties) with datasource details
 _todo_
+* Running
+  * standalone _todo_
+  * tomcat _todo_
+
 
 ### setup 
 Integration into Mattermost requires a slash command and webhook
@@ -16,7 +21,6 @@ Integration into Mattermost requires a slash command and webhook
   * put token in [application.properties](src/main/resources/application.properties) `webhookUrl=<YOUR_TOKEN>`
 
 ### todos
-* test external database (setup h2 currently)
 * button/link interactions on reminders
 * manage past & incomplete reminders
 * complete planned supported features

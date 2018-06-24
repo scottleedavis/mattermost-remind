@@ -3,7 +3,8 @@ A /remind slash command for mattermost
 
 `/remind [@someone or #channel] [what] [when]`
 
-## under constructions
+### installation
+_todo_
 
 ### setup 
 Integration into Mattermost requires a slash command and webhook

@@ -52,10 +52,9 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
   * example: `/remind me Do the dishes in 2 days`
 
 ##### todos
-* setup appropriate icons
+* set system icon for webhook
 * button/link interactions on reminders
 * manage past & incomplete reminders
-* complete planned supported features
 * planned supported features
   * /remind me Drink water Everyday
   * /remind @lima	Submit report May 30

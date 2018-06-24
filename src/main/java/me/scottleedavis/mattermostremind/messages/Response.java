@@ -10,6 +10,8 @@ import java.util.List;
 public class Response {
 
     private String text;
+    private String username;
+    private String channel;
     private ResponseType responseType;
     private List<Attachment> attachments;
 
@@ -19,6 +21,22 @@ public class Response {
 
     public String getText() {
         return text;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     public void setResponseType(ResponseType responseType) {

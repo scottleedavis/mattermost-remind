@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind.reminders;
+package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.stereotype.Component;
 

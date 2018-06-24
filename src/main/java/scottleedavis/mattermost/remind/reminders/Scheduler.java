@@ -1,14 +1,15 @@
-package me.scottleedavis.mattermostremind.reminders;
+package scottleedavis.mattermost.remind.reminders;
 
-import me.scottleedavis.mattermostremind.jpa.Reminder;
-import me.scottleedavis.mattermostremind.messages.*;
-import me.scottleedavis.mattermostremind.io.Webhook;
-import me.scottleedavis.mattermostremind.jpa.ReminderRepository;
+import scottleedavis.mattermost.remind.jpa.Reminder;
+import scottleedavis.mattermost.remind.io.Webhook;
+import scottleedavis.mattermost.remind.jpa.ReminderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import scottleedavis.mattermost.remind.messages.Attachment;
+import scottleedavis.mattermost.remind.messages.Response;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;

@@ -14,7 +14,7 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 ### setup 
 ##### Datasource
 * Default database is [h2](http://www.h2database.com/html/main.html) (an in-memory database)
-* Alternatively use [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) by editing [application.properties](src/main/resources/application.properties)
+* Alternatively use [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx)by editing [application.properties](src/main/resources/application.properties)
   ```$xslt
     spring.datasource.url=jdbc:sqlserver://YOUR_DATABASE_SERVER;databaseName=YOUR_DATABASE_NAME
     spring.datasource.username=YOUR_DATABASE_USER
@@ -35,11 +35,13 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
   * Response Username: `mattermost-remind`
   * Autocomplete hint: `[@someone or #channel] [what] [when]`
   * Request URL: `<path_to_mattermost-remind>/remind`
+  * set mattermost system icon
   * put token in [application.properties](src/main/resources/application.properties) `slashCommandToken=<YOUR_TOKEN>`
 * create incoming webhook
   * Title & Description: `Set a reminder`
   * Channel: `Town Square`  <= (won't be used)
   * Username: `mattermost-remind`
+  * set mattermost system icon
   * put webhook URL in [application.properties](src/main/resources/application.properties) `webhookUrl=<YOUR_WEBHOOK>`
 
 ### execution
@@ -61,11 +63,10 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
     * `/remind @jessica about the interview in 3 hours`
 
 ##### todos
-* set system icon for webhook
 * handle single 'in' occurrences (day, hour, etc)
-* button/link interactions on reminders
-* manage past & incomplete reminders
-* planned supported features
+* button interactions
+* past & incomplete reminders
+* future planned features
   * Times
     * `/remind @lima Lunch time! at 12:30pm`
   * Days of the week

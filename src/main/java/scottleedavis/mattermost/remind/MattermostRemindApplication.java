@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind;
+package scottleedavis.mattermost.remind;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 @EnableScheduling
-@SpringBootApplication(scanBasePackages = {"me.ramswaroop.jbot", "me.scottleedavis.mattermostremind"})
+@SpringBootApplication(scanBasePackages = {"me.ramswaroop.jbot", "scottleedavis.mattermost.remind"})
 public class MattermostRemindApplication {
 
 	@Bean

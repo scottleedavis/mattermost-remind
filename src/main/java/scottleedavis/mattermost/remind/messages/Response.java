@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind.messages;
+package scottleedavis.mattermost.remind.messages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;

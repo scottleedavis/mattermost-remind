@@ -1,8 +1,8 @@
-package me.scottleedavis.mattermostremind.io;
+package scottleedavis.mattermost.remind.io;
 
-import me.scottleedavis.mattermostremind.messages.Attachment;
-import me.scottleedavis.mattermostremind.messages.Response;
-import me.scottleedavis.mattermostremind.reminders.ReminderOptions;
+import scottleedavis.mattermost.remind.messages.Attachment;
+import scottleedavis.mattermost.remind.messages.Response;
+import scottleedavis.mattermost.remind.reminders.ReminderOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

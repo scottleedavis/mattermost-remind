@@ -1,9 +1,8 @@
-package me.scottleedavis.mattermostremind.reminders;
+package scottleedavis.mattermost.remind.reminders;
 
-import me.scottleedavis.mattermostremind.messages.Action;
-import me.scottleedavis.mattermostremind.messages.Attachment;
-import me.scottleedavis.mattermostremind.messages.Context;
-import me.scottleedavis.mattermostremind.messages.Integration;
+import scottleedavis.mattermost.remind.messages.Action;
+import scottleedavis.mattermost.remind.messages.Context;
+import scottleedavis.mattermost.remind.messages.Integration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind.jpa;
+package scottleedavis.mattermost.remind.jpa;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

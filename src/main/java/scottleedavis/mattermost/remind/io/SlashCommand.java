@@ -1,7 +1,7 @@
-package me.scottleedavis.mattermostremind.io;
+package scottleedavis.mattermost.remind.io;
 
-import me.scottleedavis.mattermostremind.messages.Response;
-import me.scottleedavis.mattermostremind.reminders.Scheduler;
+import scottleedavis.mattermost.remind.messages.Response;
+import scottleedavis.mattermost.remind.reminders.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;

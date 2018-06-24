@@ -1,4 +1,4 @@
-package me.scottleedavis.mattermostremind.jpa;
+package scottleedavis.mattermost.remind.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

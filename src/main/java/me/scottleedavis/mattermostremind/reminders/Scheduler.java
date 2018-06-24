@@ -72,7 +72,7 @@ public class Scheduler {
         reminder.setOccurrence(calculateOccurrence(when));
         reminderRepository.save(reminder);
 
-        return ":thumbsup: I will remind " + (target.equals("me") ? "you" : target) + " \"" + message.trim() + "\"" + when;
+        return ":thumbsup: I will remind " + (target.equals("me") ? "you" : target) + " \"" + message.trim() + "\" " + when;
     }
 
     private LocalDateTime calculateOccurrence(String when) throws Exception {

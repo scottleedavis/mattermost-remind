@@ -7,7 +7,7 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 * Building with [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
     * `mvn package`
 * Running [Java8 JRE](http://openjdk.java.net/install/)
-* [Mattermost](https://mattermost.com/) 
+* Using [Mattermost](https://mattermost.com/) 
   * Tested agaist  Version: 5.0.0-rc1  
   * (other versions could likely work great too)
 

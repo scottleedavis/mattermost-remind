@@ -50,7 +50,7 @@ public class Scheduler {
                 responseMessage.setText(listReminders(userName));
             } else {
                 String when = reminderRequest.findWhen(message);
-                String actualMessage = message.replace(target, "").replace(when, "");
+                String actualMessage = message.replace(target, "").replace(when, "").trim();
                 responseMessage.setText(scheduleReminder(target, userName, when, actualMessage));
             }
 

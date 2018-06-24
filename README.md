@@ -3,6 +3,9 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 
 `/remind [@someone or #channel] [what] [when]`
 
+![set_reminder](set_reminder.png)
+![reminded](reminded.png)
+
 ### requirements
 * Building with [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
     * `mvn package`

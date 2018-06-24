@@ -62,7 +62,7 @@ public class Scheduler {
                 if (channelName.contains(userId)) {
 
                     Attachment attachment = new Attachment();
-                    attachment.setActions(reminderOptions.remindActions());
+                    attachment.setActions(reminderOptions.actions());
                     attachment.setText(scheduleReminder(target, userName, when, actualMessage));
                     response.setAttachments(Arrays.asList(attachment));
 

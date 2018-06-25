@@ -66,7 +66,7 @@ _Requires slash command and webhook integrations_
   * `/remind #test-team New tests at two`
   * `/remind me Pickup kids at 4:30pm`
   
-##### todos 
+### todos 
 * button interactions
 * past & incomplete reminders
 * ensure cannot set recurring reminders for other users

@@ -56,12 +56,12 @@ _Requires slash command and webhook integrations_
 ### usage
 
 ##### supported features
-* `/remind help`
-* `/remind list`
-* `/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]`
+* **/remind help**
+* **/remind list**
+* **/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]**
   * `/remind me Do the dishes in 1 day`
   * `/remind @jessica about the interview in three hours`
-* `/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)]`
+* **/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)]**
   * `/remind @lima Lunch time! at noon`
   
 ##### todos 

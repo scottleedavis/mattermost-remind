@@ -69,6 +69,8 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 * handle single 'in' occurrences (day, hour, etc)
 * button interactions
 * past & incomplete reminders
+* ensure recurring reminders disallowed for other members
+* ensure channel reminders can’t be snoozed
 * future planned features
   * Times
     * `/remind @lima Lunch time! at 12:30pm`

@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 @EnableScheduling
-@SpringBootApplication(scanBasePackages = {"me.ramswaroop.jbot", "scottleedavis.mattermost.remind"})
+@SpringBootApplication(scanBasePackages = {"scottleedavis.mattermost.remind"})
 public class MattermostRemindApplication {
 
 	@Bean

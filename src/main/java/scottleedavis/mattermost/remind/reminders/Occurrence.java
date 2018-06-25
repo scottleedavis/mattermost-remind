@@ -85,9 +85,7 @@ public class Occurrence {
         String[] timeChunks = when.split(" ");
         if (timeChunks.length != 2)
             throw new Exception("unrecognized time mark.");
-
-        // todo: at noon
-        // todo: at midnight
+        
         // todo: at two
         // todo: at 7
         // todo: at 12:30pm
@@ -102,7 +100,11 @@ public class Occurrence {
                 else
                     return todayAtNoon;
             case "midnight":
-                break;
+                LocalDateTime todayAtMidnight = LocalDate.now().atTime(0, 0);
+                if ( todayAtMidnight.isBefore(now) )
+                    return todayAtMidnight.plusDays(1);
+                else
+                    return todayAtMidnight;
             case "one":
             case "two":
             case "three":

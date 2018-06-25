@@ -30,8 +30,8 @@ _Requires slash command and webhook integrations_
 * Ensure Custom Integrations (in System Console) has the following enabled
   * `Enable Incoming Webhooks`
   * `Enable Custom Slash Commands`
-  * `Enable integrations to override usernames`
-    * OR... create a `mattermost-remind` user to setup the slash command and webhook
+  * `Enable integrations to override usernames` & `Enable integrations to override profile picture icons`
+    * OR... create a `mattermost-remind` user to setup the slash command and webhook with system icon
 * create `remind` as slash command
   * Title & Autocomplete: `Set a reminder`
   * Response Username: `mattermost-remind`

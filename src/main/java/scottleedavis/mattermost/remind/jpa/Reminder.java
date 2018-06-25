@@ -12,6 +12,7 @@ public class Reminder {
     private Long id;
 
     private String target;
+    @Column(name = "user_name")
     private String userName;
     private LocalDateTime occurrence;
     private String message;

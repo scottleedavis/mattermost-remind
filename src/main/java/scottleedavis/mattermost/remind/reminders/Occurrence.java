@@ -2,7 +2,6 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -134,13 +133,12 @@ public class Occurrence {
     }
 
     private Integer wordToNumber(String input) throws Exception {
-        System.out.println("===========\nInput string = "+input);
-        Integer sum=0;
-        Integer temp=null;
-        Integer previous=0;
-        String [] splitted= input.toLowerCase().split(" ");
+        Integer sum = 0;
+        Integer temp = null;
+        Integer previous = 0;
+        String [] splitted = input.toLowerCase().split(" ");
 
-        for(String split:splitted){
+        for( String split : splitted ){
             if( numbers.get(split) != null ){
                 temp = numbers.get(split);
                 sum = sum + temp;

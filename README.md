@@ -63,13 +63,12 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 * /remind [who] [what] [in # (seconds|minutes|hours|days|weeks|months|years)]
   * examples
     * `/remind me Do the dishes in 2 days`
-    * `/remind @jessica about the interview in 3 hours`
+    * `/remind @jessica about the interview in three hours`
 
-##### todos
-* handle single 'in' occurrences (day, hour, etc)
+##### todos 
 * button interactions
 * past & incomplete reminders
-* ensure recurring reminders disallowed for other members
+* ensure cannot set recurring reminders for other users
 * ensure channel reminders can’t be snoozed
 * future planned features
   * Times

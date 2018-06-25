@@ -2,7 +2,7 @@ package scottleedavis.mattermost.remind.io;
 
 import scottleedavis.mattermost.remind.messages.Attachment;
 import scottleedavis.mattermost.remind.messages.Response;
-import scottleedavis.mattermost.remind.reminders.ReminderOptions;
+import scottleedavis.mattermost.remind.reminders.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class Webhook {
     private String webhookUrl;
 
     @Autowired
-    ReminderOptions reminderOptions;
+    Options options;
 
     public void invoke(String target, String message) throws Exception {
 
@@ -32,7 +32,7 @@ public class Webhook {
         response.setUsername("mattermost-remind");
         response.setResponseType(Response.ResponseType.EPHEMERAL);
         Attachment attachment = new Attachment();
-        attachment.setActions(reminderOptions.finishedActions());
+        attachment.setActions(options.finishedActions());
         attachment.setText("You asked me to remind you \""+message+"\".");
         response.setAttachments(Arrays.asList(attachment));
 

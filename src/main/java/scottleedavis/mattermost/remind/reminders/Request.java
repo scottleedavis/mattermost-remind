@@ -3,7 +3,7 @@ package scottleedavis.mattermost.remind.reminders;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReminderRequest {
+public class Request {
 
     public String findTarget(String text) throws Exception {
 

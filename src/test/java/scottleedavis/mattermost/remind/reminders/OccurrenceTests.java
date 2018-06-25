@@ -60,6 +60,16 @@ public class OccurrenceTests {
         checkDate = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         assertEquals(checkDate.plusYears(1).toString(), testDate.toString());
 
+    }
 
+    @Test
+    public void calculateAt() throws Exception {
+        // todo: at noon
+        // todo: at midnight
+        // todo: at two
+        // todo: at 7
+        // todo: at 12:30pm
+        // todo: at 1230am
+        // todo: at 1400
     }
 }

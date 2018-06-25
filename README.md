@@ -1,5 +1,5 @@
 # mattermost-remind [![Build Status](https://travis-ci.org/scottleedavis/mattermost-remind.svg?branch=master)](https://travis-ci.org/scottleedavis/mattermost-remind)
-A /remind slash command for mattermost built with [Spring Boot](https://spring.io/projects/spring-boot)
+A /remind slash command for [Mattermost](https://mattermost.com/) built with [Spring Boot](https://spring.io/projects/spring-boot)
 
 `/remind [@someone or #channel] [what] [when]`
 
@@ -7,17 +7,15 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 ![reminded](reminded.png)
 
 ### requirements
-* Building with [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
+* Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
     * `mvn package`
-* Running [Java8 JRE](http://openjdk.java.net/install/)
-* Using [Mattermost](https://mattermost.com/) 
-  * Tested against Version: 5.0.0-rc1  
-  * (other versions will likely work)
+* Run: [Java8 JRE](http://openjdk.java.net/install/)
+* Use: [Mattermost](https://mattermost.com/) 
 
 ### setup 
 ##### Datasource
 * Default database is [h2](http://www.h2database.com/html/main.html) (an in-memory database)
-* Alternatively use [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) by editing [application.properties](src/main/resources/application.properties)
+* [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) can be used by changing [application.properties](src/main/resources/application.properties)
   ```$xslt
     spring.datasource.url=jdbc:sqlserver://YOUR_DATABASE_SERVER;databaseName=YOUR_DATABASE_NAME
     spring.datasource.username=YOUR_DATABASE_USER
@@ -27,7 +25,7 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
   ```
 
 ##### Mattermost Integration
-(requires a slash command and webhook)
+_Requires slash command and webhook integrations_
 * Ensure Custom Integrations (in System Console) has the following enabled
   * `Enable Incoming Webhooks`
   * `Enable Custom Slash Commands`
@@ -60,10 +58,9 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 ##### supported features
 * /remind help
 * /remind list
-* /remind [who] [what] [in # (seconds|minutes|hours|days|weeks|months|years)]
-  * examples
-    * `/remind me Do the dishes in 2 days`
-    * `/remind @jessica about the interview in three hours`
+* /remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]
+  * `/remind me Do the dishes in 1 day`
+  * `/remind @jessica about the interview in three hours`
 
 ##### todos 
 * button interactions
@@ -72,7 +69,9 @@ A /remind slash command for mattermost built with [Spring Boot](https://spring.i
 * ensure channel reminders can’t be snoozed
 * future planned features
   * Times
-    * `/remind @lima Lunch time! at 12:30pm`
+    * `/remind @lima Lunch time! at noon`
+    * `/remind #test-team New tests at two`
+    * `/remind me Pickup kids at 4:30pm`
   * Days of the week
     * `/remind #design Join the meeting Monday`
     * `/remind me Go to movies on Friday`

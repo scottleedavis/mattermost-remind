@@ -61,8 +61,10 @@ _Requires slash command and webhook integrations_
 * **/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]**
   * `/remind me Do the dishes in 1 day`
   * `/remind @jessica about the interview in three hours`
-* **/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)]**  _(in progress)_
+* _(in progress)_ **/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)]**  
   * `/remind @lima Lunch time! at noon`
+  * `/remind #test-team New tests at two`
+  * `/remind me Pickup kids at 4:30pm`
   
 ##### todos 
 * button interactions
@@ -70,9 +72,6 @@ _Requires slash command and webhook integrations_
 * ensure cannot set recurring reminders for other users
 * ensure channel reminders can’t be snoozed
 * future planned features
-  * Times
-    * `/remind #test-team New tests at two`
-    * `/remind me Pickup kids at 4:30pm`
   * Days of the week
     * `/remind #design Join the meeting Monday`
     * `/remind me Go to movies on Friday`

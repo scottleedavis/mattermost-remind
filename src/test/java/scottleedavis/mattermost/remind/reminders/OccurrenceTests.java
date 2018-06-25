@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import sun.util.resources.LocaleData;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -64,8 +65,20 @@ public class OccurrenceTests {
 
     @Test
     public void calculateAt() throws Exception {
-        // todo: at noon
-        // todo: at midnight
+        String when;
+        LocalDateTime testDate;
+        LocalDateTime checkDate;
+
+        when = "at noon";
+        testDate = occurrence.calculate(when);
+        checkDate = LocalDate.now().atTime(12, 0).truncatedTo(ChronoUnit.SECONDS);
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+
+        when = "at midnight";
+        testDate = occurrence.calculate(when);
+        checkDate = LocalDate.now().atTime(0, 0).truncatedTo(ChronoUnit.SECONDS);
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+
         // todo: at two
         // todo: at 7
         // todo: at 12:30pm

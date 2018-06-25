@@ -2,6 +2,7 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class Occurrence {
     }
 
     private LocalDateTime in(String when) throws Exception {
+
         LocalDateTime date;
 
         String[] timeChunks = when.split(" ");
@@ -76,6 +78,48 @@ public class Occurrence {
     }
 
     private LocalDateTime at(String when) throws Exception {
+
+        LocalDateTime date;
+        LocalDateTime now = LocalDateTime.now();
+
+        String[] timeChunks = when.split(" ");
+        if (timeChunks.length != 2)
+            throw new Exception("unrecognized time mark.");
+
+        // todo: at noon
+        // todo: at midnight
+        // todo: at two
+        // todo: at 7
+        // todo: at 12:30pm
+        // todo: at 1230am
+        // todo: at 1400
+        String chronoUnit = timeChunks[1].toLowerCase();
+        switch(chronoUnit) {
+            case "noon":
+                LocalDateTime todayAtNoon = LocalDate.now().atTime(12, 0);
+                if ( todayAtNoon.isBefore(now) )
+                    return todayAtNoon.plusDays(1);
+                else
+                    return todayAtNoon;
+            case "midnight":
+                break;
+            case "one":
+            case "two":
+            case "three":
+            case "four":
+            case "five":
+            case "six":
+            case "seven":
+            case "eight":
+            case "nine":
+            case "ten":
+            case "eleven":
+            case "twelve":
+                break;
+            default:
+                break;
+        }
+
         throw new Exception("not yet supported");
     }
 

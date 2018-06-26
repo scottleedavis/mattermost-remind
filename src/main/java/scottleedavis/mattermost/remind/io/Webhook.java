@@ -25,14 +25,14 @@ public class Webhook {
     @Autowired
     Options options;
 
-    public void invoke(String target, String message) throws Exception {
+    public void invoke(String target, String message, Long id) throws Exception {
 
         Response response = new Response();
         response.setChannel(target);
         response.setUsername("mattermost-remind");
         response.setResponseType(Response.ResponseType.EPHEMERAL);
         Attachment attachment = new Attachment();
-        attachment.setActions(options.finishedActions());
+        attachment.setActions(options.finishedActions(id));
         attachment.setText("You asked me to remind you \""+message+"\".");
         response.setAttachments(Arrays.asList(attachment));
 

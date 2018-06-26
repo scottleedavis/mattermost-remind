@@ -22,12 +22,8 @@ public class Scheduler {
 
     private static Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
-    private static String exceptionText = "Sorry, I didn’t quite get that. I’m easily confused. " +
-            "Perhaps try the words in a different order? This usually works: " +
-            "`/remind [@someone or #channel] [what] [when]`.\n";
-
     @Autowired
-    Request request;
+    Parser parser;
 
     @Autowired
     Webhook webhook;
@@ -45,28 +41,33 @@ public class Scheduler {
 
         Response response = new Response();
         try {
-            String target = request.findTarget(message);
+            String target = parser.findTarget(message);
             if( target.equals("help") ) {
                 response.setText(Options.helpMessage);
             } else if( target.equals("list") ) {
                 response.setText(options.listReminders(userName));
             } else {
-                String when = request.findWhen(message);
+                String when = parser.findWhen(message);
                 String actualMessage = message.replace(target, "")
                                               .replace(when, "")
                                               .trim();
+                Reminder reminder = scheduleReminder(target, userName, when, actualMessage);
+                String responseText = ":thumbsup: I will remind " +
+                                      (target.equals("me") ? "you" : target) +
+                                      " \"" + actualMessage.trim() + "\" " + when;
+
                 if (channelName.contains(userId)) {
                     Attachment attachment = new Attachment();
-                    attachment.setActions(options.setActions());
-                    attachment.setText(scheduleReminder(target, userName, when, actualMessage));
+                    attachment.setActions(options.setActions(reminder.getId()));
+                    attachment.setText(responseText);
                     response.setAttachments(Arrays.asList(attachment));
                 } else {
-                    response.setText(scheduleReminder(target, userName, when, actualMessage));
+                    response.setText(responseText);
                 }
             }
 
         } catch( Exception e ) {
-            response.setText(exceptionText);
+            response.setText(options.exceptionText);
         }
 
         response.setResponseType(channelName.contains(userId) ? Response.ResponseType.IN_CHANNEL : Response.ResponseType.EPHEMERAL);
@@ -74,7 +75,7 @@ public class Scheduler {
         return response;
     }
 
-    private String scheduleReminder(String target, String userName, String when, String message) throws Exception {
+    private Reminder scheduleReminder(String target, String userName, String when, String message) throws Exception {
 
         Reminder reminder = new Reminder();
         reminder.setTarget(target.equals("me") ? "@"+userName : target);
@@ -82,8 +83,7 @@ public class Scheduler {
         reminder.setMessage(message);
         reminder.setOccurrence(occurrence.calculate(when));
         reminderRepository.save(reminder);
-
-        return ":thumbsup: I will remind " + (target.equals("me") ? "you" : target) + " \"" + message.trim() + "\" " + when;
+        return reminder;
     }
 
     @Scheduled(fixedRate = 1000)
@@ -91,9 +91,9 @@ public class Scheduler {
 
         List<Reminder> reminders = reminderRepository.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         reminders.forEach( reminder -> {
-            logger.info("Sending reminder to {} ", reminder.getTarget());
+            logger.info("Sending reminder {} to {} ", reminder.getId(), reminder.getTarget());
             try {
-                webhook.invoke(reminder.getTarget(), reminder.getMessage());
+                webhook.invoke(reminder.getTarget(), reminder.getMessage(), reminder.getId());
             } catch (Exception  e) {
                 logger.error("Not able to send reminder {}",e);
             }

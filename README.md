@@ -27,7 +27,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 
 ### todos
 
-* See the [TODO](TODO.md) work works in progress and coming features.
+* See the [TODO](TODO.md) page for works in progress and coming features.
 * Want to see a feature or report a bug?  Head to the [issues tab](https://github.com/scottleedavis/mattermost-remind/issues).
 * Want to contribute?  Fork this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 ### requirements

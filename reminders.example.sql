@@ -5,5 +5,6 @@ create table reminders
   target       nvarchar(100)  not null,
   user_name    nvarchar(100)  not null,
   occurrence   date           not null,
-  message .    nvarchar(1000) not null
+  message .    nvarchar(1000) not null,
+  completed    bit            not null
 )

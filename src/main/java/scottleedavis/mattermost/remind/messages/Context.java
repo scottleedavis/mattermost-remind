@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 public class Context {
 
     private String action;
+    private Long id;
 
     public String getAction() {
         return action;
@@ -14,5 +15,13 @@ public class Context {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

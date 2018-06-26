@@ -14,8 +14,9 @@ public class Reminder {
     private String target;
     @Column(name = "user_name")
     private String userName;
-    private LocalDateTime occurrence;
     private String message;
+    private LocalDateTime occurrence;
+    private boolean complete = false;
 
     public Long getId() {
         return id;
@@ -41,6 +42,14 @@ public class Reminder {
         this.userName = userName;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public LocalDateTime getOccurrence() {
         return occurrence;
     }
@@ -49,11 +58,11 @@ public class Reminder {
         this.occurrence = occurrence;
     }
 
-    public String getMessage() {
-        return message;
+    public boolean isComplete() {
+        return complete;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setComplete(boolean complete) {
+        this.complete = complete;
     }
 }

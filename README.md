@@ -68,8 +68,10 @@ _Requires slash command and webhook integrations_
   * `/remind me Pickup kids at 4:30pm`
   
 ### todos 
-* button interactions
-* past & incomplete reminders
+* snooze choices (currently only 20 minutes)
+* remind list 
+  * delete/complete interactions
+  * past & complete view
 * ensure cannot set recurring reminders for other users
 * ensure channel reminders can’t be snoozed
 * future planned features

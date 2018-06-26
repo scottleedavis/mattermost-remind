@@ -6,6 +6,30 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 ![set_reminder](set_reminder.png)
 ![reminded](reminded.png)
 
+### usage
+
+##### supported features
+* **/remind help**
+* **/remind list**
+* **/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]**
+  * `/remind me Do the dishes in 1 day`
+  * `/remind @jessica about the interview in three hours`
+* _(in progress)_ **/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)]**  
+  * `/remind @lima Lunch time! at noon`
+  * `/remind #test-team New tests at two`
+  * `/remind me Pickup kids at 4:30pm`
+
+### notes
+* You can’t set recurring reminders for other members.
+* Channel reminders can’t be snoozed.
+* Message buttons don’t show up for `/remind` in channels other than with yourself
+  * [This is because Ephemeral messages do not have a state, and therefore do not support interactive message buttons at this time.](https://docs.mattermost.com/developer/interactive-message-buttons.html#troubleshooting)
+
+### todos
+
+* See the [TODO](TODO.md) work works in progress and coming features.
+* Want to see a feature or report a bug?  Head to the [issues tab](https://github.com/scottleedavis/mattermost-remind/issues).
+* Want to contribute?  Fork this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 ### requirements
 * Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
     * `mvn package`
@@ -54,48 +78,3 @@ _Requires slash command and webhook integrations_
 * Running via docker
   * _todo_
 
-### usage
-
-##### supported features
-* **/remind help**
-* **/remind list**
-* **/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]**
-  * `/remind me Do the dishes in 1 day`
-  * `/remind @jessica about the interview in three hours`
-* _(in progress)_ **/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)]**  
-  * `/remind @lima Lunch time! at noon`
-  * `/remind #test-team New tests at two`
-  * `/remind me Pickup kids at 4:30pm`
-  
-### todos 
-* snooze choices (currently only 20 minutes)
-* remind list 
-  * delete/complete interactions
-  * past & complete view
-* ensure cannot set recurring reminders for other users
-* ensure channel reminders can’t be snoozed
-* future planned features
-  * Days of the week
-    * `/remind #design Join the meeting Monday`
-    * `/remind me Go to movies on Friday`
-  * Dates
-    * `/remind @lima Submit report May 30`
-    * `/remind #management Send annual salary review report on December 15`
-  * Recurring reminders
-    * `/remind me Drink water Everyday`
-    * `/remind me to schedule annual reviews every January 25`
-    * `/remind #design Design critique meeting every Thursday`
-    * `/remind me Physiotherapy after work every other Wednesday`
-    * `/remind me to update the team meeting agenda on Mondays`
-    * `/remind me to attend the team meeting at 11:00 every Tuesday`
-    * `/remind me to drink water at 3pm every day`
-    * `/remind #team-alpha to update the project status every Monday at 9am`
-  * Alternate ordering `/remind [who] [when] [what]`
-    * `/remind me on June 1st to wish Linda happy birthday`
-    * `/remind @peter tomorrow "Please review the office seating plan"`
-
-### notes
-* You can’t set recurring reminders for other members.
-* Channel reminders can’t be snoozed.
-* Message buttons don’t show up for `/remind` in channels other than with yourself
-  * [This is because Ephemeral messages do not have a state, and therefore do not support interactive message buttons at this time.](https://docs.mattermost.com/developer/interactive-message-buttons.html#troubleshooting)

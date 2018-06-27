@@ -78,13 +78,16 @@ public class OccurrenceTests {
         checkDate = LocalDate.now().atTime(0, 0).truncatedTo(ChronoUnit.SECONDS);
         assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
 
-        // todo: at two
         when = "at two";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(2,0).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate) || checkDate.plusDays(1).equals(testDate) );
 
-        // todo: at 7
+        when = "at 7";
+        testDate = occurrence.calculate(when);
+        checkDate = LocalDate.now().atTime(7,0).truncatedTo(ChronoUnit.SECONDS);
+        assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate) || checkDate.plusDays(1).equals(testDate));
+
         // todo: at 12:30pm
         // todo: at 1230am
         // todo: at 1400

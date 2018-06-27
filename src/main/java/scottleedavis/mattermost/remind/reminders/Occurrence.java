@@ -5,23 +5,28 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class Occurrence {
 
     public LocalDateTime calculate(String when) throws Exception {
-
-        if ( when.startsWith("in") )
-            return in(when);
-        else if ( when.startsWith("at") )
-            return at(when);
-        else if ( when.startsWith("on") )
-            return on(when);
-        else if ( when.startsWith("every") )
-            return every(when);
-        else
-            return freeForm(when);
+        switch(classify(when)) {
+            case IN:
+                return in(when);
+            case AT:
+                return at(when);
+            case ON:
+                return on(when);
+            case EVERY:
+                return every(when);
+            default:
+                return freeForm(when);
+        }
     }
 
     public OccurrenceType classify(String when) {
@@ -91,32 +96,21 @@ public class Occurrence {
 
     private LocalDateTime at(String when) throws Exception {
 
-        LocalDateTime date;
         LocalDateTime now = LocalDateTime.now();
+        LocalDateTime closest;
 
         String[] timeChunks = when.split(" ");
-        if (timeChunks.length != 2)
+        if (timeChunks.length < 2)
             throw new Exception("unrecognized time mark.");
-        
-        // todo: at two
-        // todo: at 7
-        // todo: at 12:30pm
-        // todo: at 1230am
-        // todo: at 1400
-        String chronoUnit = timeChunks[1].toLowerCase();
+
+        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
         switch(chronoUnit) {
             case "noon":
-                LocalDateTime todayAtNoon = LocalDate.now().atTime(12, 0);
-                if ( todayAtNoon.isBefore(now) )
-                    return todayAtNoon.plusDays(1);
-                else
-                    return todayAtNoon;
+                closest = LocalDate.now().atTime(12, 0);
+                return chooseClosest(closest, now, true);
             case "midnight":
-                LocalDateTime todayAtMidnight = LocalDate.now().atTime(0, 0);
-                if ( todayAtMidnight.isBefore(now) )
-                    return todayAtMidnight.plusDays(1);
-                else
-                    return todayAtMidnight;
+                closest = LocalDate.now().atTime(0, 0);
+                return chooseClosest(closest, now, true);
             case "one":
             case "two":
             case "three":
@@ -129,13 +123,77 @@ public class Occurrence {
             case "ten":
             case "eleven":
             case "twelve":
-                LocalDateTime closest = LocalDate.now().atTime(wordToNumber(chronoUnit), 0);
-                if ( closest.isBefore(now) )
-                    return closest.plusHours(12);
-                else
-                    return closest;
+                closest = LocalDate.now().atTime(wordToNumber(chronoUnit), 0);
+                return chooseClosest(closest, now, false);
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+            case "10":
+            case "11":
+            case "12":
+            case "13":
+            case "14":
+            case "15":
+            case "16":
+            case "17":
+            case "18":
+            case "19":
+            case "20":
+            case "21":
+            case "22":
+            case "23":
+                closest = LocalDate.now().atTime(Integer.parseInt(chronoUnit), 0);
+                return chooseClosest(closest, now, false);
             default:
                 break;
+        }
+
+        // 12:30PM, 12:30 pm
+        Matcher match = Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)",
+                        Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
+        if (match.find()) {
+            int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ' ) ? 3 : 2;
+            String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
+            int[] time = Arrays.stream(chronoUnit.substring(0, chronoUnit.length() - amPmOffset).split(":"))
+                                .mapToInt(Integer::parseInt).toArray();
+
+            time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ?( (time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            closest = LocalDate.now().atTime(time[0], time[1]);
+            return chooseClosest(closest, now, true);
+        }
+        // 12:30
+        match = Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\\\s)?(?i)",
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
+        if (match.find()) {
+//            String foo = "bar";
+//            String str = "1986-04-08 12:30";
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+        }
+        // 1230pm
+        match = Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\\\s)?(?i)(am|pm)",
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
+        if (match.find()) {
+//            String foo = "bar";
+//            String str = "1986-04-08 12:30";
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+        }
+        // 1200
+        match = Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\\\s)?(?i)",
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
+        if (match.find()) {
+//            String foo = "bar";
+//            String str = "1986-04-08 12:30";
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
         }
 
         throw new Exception("not yet supported");
@@ -151,6 +209,25 @@ public class Occurrence {
 
     private LocalDateTime freeForm(String when) throws Exception {
         throw new Exception("unrecognized time mark.");
+    }
+
+    private LocalDateTime chooseClosest(LocalDateTime closest, LocalDateTime now, boolean dayInterval) {
+        if( dayInterval ) {
+            if ( closest.isBefore(now) )
+                return closest.plusDays(1);
+            else
+                return closest;
+        } else {
+            if ( closest.isBefore(now) ) {
+                if ( closest.plusHours(12).isBefore(now) )
+                    return closest.plusHours(24);
+                else
+                    return closest.plusHours(12);
+            }
+            else
+                return closest;
+        }
+
     }
 
     private static HashMap<String, Integer> numbers= new HashMap<String, Integer>();

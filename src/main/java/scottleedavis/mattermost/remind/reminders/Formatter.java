@@ -3,7 +3,9 @@ package scottleedavis.mattermost.remind.reminders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Component
 public class Formatter {
@@ -15,8 +17,15 @@ public class Formatter {
         switch(occurrence.classify(when)) {
             case AT:
                 LocalDateTime ldt = occurrence.calculate(when);
-                when = Integer.toString(ldt.getHour()) +
-                        "TODO AM/PM " + " today or tomorrow";
+                LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+                Integer timeRaw = ldt.getHour() % 12;
+                timeRaw = timeRaw == 0 ? 12 : timeRaw;
+                String time = Integer.toString(timeRaw);
+                if( ldt.getMinute() > 0 )
+                    time += ":"+String.format("%02d", ldt.getMinute());
+                String day = (ldt.getDayOfMonth() == now.getDayOfMonth()) ? "today" : "tomorrow";
+                String amPm = (ldt.getHour() >= 12) ? "PM" : "AM";
+                when = time + amPm + " " + day;
                 break;
             case IN:
             default:

@@ -4,7 +4,7 @@
 1. 'on' when patterns.  (my approach is to try all the patterns in slack and then build the logic for them).  So for 'on', it looks like 'day of week', or 'date', or... (still need to check')
 1. I haven't fully fleshed out the idea for recurring reminders in the db & function.   My passing thoughts were : 1) store the 'when' pattern with a reminder if it is recurring (db column).  2) when reminder triggers, set another reminder immediately using the 'when' pattern.   maybe as easy as that?   
 
-* Help reminder patterns need to be verified and categorized
+* error response needs to have 'show some examples button'
 * /remind help needs link to github issues page
 * /remind version reports version
 * Quote blocks need to be respected " food"

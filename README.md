@@ -25,11 +25,15 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 * Message buttons don’t show up for `/remind` in channels other than with yourself
   * [This is because Ephemeral messages do not have a state, and therefore do not support interactive message buttons at this time.](https://docs.mattermost.com/developer/interactive-message-buttons.html#troubleshooting)
 
+### bugs & issues
+
+* Want to see a feature or report a bug?  Head to the [issues tab](https://github.com/scottleedavis/mattermost-remind/issues).
+
 ### todos
 
 * See the [TODO](TODO.md) page for works in progress and coming features.
-* Want to see a feature or report a bug?  Head to the [issues tab](https://github.com/scottleedavis/mattermost-remind/issues).
 * Want to contribute?  Fork this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
+
 ### requirements
 * Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
     * `mvn package`

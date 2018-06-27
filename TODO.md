@@ -33,6 +33,7 @@
     * `/remind me to attend the team meeting at 11:00 every Tuesday`
     * `/remind me to drink water at 3pm every day`
     * `/remind #team-alpha to update the project status every Monday at 9am`
+    * `/remind me to do things every monday and wednesday`
   * Alternate ordering `/remind [who] [when] [what]`
     * `/remind me on June 1st to wish Linda happy birthday`
     * `/remind @peter tomorrow "Please review the office seating plan"`

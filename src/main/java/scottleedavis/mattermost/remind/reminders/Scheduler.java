@@ -34,6 +34,9 @@ public class Scheduler {
     @Autowired
     Occurrence occurrence;
 
+    @Autowired
+    Formatter formatter;
+
     @Resource
     ReminderRepository reminderRepository;
 
@@ -52,9 +55,7 @@ public class Scheduler {
                                               .replace(when, "")
                                               .trim();
                 Reminder reminder = scheduleReminder(target, userName, when, actualMessage);
-                String responseText = ":thumbsup: I will remind " +
-                                      (target.equals("me") ? "you" : target) +
-                                      " \"" + actualMessage.trim() + "\" " + when;
+                String responseText = formatter.setReminder(target, actualMessage.trim(), when);
 
                 if (channelName.contains(userId)) {
                     Attachment attachment = new Attachment();

@@ -22,7 +22,19 @@ public class Occurrence {
             return every(when);
         else
             return freeForm(when);
+    }
 
+    public OccurrenceType classify(String when) {
+        if ( when.startsWith("in") )
+            return OccurrenceType.IN;
+        else if ( when.startsWith("at") )
+            return OccurrenceType.AT;
+        else if ( when.startsWith("on") )
+            return OccurrenceType.ON;
+        else if ( when.startsWith("every") )
+            return OccurrenceType.EVERY;
+        else
+            return OccurrenceType.FREEFORM;
     }
 
     private LocalDateTime in(String when) throws Exception {
@@ -117,7 +129,11 @@ public class Occurrence {
             case "ten":
             case "eleven":
             case "twelve":
-                break;
+                LocalDateTime closest = LocalDate.now().atTime(wordToNumber(chronoUnit), 0);
+                if ( closest.isBefore(now) )
+                    return closest.plusHours(12);
+                else
+                    return closest;
             default:
                 break;
         }

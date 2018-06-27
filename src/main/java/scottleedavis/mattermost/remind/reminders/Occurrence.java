@@ -169,34 +169,53 @@ public class Occurrence {
             return chooseClosest(closest, now, true);
         }
         // 12:30
-        match = Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\\\s)?(?i)",
+        match = Pattern.compile("(1[012]|[1-9]):[0-5][0-9]",
                 Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
         if (match.find()) {
-//            String foo = "bar";
-//            String str = "1986-04-08 12:30";
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+            int[] time = Arrays.stream(chronoUnit.split(":")).mapToInt(Integer::parseInt).toArray();
+            time[0] = time[0] % 24;
+            closest = LocalDate.now().atTime(time[0], time[1]);
+            return chooseClosest(closest, now, true);
         }
-        // 1230pm
-        match = Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\\\s)?(?i)(am|pm)",
+        // 1230pm, 1230 pm
+        match = Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\s)?(?i)(am|pm)",
                 Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
         if (match.find()) {
-//            String foo = "bar";
-//            String str = "1986-04-08 12:30";
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+            int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ' ) ? 3 : 2;
+            String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
+            String subChronoUnit = chronoUnit.substring(0, chronoUnit.length() - amPmOffset);
+            subChronoUnit = String.format("%4s", subChronoUnit).replace(' ', '0');
+            String[] parts = {subChronoUnit.substring(0, 2),subChronoUnit.substring(2)};
+            int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
+
+            time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ?( (time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            closest = LocalDate.now().atTime(time[0], time[1]);
+            return chooseClosest(closest, now, true);
+        }
+        // 5PM, 7 am
+        match = Pattern.compile("(1[012]|[1-9])(\\s)?(?i)(am|pm)",
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
+        if (match.find()) {
+            int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ' ) ? 3 : 2;
+            String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
+            String subChronoUnit = chronoUnit.substring(0, chronoUnit.length() - amPmOffset);
+            int time = Integer.parseInt(subChronoUnit);
+            time = amPm.toLowerCase().equals("pm") ? (time < 12 ?( (time + 12) % 24) : time) : time % 12;
+            closest = LocalDate.now().atTime(time, 0);
+            return chooseClosest(closest, now, true);
         }
         // 1200
-        match = Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\\\s)?(?i)",
+        match = Pattern.compile("(1[012]|[1-9])[0-5][0-9]",
                 Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
         if (match.find()) {
-//            String foo = "bar";
-//            String str = "1986-04-08 12:30";
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//            LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+            String[] parts = {chronoUnit.substring(0, 2),chronoUnit.substring(2)};
+            int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
+            time[0] = time[0] % 24;
+            closest = LocalDate.now().atTime(time[0], time[1]);
+            return chooseClosest(closest, now, true);
         }
 
-        throw new Exception("not yet supported");
+        throw new Exception("time mark not recognized");
     }
 
     private LocalDateTime on(String when) throws Exception {

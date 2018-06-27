@@ -1,6 +1,5 @@
 # todos 
 
-1. finishing up 'at' when handling (with unit tests) (see comments for remaining todo patterns in https://github.com/scottleedavis/mattermost-remind/blob/master/src/test/java/scottleedavis/mattermost/remind/reminders/OccurrenceTests.java)
 1. 'on' when patterns.  (my approach is to try all the patterns in slack and then build the logic for them).  So for 'on', it looks like 'day of week', or 'date', or... (still need to check')
 1. I haven't fully fleshed out the idea for recurring reminders in the db & function.   My passing thoughts were : 1) store the 'when' pattern with a reminder if it is recurring (db column).  2) when reminder triggers, set another reminder immediately using the 'when' pattern.   maybe as easy as that?   
 
@@ -12,7 +11,7 @@
   * 9.4.15-0+deb8u1  (test locally with docker)
 * snooze choices 
   * (currently only 20 minutes)
-  * awaiting [Interactive message button dropdown](https://forum.mattermost.org/t/interactive-message-button-dropdown/5219)    
+  * awaiting [Interactive message button dropdown](https://forum.mattermost.org/t/interactive-message-button-dropdown/5219)   
 * remind list 
   * awaiting [flat buttons/links * delete/complete interactions](https://forum.mattermost.org/t/interactive-flat-message-button-links/5220)
   * past & complete view

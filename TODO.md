@@ -38,3 +38,6 @@
   * Alternate ordering `/remind [who] [when] [what]`
     * `/remind me on June 1st to wish Linda happy birthday`
     * `/remind @peter tomorrow "Please review the office seating plan"`
+  * Misc
+    * `/remind me Smile tomorrow`
+    

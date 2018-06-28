@@ -4,6 +4,7 @@
 
 * minor bugs
   * the word 'to' needs to be removed from start of a message
+  * day/date reminders need to be at 9am us with at
   * error response needs to have 'show some examples button'
   * Quote blocks need to be respected " food"
 * create configuation for postgresql

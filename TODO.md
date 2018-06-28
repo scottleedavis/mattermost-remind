@@ -6,19 +6,25 @@
   * the word 'to' needs to be removed from start of a message
   * error response needs to have 'show some examples button'
   * Quote blocks need to be respected " food"
-* create configuation for postgresql
-  * 9.4.15-0+deb8u1  (test locally with docker)
-* snooze choices 
-  * (currently only 20 minutes)
-  * try reappearing buttons?  or initial row of buttons...
-  * awaiting [Interactive message button dropdown](https://forum.mattermost.org/t/interactive-message-button-dropdown/5219)   
-* remind list 
-  * awaiting [flat buttons/links * delete/complete interactions](https://forum.mattermost.org/t/interactive-flat-message-button-links/5220)
-  * try list of attachments in meantime...
-  * past & complete view
-* ensure cannot set recurring reminders for other users
-* ensure channel reminders can’t be snoozed
-* future planned features
+  
+* upcoming features
+  * create configuation for postgresql
+    * 9.4.15-0+deb8u1  (test locally with docker)
+  * snooze choices 
+    * (currently only 20 minutes)
+    * try reappearing buttons?  or initial row of buttons...
+    * awaiting [Interactive message button dropdown](https://forum.mattermost.org/t/interactive-message-button-dropdown/5219)   
+  * remind list 
+    * awaiting [flat buttons/links * delete/complete interactions](https://forum.mattermost.org/t/interactive-flat-message-button-links/5220)
+    * try list of attachments in meantime...
+    * past & complete view
+  * ensure cannot set recurring reminders for other users
+  * ensure channel reminders can’t be snoozed
+  * pattern match days of week better
+    * `((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)`
+      
+  
+* future planned commands
   * Days of the week
     * `/remind #design Join the meeting Monday`
     * `/remind me Go to movies on Friday`

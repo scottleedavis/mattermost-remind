@@ -2,6 +2,7 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -219,6 +220,39 @@ public class Occurrence {
     }
 
     private LocalDateTime on(String when) throws Exception {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime closest;
+
+        String[] timeChunks = when.split(" ");
+        if (timeChunks.length < 2)
+            throw new Exception("unrecognized time mark.");
+
+        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" ")).toUpperCase();
+        // TODO do a better search here with regex.
+        // "((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)"
+        // TODO, ensure day select automatically selects 9AM
+        switch(chronoUnit) {
+            case "MONDAY":
+            case "TUESDAY":
+            case "WEDNESDAY":
+            case "THURSDAY":
+            case "FRIDAY":
+            case "SATURDAY":
+            case "SUNDAY":
+                DayOfWeek today = LocalDate.now().getDayOfWeek();
+                DayOfWeek chosen = DayOfWeek.valueOf(chronoUnit);
+                if ( chosen.ordinal() > today.ordinal() ) {
+                    long delta_days = chosen.ordinal() - today.ordinal();
+                    return now.plusDays(delta_days);
+                } else {
+                    long delta_days = chosen.ordinal() - today.ordinal() + 7;
+                    return now.plusDays(delta_days);
+                }
+            default:
+                break;
+
+        }
         //todo: on Friday
         //todo: on December 15
         //todo: on jan 12
@@ -229,6 +263,7 @@ public class Occurrence {
         //todo: on 7 (next 7th of month)
         //todo: on 12/17/18
         //todo: on 12/17
+
 
 
         throw new Exception("time mark not recognized");

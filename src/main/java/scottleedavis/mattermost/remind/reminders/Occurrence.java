@@ -219,7 +219,19 @@ public class Occurrence {
     }
 
     private LocalDateTime on(String when) throws Exception {
-        throw new Exception("not yet supported");
+        //todo: on Friday
+        //todo: on December 15
+        //todo: on jan 12
+        //todo: on July 12th
+        //todo: on July 12
+        //todo: on July 12th 2019
+        //todo: on July 12 2019
+        //todo: on 7 (next 7th of month)
+        //todo: on 12/17/18
+        //todo: on 12/17
+
+
+        throw new Exception("time mark not recognized");
     }
 
     private LocalDateTime every(String when) throws Exception {

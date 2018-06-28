@@ -151,4 +151,19 @@ public class OccurrenceTests {
         assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
 
     }
+
+    @Test
+    public void calculateOn() {
+        //todo: on Friday
+        //todo: on December 15
+        //todo: on jan 12
+        //todo: on July 12th
+        //todo: on July 12
+        //todo: on July 12th 2019
+        //todo: on July 12 2019
+        //todo: on 7 (next 7th of month)
+        //todo: on 12/17/18
+        //todo: on 12/17
+
+    }
 }

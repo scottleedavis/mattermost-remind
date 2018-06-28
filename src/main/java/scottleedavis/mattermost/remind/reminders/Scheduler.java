@@ -63,7 +63,7 @@ public class Scheduler {
                     break;
                 default:
                     Reminder reminder = scheduleReminder(userName, parsedRequest);
-                    String responseText = formatter.setReminder(parsedRequest);
+                    String responseText = formatter.reminderResponse(parsedRequest);
                     if (channelName.contains(userId)) {
                         Attachment attachment = new Attachment();
                         attachment.setActions(options.setActions(reminder.getId()));

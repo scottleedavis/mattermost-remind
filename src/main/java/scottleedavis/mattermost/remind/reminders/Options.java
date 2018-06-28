@@ -1,5 +1,6 @@
 package scottleedavis.mattermost.remind.reminders;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import scottleedavis.mattermost.remind.jpa.Reminder;
 import scottleedavis.mattermost.remind.jpa.ReminderRepository;
@@ -30,6 +31,9 @@ public class Options {
 
     private String appUrl;
 
+    @Autowired
+    Formatter formatter;
+
     @Resource
     ReminderRepository reminderRepository;
 
@@ -52,14 +56,8 @@ public class Options {
         if (reminders.size() > 0) {
             return "*Upcoming*:\n"
                     + reminders.stream()
-                    .map(r -> "• \"" + r.getMessage() + "\" at "
-                            + r.getOccurrence().getHour() + ":"
-                            + r.getOccurrence().getMinute() + " "
-                            + r.getOccurrence().getDayOfWeek().toString().substring(0, 1)
-                            + r.getOccurrence().getDayOfWeek().toString().substring(1).toLowerCase() + ", "
-                            + r.getOccurrence().getMonth().toString().substring(0, 1)
-                            + r.getOccurrence().getMonth().toString().substring(1).toLowerCase() + " "
-                            + r.getOccurrence().getDayOfMonth() + "\n")
+                    .map(r -> "* \"" + r.getMessage() + "\" at "
+                            + formatter.upcomingReminder(r.getOccurrence()))
                     .reduce("", String::concat);
         }
 

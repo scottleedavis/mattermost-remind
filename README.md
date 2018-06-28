@@ -76,7 +76,7 @@ _Requires slash command and webhook integrations_
 
 ### execution
 * Running via java
-  * `java -jar target/mattermost-remind-#.#.#.jar`
+  * `java -jar target/remind-#.#.#.jar`
 * Running via tomcat
   * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
 * Running via docker

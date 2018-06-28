@@ -1,8 +1,5 @@
 package scottleedavis.mattermost.remind.io;
 
-import scottleedavis.mattermost.remind.messages.Attachment;
-import scottleedavis.mattermost.remind.messages.Response;
-import scottleedavis.mattermost.remind.reminders.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import scottleedavis.mattermost.remind.messages.Attachment;
+import scottleedavis.mattermost.remind.messages.Response;
+import scottleedavis.mattermost.remind.reminders.Options;
 
 import java.util.Arrays;
 
@@ -33,13 +33,13 @@ public class Webhook {
         response.setResponseType(Response.ResponseType.EPHEMERAL);
         Attachment attachment = new Attachment();
         attachment.setActions(options.finishedActions(id));
-        attachment.setText("You asked me to remind you \""+message+"\".");
+        attachment.setText("You asked me to remind you \"" + message + "\".");
         response.setAttachments(Arrays.asList(attachment));
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity entity = new HttpEntity(response,headers);
+        HttpEntity entity = new HttpEntity(response, headers);
         ResponseEntity<String> out = restTemplate.exchange(webhookUrl, HttpMethod.POST, entity, String.class);
         logger.info(out.toString());
 

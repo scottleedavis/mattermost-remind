@@ -1,12 +1,11 @@
 package scottleedavis.mattermost.remind.reminders;
 
+import org.springframework.stereotype.Component;
 import scottleedavis.mattermost.remind.jpa.Reminder;
 import scottleedavis.mattermost.remind.jpa.ReminderRepository;
 import scottleedavis.mattermost.remind.messages.Action;
 import scottleedavis.mattermost.remind.messages.Context;
 import scottleedavis.mattermost.remind.messages.Integration;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -17,12 +16,13 @@ public class Options {
 
     public static String helpMessage = ":wave: Need some help with `/remind`?\n" +
             "Use `/remind` to set a reminder for yourself, someone else, or for a channel. Some examples include:\n" +
-            "• `/remind me to drink water at 3pm every day`\n" +
-            "• `/remind me on June 1st to wish Linda happy birthday`\n" +
-            "• `/remind #team-alpha to update the project status every Monday at 9am`\n" +
-            "• `/remind @jessica about the interview in 3 hours`\n" +
-            "• `/remind @peter tomorrow \"Please review the office seating plan\"`\n" +
-            "Or, use `/remind list` to see the list of all your reminders.";
+            "* `/remind me to drink water at 3pm every day`\n" +
+            "* `/remind me on June 1st to wish Linda happy birthday`\n" +
+            "* `/remind #team-alpha to update the project status every Monday at 9am`\n" +
+            "* `/remind @jessica about the interview in 3 hours`\n" +
+            "* `/remind @peter tomorrow \"Please review the office seating plan\"`\n" +
+            "Or, use `/remind list` to see the list of all your reminders.\n" +
+            "Have a bug to report or a feature request?  Create a new [issue](https://github.com/scottleedavis/mattermost-remind/issues).";
 
     public static String exceptionText = "Sorry, I didn’t quite get that. I’m easily confused. " +
             "Perhaps try the words in a different order? This usually works: " +

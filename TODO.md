@@ -1,22 +1,20 @@
 # todos 
 
-1. 'on' when patterns.  (my approach is to try all the patterns in slack and then build the logic for them).  So for 'on', it looks like 'day of week', or 'date', or... (still need to check')
 1. I haven't fully fleshed out the idea for recurring reminders in the db & function.   My passing thoughts were : 1) store the 'when' pattern with a reminder if it is recurring (db column).  2) when reminder triggers, set another reminder immediately using the 'when' pattern.   maybe as easy as that?   
 
-* the word 'to' needs to be removed from start of a message
-* error response needs to have 'show some examples button'
-* /remind help needs link to github issues page
-* /remind version reports version
-* Quote blocks need to be respected " food"
+* minor bugs
+  * the word 'to' needs to be removed from start of a message
+  * error response needs to have 'show some examples button'
+  * Quote blocks need to be respected " food"
 * create configuation for postgresql
   * 9.4.15-0+deb8u1  (test locally with docker)
 * snooze choices 
   * (currently only 20 minutes)
-  * try reappearing buttons?  or initial row of buttons
+  * try reappearing buttons?  or initial row of buttons...
   * awaiting [Interactive message button dropdown](https://forum.mattermost.org/t/interactive-message-button-dropdown/5219)   
 * remind list 
   * awaiting [flat buttons/links * delete/complete interactions](https://forum.mattermost.org/t/interactive-flat-message-button-links/5220)
-  * try list of attachments in meantime
+  * try list of attachments in meantime...
   * past & complete view
 * ensure cannot set recurring reminders for other users
 * ensure channel reminders can’t be snoozed

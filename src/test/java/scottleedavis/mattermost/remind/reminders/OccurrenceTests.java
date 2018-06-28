@@ -1,6 +1,5 @@
 package scottleedavis.mattermost.remind.reminders;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -71,84 +73,84 @@ public class OccurrenceTests {
         when = "at noon";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(12, 0).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at midnight";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(0, 0).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at two";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDate.now().atTime(2,0).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        checkDate = LocalDate.now().atTime(2, 0).truncatedTo(ChronoUnit.SECONDS);
+        assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at 7";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDate.now().atTime(7,0).truncatedTo(ChronoUnit.SECONDS);
+        checkDate = LocalDate.now().atTime(7, 0).truncatedTo(ChronoUnit.SECONDS);
         assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at 12:30pm";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(12, 30).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at 7:12 pm";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(19, 12).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at 8:05 PM";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(20, 5).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at 9:52 am";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(9, 52).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         // todo: at 9:12, 17:15
         when = "at 9:12";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(9, 12).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at 17:15";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(17, 15).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
 
         // todo: at 930am, 1230 am
         when = "at 930am";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(9, 30).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         when = "at 1230 am";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(0, 30).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
 
         // todo: at 5PM, 4 am
         when = "at 5PM";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(17, 0).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
 
         when = "at 4 am";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(4, 0).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
         // todo: at 1400
         when = "at 1400";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(14, 00).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
     }
 

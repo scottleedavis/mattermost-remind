@@ -1,13 +1,14 @@
 package scottleedavis.mattermost.remind.reminders;
 
-import scottleedavis.mattermost.remind.jpa.Reminder;
-import scottleedavis.mattermost.remind.io.Webhook;
-import scottleedavis.mattermost.remind.jpa.ReminderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import scottleedavis.mattermost.remind.io.Webhook;
+import scottleedavis.mattermost.remind.jpa.Reminder;
+import scottleedavis.mattermost.remind.jpa.ReminderRepository;
 import scottleedavis.mattermost.remind.messages.Attachment;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 import scottleedavis.mattermost.remind.messages.Response;
@@ -22,6 +23,9 @@ import java.util.List;
 public class Scheduler {
 
     private static Logger logger = LoggerFactory.getLogger(Scheduler.class);
+
+    @Value("${version}")
+    String version;
 
     @Autowired
     Parser parser;
@@ -47,12 +51,15 @@ public class Scheduler {
         try {
 
             ParsedRequest parsedRequest = parser.extract(payload);
-            switch( parsedRequest.getTarget() ) {
+            switch (parsedRequest.getTarget()) {
                 case "help":
                     response.setText(Options.helpMessage);
                     break;
                 case "list":
                     response.setText(options.listReminders(userName));
+                    break;
+                case "version":
+                    response.setText(version);
                     break;
                 default:
                     Reminder reminder = scheduleReminder(parsedRequest.getTarget(),
@@ -73,7 +80,7 @@ public class Scheduler {
                     }
             }
 
-        } catch( Exception e ) {
+        } catch (Exception e) {
             response.setText(options.exceptionText);
         }
 
@@ -85,7 +92,7 @@ public class Scheduler {
     private Reminder scheduleReminder(String target, String userName, String when, String message) throws Exception {
 
         Reminder reminder = new Reminder();
-        reminder.setTarget(target.equals("me") ? "@"+userName : target);
+        reminder.setTarget(target.equals("me") ? "@" + userName : target);
         reminder.setUserName(userName);
         reminder.setMessage(message);
         reminder.setOccurrence(occurrence.calculate(when));
@@ -97,12 +104,12 @@ public class Scheduler {
     public void runSchedule() {
 
         List<Reminder> reminders = reminderRepository.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        reminders.forEach( reminder -> {
+        reminders.forEach(reminder -> {
             logger.info("Sending reminder {} to {} ", reminder.getId(), reminder.getTarget());
             try {
                 webhook.invoke(reminder.getTarget(), reminder.getMessage(), reminder.getId());
-            } catch (Exception  e) {
-                logger.error("Not able to send reminder {}",e);
+            } catch (Exception e) {
+                logger.error("Not able to send reminder {}", e);
             }
         });
     }

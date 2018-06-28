@@ -9,11 +9,11 @@ public class Parser {
     public ParsedRequest extract(String text) throws Exception {
         ParsedRequest parsedRequest = new ParsedRequest();
         parsedRequest.setTarget(findTarget(text));
-        text = text.replace(parsedRequest.getTarget(),"").trim();
-        if( text.length() == 0 )
+        text = text.replace(parsedRequest.getTarget(), "").trim();
+        if (text.length() == 0)
             return parsedRequest;
         parsedRequest.setWhen(findWhen(text));
-        text = text.replace(parsedRequest.getWhen(),"").trim();
+        text = text.replace(parsedRequest.getWhen(), "").trim();
         parsedRequest.setMessage(text);
         return parsedRequest;
     }
@@ -22,13 +22,15 @@ public class Parser {
 
         String[] parts = text.split("\\s+");
 
-        if (parts[0].equals("") )
+        if (parts[0].equals(""))
             throw new Exception("Empty target");
-        else if (parts[0].equals("me") )
+        else if (parts[0].equals("me"))
             return parts[0];
-        else if (parts[0].equals("list") )
+        else if (parts[0].equals("list"))
             return parts[0];
-        else if (parts[0].equals("help") )
+        else if (parts[0].equals("help"))
+            return parts[0];
+        else if (parts[0].equals("version"))
             return parts[0];
         else if (parts[0].charAt(0) == '@')
             return parts[0];
@@ -44,22 +46,22 @@ public class Parser {
         int subString = -1;
 
         subString = text.indexOf(" at ");
-        if( subString > -1 ) {
+        if (subString > -1) {
             return text.substring(subString).trim();
         }
 
         subString = text.indexOf(" in ");
-        if( subString > -1 ) {
+        if (subString > -1) {
             return text.substring(subString).trim();
         }
 
         subString = text.indexOf(" on ");
-        if( subString > -1 ) {
+        if (subString > -1) {
             return text.substring(subString).trim();
         }
 
         subString = text.indexOf(" every ");
-        if( subString > -1 ) {
+        if (subString > -1) {
             return text.substring(subString).trim();
         }
 

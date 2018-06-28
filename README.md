@@ -11,6 +11,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 ##### supported features
 * **/remind help**
 * **/remind list**
+* **/remind version**
 * **/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]**
   * `/remind me Do the dishes in 1 day`
   * `/remind @jessica about the interview in three hours`
@@ -18,7 +19,11 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind @lima Lunch time! at noon`
   * `/remind #test-team New tests at two`
   * `/remind me Pickup kids at 4:30pm`
-
+* _(in progress)_ **/remind [who] [what] on [(Monday-Sunday|Month & Day|##/##/##|##/##|)]**
+  * `/remind me Go to movies on Friday`
+  * `/remind #management Send annual salary review report on December 15`
+  * `/remind me Mow the lawn on 7th`
+  
 ### notes
 * You can’t set recurring reminders for other members.
 * Channel reminders can’t be snoozed.
@@ -27,7 +32,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 
 ### bugs & issues
 
-* Want to see a feature or report a bug?  Head to the [issues tab](https://github.com/scottleedavis/mattermost-remind/issues).
+* Want to see a feature or report a bug?  Head to [issues](https://github.com/scottleedavis/mattermost-remind/issues).
 
 ### todos
 
@@ -43,7 +48,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 ### setup 
 ##### Datasource
 * Default database is [h2](http://www.h2database.com/html/main.html) (an auto-generated in-memory database)
-* [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) can be used by changing [application.properties](src/main/resources/application.properties) and creating a reminders table (_[reminders.example.sql](reminders.example.sql)_)
+* [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) can be used by changing [application.properties](src/main/resources/application.properties) and creating a reminders table  (_[reminders.example.sqlserver.sql](scripts/reminders.example.sqlserver.sql)_)
   ```$xslt
     spring.datasource.url=jdbc:sqlserver://YOUR_DATABASE_SERVER;databaseName=YOUR_DATABASE_NAME
     spring.datasource.username=YOUR_DATABASE_USER
@@ -51,8 +56,13 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
     spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
     spring.jpa.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
   ```
-  
-
+* [PostgreSQL](https://www.postgresql.org/) can be used by changing [application.properties](src/main/resources/application.properties) and creating a reminders table (_[reminders.example.postgresql.sql](scripts/reminders.example.postgresql.sql)_)
+  ```$xslt
+    spring.datasource.url=jdbc:postgresql://YOUR_DATABASE_SERVER:5432/YOUR_DATABASE_NAME 
+    spring.datasource.username=YOUR_DATABASE_USER 
+    spring.datasource.password=postgres@YOUR_DATABASE_PASSWORD   
+    spring.jpa.hibernate.ddl-auto=create-drop
+  ```
 ##### Mattermost Integration
 _Requires slash command and webhook integrations_
 * Ensure Custom Integrations (in System Console) has the following enabled

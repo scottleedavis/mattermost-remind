@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     List<Reminder> findByOccurrence(LocalDateTime occurrence);
+
     List<Reminder> findByUserName(String userName);
 }

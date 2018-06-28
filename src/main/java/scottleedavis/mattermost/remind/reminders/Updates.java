@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import scottleedavis.mattermost.remind.jpa.Reminder;
 import scottleedavis.mattermost.remind.jpa.ReminderRepository;
-import scottleedavis.mattermost.remind.messages.UpdateResponse;
 import scottleedavis.mattermost.remind.messages.Interaction;
 import scottleedavis.mattermost.remind.messages.Update;
+import scottleedavis.mattermost.remind.messages.UpdateResponse;
 
 import javax.annotation.Resource;
 import java.time.temporal.ChronoUnit;
@@ -24,7 +24,7 @@ public class Updates {
         Reminder reminder = getReminder(interaction);
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
-        update.setMessage("Ok! I’ve deleted the reminder “"+reminder.getMessage()+"”.");
+        update.setMessage("Ok! I’ve deleted the reminder “" + reminder.getMessage() + "”.");
         updateResponse.setUpdate(update);
         reminderRepository.delete(reminder);
         return updateResponse;
@@ -41,7 +41,7 @@ public class Updates {
         Reminder reminder = getReminder(interaction);
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
-        update.setMessage("Ok! I’ve marked the reminder  “"+reminder.getMessage()+"” as complete.");
+        update.setMessage("Ok! I’ve marked the reminder  “" + reminder.getMessage() + "” as complete.");
         updateResponse.setUpdate(update);
         reminder.setComplete(true);
         reminderRepository.save(reminder);
@@ -52,7 +52,7 @@ public class Updates {
         Reminder reminder = getReminder(interaction);
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
-        update.setMessage("Ok! I’ll remind you “"+reminder.getMessage()+"” in 20 minutes");
+        update.setMessage("Ok! I’ll remind you “" + reminder.getMessage() + "” in 20 minutes");
         updateResponse.setUpdate(update);
         reminder.setOccurrence(reminder.getOccurrence().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
         reminderRepository.save(reminder);

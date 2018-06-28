@@ -1,13 +1,11 @@
 package scottleedavis.mattermost.remind.io;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import scottleedavis.mattermost.remind.messages.Interaction;
 import scottleedavis.mattermost.remind.messages.UpdateResponse;
-import scottleedavis.mattermost.remind.messages.Response;
 import scottleedavis.mattermost.remind.reminders.Updates;
 
 @RestController

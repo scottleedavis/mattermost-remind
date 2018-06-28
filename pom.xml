@@ -5,7 +5,7 @@
 
 	<groupId>scottleedavis.mattermost</groupId>
 	<artifactId>remind</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>mattermost-remind</name>
@@ -63,6 +63,12 @@
 			<version>6.5.3.jre8-preview</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4-1206-jdbc42</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -72,7 +78,15 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>application.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
-
 
 </project>

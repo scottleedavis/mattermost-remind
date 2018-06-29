@@ -238,8 +238,11 @@ public class OccurrenceTests {
 
 
         //todo: on 12/17/18
+        //todo: on 12/17/2018
         //todo: on 12/17
-
+        //todo: on 12-17-18
+        //todo: on 12-17-2018
+        //todo: on 12-17
 
     }
 }

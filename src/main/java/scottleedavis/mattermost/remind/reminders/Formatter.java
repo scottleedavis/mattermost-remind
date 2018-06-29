@@ -222,7 +222,7 @@ public class Formatter {
 
         } else if (Pattern.compile("()",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
-            
+
             //todo: on 12/17/18
             //todo: on 12/17/2018
             //todo: on 12/17

@@ -264,16 +264,8 @@ public class Occurrence {
 
         }
 
-        //todo: on December 15
-        //todo: on jan 12
-        //todo: on July 12th
-        //todo: on July 12
-        //todo: on July 12th 2019
-        //todo: on July 12 2019
-        //todo: on July tenth 2019
-
         return LocalDateTime.parse(chronoUnit + " 09:00", new DateTimeFormatterBuilder()
-                .parseCaseInsensitive().appendPattern("MMMM dd yyyy HH:mm").toFormatter());
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
 
         //todo: on 7 (next 7th of month)
         //todo: on 7th

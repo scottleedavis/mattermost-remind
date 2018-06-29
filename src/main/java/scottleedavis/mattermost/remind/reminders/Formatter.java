@@ -315,6 +315,39 @@ public class Formatter {
         onumbers.put("thousand", 1000);
         onumbers.put("million", 1000000);
         onumbers.put("billion", 1000000000);
+
+        numbers.put("first", 1);
+        numbers.put("second", 2);
+        numbers.put("third", 3);
+        numbers.put("fourth", 4);
+        numbers.put("fifth", 5);
+        numbers.put("sixth", 6);
+        numbers.put("seventh", 7);
+        numbers.put("eighth", 8);
+        numbers.put("nineth", 9);
+        numbers.put("tenth", 10);
+        numbers.put("eleventh", 11);
+        numbers.put("twelveth", 12);
+        numbers.put("thirteenth", 13);
+        numbers.put("fourteenth", 14);
+        numbers.put("fifteenth", 15);
+        numbers.put("sixteenth", 16);
+        numbers.put("seventeenth", 17);
+        numbers.put("eighteenth", 18);
+        numbers.put("nineteenth", 19);
+        tnumbers.put("twenteth", 20);
+        tnumbers.put("twentyfirst", 21);
+        tnumbers.put("twentysecond", 22);
+        tnumbers.put("twentythird", 23);
+        tnumbers.put("twentyfourth", 24);
+        tnumbers.put("twentyfifth", 25);
+        tnumbers.put("twentysixth", 26);
+        tnumbers.put("twentyseventh", 27);
+        tnumbers.put("twentyeight", 28);
+        tnumbers.put("twentynineth", 29);
+        tnumbers.put("thirteth", 30);
+        tnumbers.put("thirtyfirst", 31);
+
     }
 
 }

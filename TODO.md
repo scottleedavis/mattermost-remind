@@ -1,6 +1,7 @@
 # todos 
 
-1. I haven't fully fleshed out the idea for recurring reminders in the db & function.   My passing thoughts were : 1) store the 'when' pattern with a reminder if it is recurring (db column).  2) when reminder triggers, set another reminder immediately using the 'when' pattern.   maybe as easy as that?   
+* Thoughts on recurring reminders
+  * occurences savea 'when' column, that re-evaluates everything the reminder is run.   needs to be intelligent for multi day things like `every friday and saturday`
 
 * minor bugs
   * ensure day/date select automatically selects 9AM 

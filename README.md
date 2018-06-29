@@ -61,7 +61,6 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
     spring.datasource.url=jdbc:postgresql://YOUR_DATABASE_SERVER:5432/YOUR_DATABASE_NAME 
     spring.datasource.username=YOUR_DATABASE_USER 
     spring.datasource.password=postgres@YOUR_DATABASE_PASSWORD   
-    spring.jpa.hibernate.ddl-auto=create-drop
   ```
 ##### Mattermost Integration
 _Requires slash command and webhook integrations_

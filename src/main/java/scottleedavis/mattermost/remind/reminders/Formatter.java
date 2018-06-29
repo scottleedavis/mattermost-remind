@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class Formatter {
@@ -122,25 +123,85 @@ public class Formatter {
             return text.toUpperCase();
         } else if (Pattern.compile("(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june|july|aug(ust)?|sept(ember)?|oct(ober)?|nov(ember)?|dec(ember)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
-            String[] parts = text.split(" ");
-            if ( parts.length == 2 ) {
-                 for( int i = 0; i < suffixes.length; i++ ){
-                     if( suffixes[i].equals(parts[1]) ) {
-                         parts[1] = parts[1].substring(0, parts[1].length() - 2);
-                         break;
-                     }
-                 }
-                 try {
-                     Integer.parseInt(parts[1]);
-                 } catch (Exception e) {
-                     parts[1] = Integer.toString(wordToNumber([1]));
-                 }
 
-                 parts[2] = Integer.toString(LocalDateTime.now().getYear());
+            String[] parts = text.toLowerCase().split(" ");
 
-            } else if ( parts.length == 3 ) {
-                //todo
+            switch(Integer.toString(parts.length)) {
+                case "1":
+                    break;
+                case "2":
+                    for( int i = 0; i < suffixes.length; i++ ){
+                        if( suffixes[i].equals(parts[1]) ) {
+                            parts[1] = parts[1].substring(0, parts[1].length() - 2);
+                            break;
+                        }
+                    }
+                    try {
+                        Integer.parseInt(parts[1]);
+                    } catch (Exception e) {
+                        parts[1] = Integer.toString(wordToNumber(parts[1]));
+                    }
+                    String[] temp = parts;
+                    parts = new String[3];
+                    parts[0] = temp[0];
+                    parts[1] = temp[1];
+                    parts[2] = Integer.toString(LocalDateTime.now().getYear());
+                    break;
+                case "3":
+                    for( int i = 0; i < suffixes.length; i++ ){
+                        if( suffixes[i].equals(parts[1]) ) {
+                            parts[1] = parts[1].substring(0, parts[1].length() - 2);
+                            break;
+                        }
+                    }
+                    try {
+                        Integer.parseInt(parts[1]);
+                    } catch (Exception e) {
+                        parts[1] = Integer.toString(wordToNumber(parts[1]));
+                    }
+
+                    Integer.parseInt(parts[2]);
+
+                    break;
+                default:
+                    throw new Exception("unrecognized date format");
             }
+
+            //(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june|july|aug(ust)?|sept(ember)?|oct(ober)?|nov(ember)?|dec(ember)
+            switch(parts[0]) {
+                case "jan":
+                    parts[0] = "january";
+                    break;
+                case "feb":
+                    parts[0] = "february";
+                    break;
+                case "mar":
+                    parts[0] = "march";
+                    break;
+                case "apr":
+                    parts[0] = "april";
+                    break;
+                case "aug":
+                    parts[0] = "august";
+                    break;
+                case "sept":
+                    parts[0] = "september";
+                    break;
+                case "oct":
+                    parts[0] = "october";
+                    break;
+                case "nov":
+                    parts[0] = "november";
+                    break;
+                case "dec":
+                    parts[0] = "december";
+                    break;
+                default:
+                    throw new Exception("month not found");
+            }
+
+            return Arrays.stream(parts).collect(Collectors.joining(" ")).toUpperCase();
+
         } else {
 
         }
@@ -152,9 +213,11 @@ public class Formatter {
     //todo: on July 12
     //todo: on July tenth
     //todo: on July 12th 2019
+    //todo: on July tenth 2019
     //todo: on July 12 2019
 
     //todo: on 7 (next 7th of month)
+    //todo: on 7th
     //todo: on seven
     //todo: on 12/17/18
     //todo: on 12/17

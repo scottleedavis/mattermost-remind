@@ -3,6 +3,7 @@
 1. I haven't fully fleshed out the idea for recurring reminders in the db & function.   My passing thoughts were : 1) store the 'when' pattern with a reminder if it is recurring (db column).  2) when reminder triggers, set another reminder immediately using the 'when' pattern.   maybe as easy as that?   
 
 * minor bugs
+  * ensure day/date select automatically selects 9AM 
   * the word 'to' needs to be removed from start of a message
   * day/date reminders need to be at 9am us with at
   * error response needs to have 'show some examples button'

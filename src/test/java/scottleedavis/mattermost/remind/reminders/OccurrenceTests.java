@@ -110,7 +110,6 @@ public class OccurrenceTests {
         checkDate = LocalDate.now().atTime(9, 52).truncatedTo(ChronoUnit.SECONDS);
         assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
-        // todo: at 9:12, 17:15
         when = "at 9:12";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(9, 12).truncatedTo(ChronoUnit.SECONDS);
@@ -121,8 +120,6 @@ public class OccurrenceTests {
         checkDate = LocalDate.now().atTime(17, 15).truncatedTo(ChronoUnit.SECONDS);
         assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
-
-        // todo: at 930am, 1230 am
         when = "at 930am";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(9, 30).truncatedTo(ChronoUnit.SECONDS);
@@ -133,8 +130,6 @@ public class OccurrenceTests {
         checkDate = LocalDate.now().atTime(0, 30).truncatedTo(ChronoUnit.SECONDS);
         assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
-
-        // todo: at 5PM, 4 am
         when = "at 5PM";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(17, 0).truncatedTo(ChronoUnit.SECONDS);
@@ -146,7 +141,6 @@ public class OccurrenceTests {
         checkDate = LocalDate.now().atTime(4, 0).truncatedTo(ChronoUnit.SECONDS);
         assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
-        // todo: at 1400
         when = "at 1400";
         testDate = occurrence.calculate(when);
         checkDate = LocalDate.now().atTime(14, 00).truncatedTo(ChronoUnit.SECONDS);
@@ -157,6 +151,11 @@ public class OccurrenceTests {
     @Test
     public void calculateOn() {
         //todo: on Friday
+        //todo: on mon
+        //todo: ON WEDNEs
+
+        
+
         //todo: on December 15
         //todo: on jan 12
         //todo: on July 12th

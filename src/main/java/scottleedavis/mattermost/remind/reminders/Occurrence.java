@@ -242,10 +242,9 @@ public class Occurrence {
         if (timeChunks.length < 2)
             throw new Exception("unrecognized time mark.");
 
-        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" ")).toUpperCase();
-        // TODO do a better search here with regex.
-        // "((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)"
-        // TODO, ensure day select automatically selects 9AM
+        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
+        chronoUnit = formatter.normalizeDate(chronoUnit);
+
         switch(chronoUnit) {
             case "MONDAY":
             case "TUESDAY":

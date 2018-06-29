@@ -28,7 +28,6 @@ public class Formatter {
 
     public String reminderResponse(ParsedRequest parsedRequest) throws Exception {
         String when = parsedRequest.getWhen();
-        String amPm;
         LocalDateTime ldt;
         Integer timeRaw;
         String day;
@@ -42,21 +41,18 @@ public class Formatter {
                 if (ldt.getMinute() > 0)
                     time += ":" + String.format("%02d", ldt.getMinute());
                 day = (ldt.getDayOfMonth() == now.getDayOfMonth()) ? "today" : "tomorrow";
-                amPm = amPm(ldt);
-                when = time + amPm + " " + day;
+                when = time + amPm(ldt) + " " + day;
                 break;
             case ON:
                 ldt = occurrence.calculate(parsedRequest.getWhen());
-                Matcher match = Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
-                        Pattern.CASE_INSENSITIVE).matcher(when);
-                if (match.find()) {
+                if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+                        Pattern.CASE_INSENSITIVE).matcher(when).find()) {
                     timeRaw = ldt.getHour() % 12;
                     timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                    amPm = amPm(ldt);
                     String dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
                     String month = capitalize(ldt.getMonth().toString());
                     day = daySuffix(ldt.getDayOfMonth());
-                    when = "at " + timeRaw + amPm + " " + dayOfWeek + ", " + month + " " + day;
+                    when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day;
                 } else {
 
                 }
@@ -80,6 +76,50 @@ public class Formatter {
 
     public String amPm(LocalDateTime ldt) {
         return (ldt.getHour() >= 12) ? "PM" : "AM";
+    }
+
+    public String normalizeDate(String text) {
+
+        if( Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+                Pattern.CASE_INSENSITIVE).matcher(text).find() ) {
+
+            switch(text.toLowerCase()) {
+                case "mon":
+                    text = "monday";
+                    break;
+                case "tues":
+                    text = "tuesday";
+                    break;
+                case "wed":
+                    text = "wednesday";
+                    break;
+                case "wednes":
+                    text = "wednesday";
+                    break;
+                case "thur":
+                    text = "thursday";
+                    break;
+                case "thurs":
+                    text = "thursday";
+                    break;
+                case "fri":
+                    text = "friday";
+                    break;
+                case "sat":
+                    text = "saturday";
+                    break;
+                case "satur":
+                    text = "saturday";
+                    break;
+                case "sun":
+                    text = "sunday";
+                    break;
+                default:
+                    break;
+            }
+            return text.toUpperCase();
+        }
+        return text;
     }
 
     public Integer wordToNumber(String input) throws Exception {

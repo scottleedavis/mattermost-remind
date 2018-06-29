@@ -267,12 +267,6 @@ public class Occurrence {
         return LocalDateTime.parse(chronoUnit + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
 
-        //todo: on 7 (next 7th of month)
-        //todo: on 7th
-        //todo: on seven
-        //todo: on 12/17/18
-        //todo: on 12/17
-
     }
 
     private LocalDateTime every(String when) throws Exception {

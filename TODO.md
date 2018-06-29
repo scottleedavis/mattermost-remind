@@ -25,8 +25,6 @@
     * past & complete view
   * ensure cannot set recurring reminders for other users
   * ensure channel reminders can’t be snoozed
-  * pattern match days of week better
-    * `((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)`
       
   
 * future planned commands

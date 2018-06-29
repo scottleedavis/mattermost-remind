@@ -119,6 +119,7 @@ public class Formatter {
         } else if (Pattern.compile("(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june|july|aug(ust)?|sept(ember)?|oct(ober)?|nov(ember)?|dec(ember)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
+            text = text.replace(",", "");
             String[] parts = text.toLowerCase().split(" ");
 
             switch(Integer.toString(parts.length)) {
@@ -219,25 +220,44 @@ public class Formatter {
 
             return Arrays.stream(parts).collect(Collectors.joining(" ")).toUpperCase();
 
+        } else if (Pattern.compile("()",
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            
+            //todo: on 12/17/18
+            //todo: on 12/17/2018
+            //todo: on 12/17
+            //todo: on 12-17-18
+            //todo: on 12-17-2018
+            //todo: on 12-17
+
+            String foo = "fooo";
+//            text = text.replace(",", "");
+//            String[] parts = text.toLowerCase().split(" ");
+
         } else {
+
+            for (int i = 0; i < suffixes.length; i++) {
+                if (suffixes[i].equals(text)) {
+                    text = text.substring(0, text.length() - 2);
+                    break;
+                }
+            }
+            try {
+                Integer.parseInt(text);
+            } catch (Exception e) {
+                text = Integer.toString(wordToNumber(text));
+            }
+
+            String month = LocalDateTime.now().getMonth().name();
+            String year = Integer.toString(LocalDateTime.now().getYear());
+            if( LocalDate.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), Integer.parseInt(text)).isBefore(LocalDate.now()) ) {
+                month = LocalDateTime.now().getMonth().plus(1).name();
+            }
+            return month + " " + text + " " + year;
 
         }
         return text;
     }
-    //todo: on December 15
-    //todo: on jan 12
-    //todo: on July 12th
-    //todo: on July 12
-    //todo: on July tenth
-    //todo: on July 12th 2019
-    //todo: on July tenth 2019
-    //todo: on July 12 2019
-
-    //todo: on 7 (next 7th of month)
-    //todo: on 7th
-    //todo: on seven
-    //todo: on 12/17/18
-    //todo: on 12/17
 
 
     public Integer wordToNumber(String input) throws Exception {

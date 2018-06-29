@@ -5,8 +5,10 @@ import org.springframework.stereotype.Component;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,7 +80,7 @@ public class Formatter {
         return (ldt.getHour() >= 12) ? "PM" : "AM";
     }
 
-    public String normalizeDate(String text) {
+    public String normalizeDate(String text) throws Exception {
 
         if( Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find() ) {
@@ -118,9 +120,45 @@ public class Formatter {
                     break;
             }
             return text.toUpperCase();
+        } else if (Pattern.compile("(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june|july|aug(ust)?|sept(ember)?|oct(ober)?|nov(ember)?|dec(ember)?)",
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            String[] parts = text.split(" ");
+            if ( parts.length == 2 ) {
+                 for( int i = 0; i < suffixes.length; i++ ){
+                     if( suffixes[i].equals(parts[1]) ) {
+                         parts[1] = parts[1].substring(0, parts[1].length() - 2);
+                         break;
+                     }
+                 }
+                 try {
+                     Integer.parseInt(parts[1]);
+                 } catch (Exception e) {
+                     parts[1] = Integer.toString(wordToNumber([1]));
+                 }
+
+                 parts[2] = Integer.toString(LocalDateTime.now().getYear());
+
+            } else if ( parts.length == 3 ) {
+
+            }
+        } else {
+
         }
         return text;
     }
+    //todo: on December 15
+    //todo: on jan 12
+    //todo: on July 12th
+    //todo: on July 12
+    //todo: on July tenth
+    //todo: on July 12th 2019
+    //todo: on July 12 2019
+
+    //todo: on 7 (next 7th of month)
+    //todo: on seven
+    //todo: on 12/17/18
+    //todo: on 12/17
+
 
     public Integer wordToNumber(String input) throws Exception {
         Integer sum = 0;

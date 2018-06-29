@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -149,12 +152,26 @@ public class OccurrenceTests {
     }
 
     @Test
-    public void calculateOn() {
-        //todo: on Friday
-        //todo: on mon
-        //todo: ON WEDNEs
+    public void calculateOn() throws Exception {
+        String when;
+        LocalDateTime testDate;
+        LocalDateTime checkDate;
 
-        
+        when = "on Friday";
+        testDate = occurrence.calculate(when);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "on mon";
+        testDate = occurrence.calculate(when);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "on WEDNEs";
+        testDate = occurrence.calculate(when);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
 
         //todo: on December 15
         //todo: on jan 12

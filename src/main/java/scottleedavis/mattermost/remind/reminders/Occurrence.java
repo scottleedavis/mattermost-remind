@@ -7,6 +7,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -253,15 +254,7 @@ public class Occurrence {
             case "FRIDAY":
             case "SATURDAY":
             case "SUNDAY":
-                DayOfWeek today = LocalDate.now().getDayOfWeek();
-                DayOfWeek chosen = DayOfWeek.valueOf(chronoUnit);
-                if ( chosen.ordinal() > today.ordinal() ) {
-                    long delta_days = chosen.ordinal() - today.ordinal();
-                    return now.plusDays(delta_days);
-                } else {
-                    long delta_days = chosen.ordinal() - today.ordinal() + 7;
-                    return now.plusDays(delta_days);
-                }
+                return LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(chronoUnit))).atTime(9,0);
             default:
                 break;
 

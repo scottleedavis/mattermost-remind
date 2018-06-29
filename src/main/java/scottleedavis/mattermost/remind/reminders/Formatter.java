@@ -167,7 +167,6 @@ public class Formatter {
                     throw new Exception("unrecognized date format");
             }
 
-            //(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june|july|aug(ust)?|sept(ember)?|oct(ober)?|nov(ember)?|dec(ember)
             switch(parts[0]) {
                 case "january":
                 case "jan":
@@ -220,7 +219,7 @@ public class Formatter {
 
             return Arrays.stream(parts).collect(Collectors.joining(" ")).toUpperCase();
 
-        } else if (Pattern.compile("()",
+        } else if (Pattern.compile("(\\d{2}(-|/)\\d{2}((-|/)(\\d{2}|\\d{4}))?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
             //todo: on 12/17/18

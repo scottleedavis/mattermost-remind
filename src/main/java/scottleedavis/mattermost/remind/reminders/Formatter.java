@@ -48,17 +48,12 @@ public class Formatter {
                 break;
             case ON:
                 ldt = occurrence.calculate(parsedRequest.getWhen());
-                if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
-                        Pattern.CASE_INSENSITIVE).matcher(when).find()) {
-                    timeRaw = ldt.getHour() % 12;
-                    timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                    String dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
-                    String month = capitalize(ldt.getMonth().toString());
-                    day = daySuffix(ldt.getDayOfMonth());
-                    when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day;
-                } else {
-
-                }
+                timeRaw = ldt.getHour() % 12;
+                timeRaw = timeRaw == 0 ? 12 : timeRaw;
+                String dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
+                String month = capitalize(ldt.getMonth().toString());
+                day = daySuffix(ldt.getDayOfMonth());
+                when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day;
                 break;
             case IN:
             default:
@@ -130,10 +125,12 @@ public class Formatter {
                 case "1":
                     break;
                 case "2":
-                    for( int i = 0; i < suffixes.length; i++ ){
-                        if( suffixes[i].equals(parts[1]) ) {
-                            parts[1] = parts[1].substring(0, parts[1].length() - 2);
-                            break;
+                    if ( parts[1].length() > 2 ) {
+                        for (int i = 0; i < suffixes.length; i++) {
+                            if (suffixes[i].equals(parts[1])) {
+                                parts[1] = parts[1].substring(0, parts[1].length() - 2);
+                                break;
+                            }
                         }
                     }
                     try {
@@ -148,10 +145,12 @@ public class Formatter {
                     parts[2] = Integer.toString(LocalDateTime.now().getYear());
                     break;
                 case "3":
-                    for( int i = 0; i < suffixes.length; i++ ){
-                        if( suffixes[i].equals(parts[1]) ) {
-                            parts[1] = parts[1].substring(0, parts[1].length() - 2);
-                            break;
+                    if ( parts[1].length() > 2 ) {
+                        for (int i = 0; i < suffixes.length; i++) {
+                            if (suffixes[i].equals(parts[1])) {
+                                parts[1] = parts[1].substring(0, parts[1].length() - 2);
+                                break;
+                            }
                         }
                     }
                     try {
@@ -169,30 +168,48 @@ public class Formatter {
 
             //(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june|july|aug(ust)?|sept(ember)?|oct(ober)?|nov(ember)?|dec(ember)
             switch(parts[0]) {
+                case "january":
                 case "jan":
                     parts[0] = "january";
                     break;
+                case "february":
                 case "feb":
                     parts[0] = "february";
                     break;
+                case "march":
                 case "mar":
                     parts[0] = "march";
                     break;
+                case "april":
                 case "apr":
                     parts[0] = "april";
                     break;
+                case "may":
+                    parts[0] = "may";
+                    break;
+                case "june":
+                    parts[0] = "june";
+                    break;
+                case "july":
+                    parts[0] = "july";
+                    break;
+                case "august":
                 case "aug":
                     parts[0] = "august";
                     break;
+                case "september":
                 case "sept":
                     parts[0] = "september";
                     break;
+                case "october":
                 case "oct":
                     parts[0] = "october";
                     break;
+                case "november":
                 case "nov":
                     parts[0] = "november";
                     break;
+                case "december":
                 case "dec":
                     parts[0] = "december";
                     break;

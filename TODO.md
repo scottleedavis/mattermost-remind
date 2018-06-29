@@ -9,6 +9,8 @@
   * day/date reminders need to be at 9am us with at
   * error response needs to have 'show some examples button'
   * Quote blocks need to be respected " food"
+  * 'on' dates need 'at' after support
+    *  e.g. `/remind me foo on Friday at 12pm`
   
 * upcoming features
   * create configuation for postgresql

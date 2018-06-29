@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
@@ -243,6 +245,8 @@ public class Occurrence {
         if (timeChunks.length < 2)
             throw new Exception("unrecognized time mark.");
 
+        //todo ensure all the prior works with on <day|date> at <time>
+
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
         chronoUnit = formatter.normalizeDate(chronoUnit);
 
@@ -267,7 +271,9 @@ public class Occurrence {
         //todo: on July 12th 2019
         //todo: on July 12 2019
         //todo: on July tenth 2019
-        String foo = "bar";
+
+        return LocalDateTime.parse(chronoUnit + " 09:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM dd yyyy HH:mm").toFormatter());
 
         //todo: on 7 (next 7th of month)
         //todo: on 7th
@@ -275,7 +281,6 @@ public class Occurrence {
         //todo: on 12/17/18
         //todo: on 12/17
 
-        throw new Exception("time mark not recognized");
     }
 
     private LocalDateTime every(String when) throws Exception {

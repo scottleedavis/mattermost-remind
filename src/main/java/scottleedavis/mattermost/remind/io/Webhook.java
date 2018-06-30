@@ -23,7 +23,7 @@ public class Webhook {
     private String webhookUrl;
 
     @Autowired
-    Options options;
+    private Options options;
 
     public void invoke(String target, String message, Long id) throws Exception {
 

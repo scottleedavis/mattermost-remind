@@ -16,13 +16,13 @@ import scottleedavis.mattermost.remind.reminders.Scheduler;
 public class SlashCommand {
 
     @Value("${slashCommandToken}")
-    String slashCommandToken;
+    private String slashCommandToken;
 
     @Autowired
-    Options options;
+    private Options options;
 
     @Autowired
-    Scheduler scheduler;
+    private Scheduler scheduler;
 
     @RequestMapping(value = "/remind", produces = "application/json")
     public Response remind(

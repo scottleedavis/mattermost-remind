@@ -32,10 +32,10 @@ public class Options {
     private String appUrl;
 
     @Autowired
-    Formatter formatter;
+    private Formatter formatter;
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     public void setAppUrl(String appUrl) {
         this.appUrl = appUrl;

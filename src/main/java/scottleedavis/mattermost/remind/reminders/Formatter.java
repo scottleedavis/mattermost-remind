@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class Formatter {
 
     @Autowired
-    Occurrence occurrence;
+    private Occurrence occurrence;
 
     public String upcomingReminder(LocalDateTime occurrence) {
         return occurrence.getHour() + ":"

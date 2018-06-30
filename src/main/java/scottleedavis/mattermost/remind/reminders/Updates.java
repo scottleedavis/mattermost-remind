@@ -15,10 +15,10 @@ import java.time.temporal.ChronoUnit;
 public class Updates {
 
     @Autowired
-    Options options;
+    private Options options;
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     public UpdateResponse delete(Interaction interaction) throws Exception {
         Reminder reminder = getReminder(interaction);

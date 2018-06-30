@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class Occurrence {
 
     @Autowired
-    Formatter formatter;
+    private Formatter formatter;
 
     public LocalDateTime calculate(String when) throws Exception {
         switch (classify(when)) {

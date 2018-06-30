@@ -25,25 +25,25 @@ public class Scheduler {
     private static Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
     @Value("${version}")
-    String version;
+    private String version;
 
     @Autowired
-    Parser parser;
+    private Parser parser;
 
     @Autowired
-    Webhook webhook;
+    private Webhook webhook;
 
     @Autowired
-    Options options;
+    private Options options;
 
     @Autowired
-    Occurrence occurrence;
+    private Occurrence occurrence;
 
     @Autowired
-    Formatter formatter;
+    private Formatter formatter;
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     public Response setReminder(String userName, String payload, String userId, String channelName) {
 

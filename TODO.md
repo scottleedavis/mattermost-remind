@@ -9,6 +9,7 @@
   * day/date reminders need to be at 9am us with at
   * error response needs to have 'show some examples button'
   * Quote blocks need to be respected " food"
+  * 'in ##s' need to work  (only uses space currently)
 
 * upcoming features
   * create configuration for postgresql

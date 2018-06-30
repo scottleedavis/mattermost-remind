@@ -60,7 +60,7 @@ public class ReminderServiceTests {
 
     @Test
     public void findByUsername() {
-        List<Reminder> reminders = reminderService.findRemindersByUsername("@foo");
+        List<Reminder> reminders = reminderService.findByUsername("@foo");
         assertTrue(reminders.size() == 1);
     }
 

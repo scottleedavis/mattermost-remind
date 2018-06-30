@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import scottleedavis.mattermost.remind.db.ReminderService;
 import scottleedavis.mattermost.remind.io.Webhook;
 import scottleedavis.mattermost.remind.db.Reminder;
@@ -38,16 +39,10 @@ public class Scheduler {
     private Options options;
 
     @Autowired
-    private Occurrence occurrence;
-
-    @Autowired
     private Formatter formatter;
 
     @Autowired
     private ReminderService reminderService;
-
-    @Resource
-    private ReminderRepository reminderRepository;
 
     public Response setReminder(String userName, String payload, String userId, String channelName) {
 
@@ -90,16 +85,15 @@ public class Scheduler {
     @Scheduled(fixedRate = 1000)
     public void runSchedule() {
 
-        //TODO FIX THIS
-//        List<Reminder> reminders = reminderRepository.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-//        reminders.forEach(reminder -> {
-//            logger.info("Sending reminder {} to {} ", reminder.getId(), reminder.getTarget());
-//            try {
-//                webhook.invoke(reminder.getTarget(), reminder.getMessage(), reminder.getId());
-//            } catch (Exception e) {
-//                logger.error("Not able to send reminder {}", e);
-//            }
-//        });
+        List<ReminderOccurrence> reminderOccurrences = reminderService.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrences.forEach(occurrence -> {
+            logger.info("Sending reminder {} to {} ", occurrence.getId(), occurrence.getReminder().getTarget());
+            try {
+                webhook.invoke(occurrence.getReminder().getTarget(), occurrence.getReminder().getMessage(), occurrence.getReminder().getId());
+            } catch (Exception e) {
+                logger.error("Not able to send reminder {}", e);
+            }
+        });
     }
 
 }

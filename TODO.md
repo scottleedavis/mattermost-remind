@@ -30,10 +30,8 @@
 * future planned commands
   * Days of the week
     * `/remind #design Join the meeting Monday`
-    * `/remind me Go to movies on Friday`
   * Dates
     * `/remind @lima Submit report May 30`
-    * `/remind #management Send annual salary review report on December 15`
   * Recurring reminders
     * `/remind me Drink water Everyday`
     * `/remind me to schedule annual reviews every January 25`

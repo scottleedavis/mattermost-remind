@@ -42,7 +42,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 
 ### requirements
 * Run: [Java8 JRE](http://openjdk.java.net/install/)
-* Run: [Docker](https://www.docker.com/) (Optional instead of Java)
+* Run: [Docker](https://www.docker.com/) (Optional)
 * Use: [Mattermost](https://mattermost.com/) 
 
 ### setup 

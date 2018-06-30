@@ -1,18 +1,24 @@
 package scottleedavis.mattermost.remind.reminders;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Component
 public class Occurrence {
+
+    @Autowired
+    Formatter formatter;
 
     public LocalDateTime calculate(String when) throws Exception {
         switch (classify(when)) {
@@ -54,37 +60,47 @@ public class Occurrence {
         try {
             count = Integer.parseInt(timeChunks[1]);
         } catch (NumberFormatException e) {
-            count = wordToNumber(timeChunks[1]);
+            count = formatter.wordToNumber(timeChunks[1]);
         }
 
         String chronoUnit = timeChunks[2].toLowerCase();
         switch (chronoUnit) {
             case "seconds":
             case "second":
+            case "sec":
+            case "s":
                 date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusSeconds(count);
                 break;
             case "minutes":
             case "minute":
+            case "min":
                 date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusMinutes(count);
                 break;
             case "hours":
             case "hour":
+            case "hrs":
+            case "hr":
                 date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusHours(count);
                 break;
             case "days":
             case "day":
+            case "d":
                 date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusDays(count);
                 break;
             case "weeks":
             case "week":
+            case "wks":
+            case "wk":
                 date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusWeeks(count);
                 break;
             case "months":
             case "month":
+            case "m":
                 date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusMonths(count);
                 break;
             case "years":
             case "year":
+            case "y":
                 date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusYears(count);
                 break;
             default:
@@ -123,7 +139,7 @@ public class Occurrence {
             case "ten":
             case "eleven":
             case "twelve":
-                closest = LocalDate.now().atTime(wordToNumber(chronoUnit), 0);
+                closest = LocalDate.now().atTime(formatter.wordToNumber(chronoUnit), 0);
                 return chooseClosest(closest, now, false);
             case "0":
             case "1":
@@ -188,7 +204,7 @@ public class Occurrence {
             String[] parts = {subChronoUnit.substring(0, 2), subChronoUnit.substring(2)};
             int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
 
-            time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
             closest = LocalDate.now().atTime(time[0], time[1]);
             return chooseClosest(closest, now, true);
         }
@@ -200,7 +216,7 @@ public class Occurrence {
             String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
             String subChronoUnit = chronoUnit.substring(0, chronoUnit.length() - amPmOffset);
             int time = Integer.parseInt(subChronoUnit);
-            time = amPm.toLowerCase().equals("pm") ? (time < 12 ? ((time + 12) % 24) : time) : time % 12;
+            time = amPm.equalsIgnoreCase("pm") ? (time < 12 ? ((time + 12) % 24) : time) : time % 12;
             closest = LocalDate.now().atTime(time, 0);
             return chooseClosest(closest, now, true);
         }
@@ -219,19 +235,33 @@ public class Occurrence {
     }
 
     private LocalDateTime on(String when) throws Exception {
-        //todo: on Friday
-        //todo: on December 15
-        //todo: on jan 12
-        //todo: on July 12th
-        //todo: on July 12
-        //todo: on July 12th 2019
-        //todo: on July 12 2019
-        //todo: on 7 (next 7th of month)
-        //todo: on 12/17/18
-        //todo: on 12/17
 
+        String[] timeChunks = when.split(" ");
+        if (timeChunks.length < 2)
+            throw new Exception("unrecognized time mark.");
 
-        throw new Exception("time mark not recognized");
+        //todo ensure all the prior works with on <day|date> at <time>
+
+        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
+        chronoUnit = formatter.normalizeDate(chronoUnit);
+
+        switch (chronoUnit) {
+            case "MONDAY":
+            case "TUESDAY":
+            case "WEDNESDAY":
+            case "THURSDAY":
+            case "FRIDAY":
+            case "SATURDAY":
+            case "SUNDAY":
+                return LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(chronoUnit))).atTime(9, 0);
+            default:
+                break;
+
+        }
+
+        return LocalDateTime.parse(chronoUnit + " 09:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+
     }
 
     private LocalDateTime every(String when) throws Exception {
@@ -260,74 +290,4 @@ public class Occurrence {
 
     }
 
-    private static HashMap<String, Integer> numbers = new HashMap<String, Integer>();
-    private static HashMap<String, Integer> onumbers = new HashMap<String, Integer>();
-    private static HashMap<String, Integer> tnumbers = new HashMap<String, Integer>();
-
-    static {
-        numbers.put("zero", 0);
-        numbers.put("one", 1);
-        numbers.put("two", 2);
-        numbers.put("three", 3);
-        numbers.put("four", 4);
-        numbers.put("five", 5);
-        numbers.put("six", 6);
-        numbers.put("seven", 7);
-        numbers.put("eight", 8);
-        numbers.put("nine", 9);
-        numbers.put("ten", 10);
-        numbers.put("eleven", 11);
-        numbers.put("twelve", 12);
-        numbers.put("thirteen", 13);
-        numbers.put("fourteen", 14);
-        numbers.put("fifteen", 15);
-        numbers.put("sixteen", 16);
-        numbers.put("seventeen", 17);
-        numbers.put("eighteen", 18);
-        numbers.put("nineteen", 19);
-
-        tnumbers.put("twenty", 20);
-        tnumbers.put("thirty", 30);
-        tnumbers.put("fourty", 40);
-        tnumbers.put("fifty", 50);
-        tnumbers.put("sixty", 60);
-        tnumbers.put("seventy", 70);
-        tnumbers.put("eighty", 80);
-        tnumbers.put("ninety", 90);
-
-        onumbers.put("hundred", 100);
-        onumbers.put("thousand", 1000);
-        onumbers.put("million", 1000000);
-        onumbers.put("billion", 1000000000);
-    }
-
-    private Integer wordToNumber(String input) throws Exception {
-        Integer sum = 0;
-        Integer temp = null;
-        Integer previous = 0;
-        String[] splitted = input.toLowerCase().split(" ");
-
-        for (String split : splitted) {
-            if (numbers.get(split) != null) {
-                temp = numbers.get(split);
-                sum = sum + temp;
-                previous = previous + temp;
-            } else if (onumbers.get(split) != null) {
-                if (sum != 0)
-                    sum = sum - previous;
-                sum = sum + previous * onumbers.get(split);
-                temp = null;
-                previous = 0;
-            } else if (tnumbers.get(split) != null) {
-                temp = tnumbers.get(split);
-                sum = sum + temp;
-                previous = temp;
-            }
-        }
-
-        if (sum == 0)
-            throw new Exception("couldn't format number");
-
-        return sum;
-    }
 }

@@ -62,14 +62,8 @@ public class Scheduler {
                     response.setText(version);
                     break;
                 default:
-                    Reminder reminder = scheduleReminder(parsedRequest.getTarget(),
-                            userName,
-                            parsedRequest.getWhen(),
-                            parsedRequest.getMessage());
-                    String responseText = formatter.setReminder(parsedRequest.getTarget(),
-                            parsedRequest.getMessage(),
-                            parsedRequest.getWhen());
-
+                    Reminder reminder = scheduleReminder(userName, parsedRequest);
+                    String responseText = formatter.reminderResponse(parsedRequest);
                     if (channelName.contains(userId)) {
                         Attachment attachment = new Attachment();
                         attachment.setActions(options.setActions(reminder.getId()));
@@ -89,13 +83,13 @@ public class Scheduler {
         return response;
     }
 
-    private Reminder scheduleReminder(String target, String userName, String when, String message) throws Exception {
+    private Reminder scheduleReminder(String userName, ParsedRequest parsedRequest) throws Exception {
 
         Reminder reminder = new Reminder();
-        reminder.setTarget(target.equals("me") ? "@" + userName : target);
+        reminder.setTarget(parsedRequest.getTarget().equals("me") ? "@" + userName : parsedRequest.getTarget());
         reminder.setUserName(userName);
-        reminder.setMessage(message);
-        reminder.setOccurrence(occurrence.calculate(when));
+        reminder.setMessage(parsedRequest.getMessage());
+        reminder.setOccurrence(occurrence.calculate(parsedRequest.getWhen()));
         reminderRepository.save(reminder);
         return reminder;
     }

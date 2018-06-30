@@ -1,4 +1,5 @@
-# mattermost-remind [![Build Status](https://travis-ci.org/scottleedavis/mattermost-remind.svg?branch=master)](https://travis-ci.org/scottleedavis/mattermost-remind)
+# mattermost-remind [![Build Status](https://travis-ci.org/scottleedavis/mattermost-remind.svg?branch=master)](https://travis-ci.org/scottleedavis/mattermost-remind) [![codecov](https://codecov.io/gh/scottleedavis/mattermost-remind/branch/master/graph/badge.svg)](https://codecov.io/gh/scottleedavis/mattermost-remind)
+
 A /remind slash command for [Mattermost](https://mattermost.com/) built with [Spring Boot](https://spring.io/projects/spring-boot)
 
 `/remind [@someone or #channel] [what] [when]`
@@ -19,7 +20,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind @lima Lunch time! at noon`
   * `/remind #test-team New tests at two`
   * `/remind me Pickup kids at 4:30pm`
-* _(in progress)_ **/remind [who] [what] on [(Monday-Sunday|Month & Day|##/##/##|##/##|)]**
+* **/remind [who] [what] on [(Monday-Sunday|Month & Day|MM/DD/YYYY|MM/DD)]**
   * `/remind me Go to movies on Friday`
   * `/remind #management Send annual salary review report on December 15`
   * `/remind me Mow the lawn on 7th`

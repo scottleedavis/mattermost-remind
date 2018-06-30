@@ -1,31 +1,37 @@
 # todos 
 
-1. I haven't fully fleshed out the idea for recurring reminders in the db & function.   My passing thoughts were : 1) store the 'when' pattern with a reminder if it is recurring (db column).  2) when reminder triggers, set another reminder immediately using the 'when' pattern.   maybe as easy as that?   
+* Thoughts on recurring reminders
+  * occurences savea 'when' column, that re-evaluates everything the reminder is run.   needs to be intelligent for multi day things like `every friday and saturday`
 
 * minor bugs
+  * ensure day/date select automatically selects 9AM 
   * the word 'to' needs to be removed from start of a message
   * day/date reminders need to be at 9am us with at
   * error response needs to have 'show some examples button'
   * Quote blocks need to be respected " food"
-* create configuation for postgresql
-  * 9.4.15-0+deb8u1  (test locally with docker)
-* snooze choices 
-  * (currently only 20 minutes)
-  * try reappearing buttons?  or initial row of buttons...
-  * awaiting [Interactive message button dropdown](https://forum.mattermost.org/t/interactive-message-button-dropdown/5219)   
-* remind list 
-  * awaiting [flat buttons/links * delete/complete interactions](https://forum.mattermost.org/t/interactive-flat-message-button-links/5220)
-  * try list of attachments in meantime...
-  * past & complete view
-* ensure cannot set recurring reminders for other users
-* ensure channel reminders can’t be snoozed
-* future planned features
+  * 'on' dates need 'at' after support
+    *  e.g. `/remind me foo on Friday at 12pm`
+  
+* upcoming features
+  * create configuation for postgresql
+    * 9.4.15-0+deb8u1  (test locally with docker)
+  * snooze choices 
+    * (currently only 20 minutes)
+    * try reappearing buttons?  or initial row of buttons...
+    * awaiting [Interactive message button dropdown](https://forum.mattermost.org/t/interactive-message-button-dropdown/5219)   
+  * remind list 
+    * awaiting [flat buttons/links * delete/complete interactions](https://forum.mattermost.org/t/interactive-flat-message-button-links/5220)
+    * try list of attachments in meantime...
+    * past & complete view
+  * ensure cannot set recurring reminders for other users
+  * ensure channel reminders can’t be snoozed
+      
+  
+* future planned commands
   * Days of the week
     * `/remind #design Join the meeting Monday`
-    * `/remind me Go to movies on Friday`
   * Dates
     * `/remind @lima Submit report May 30`
-    * `/remind #management Send annual salary review report on December 15`
   * Recurring reminders
     * `/remind me Drink water Everyday`
     * `/remind me to schedule annual reviews every January 25`

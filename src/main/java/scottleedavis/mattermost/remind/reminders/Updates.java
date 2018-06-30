@@ -2,8 +2,8 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import scottleedavis.mattermost.remind.jpa.Reminder;
-import scottleedavis.mattermost.remind.jpa.ReminderRepository;
+import scottleedavis.mattermost.remind.db.Reminder;
+import scottleedavis.mattermost.remind.db.ReminderRepository;
 import scottleedavis.mattermost.remind.messages.Interaction;
 import scottleedavis.mattermost.remind.messages.Update;
 import scottleedavis.mattermost.remind.messages.UpdateResponse;
@@ -54,7 +54,8 @@ public class Updates {
         Update update = new Update();
         update.setMessage("Ok! I’ll remind you “" + reminder.getMessage() + "” in 20 minutes");
         updateResponse.setUpdate(update);
-        reminder.setOccurrence(reminder.getOccurrence().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
+//        reminder.setOccurrence(reminder.getOccurrence().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
+        //TODO FIX THIS
         reminderRepository.save(reminder);
         return updateResponse;
     }

@@ -2,8 +2,8 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import scottleedavis.mattermost.remind.jpa.Reminder;
-import scottleedavis.mattermost.remind.jpa.ReminderRepository;
+import scottleedavis.mattermost.remind.db.Reminder;
+import scottleedavis.mattermost.remind.db.ReminderRepository;
 import scottleedavis.mattermost.remind.messages.Action;
 import scottleedavis.mattermost.remind.messages.Context;
 import scottleedavis.mattermost.remind.messages.Integration;
@@ -54,11 +54,13 @@ public class Options {
         List<Reminder> reminders = reminderRepository.findByUserName(userName);
 
         if (reminders.size() > 0) {
-            return "*Upcoming*:\n"
-                    + reminders.stream()
-                    .map(r -> "* \"" + r.getMessage() + "\" at "
-                            + formatter.upcomingReminder(r.getOccurrence()))
-                    .reduce("", String::concat);
+//            return "*Upcoming*:\n"
+//                    + reminders.stream()
+//                    .map(r -> "* \"" + r.getMessage() + "\" at "
+//                            + formatter.upcomingReminder(r.getOccurrence()))
+//                    .reduce("", String::concat);
+            //TODO FIX THIS
+            return "";
         }
 
         return "I cannot find any reminders for you. Type `/remind` to set one.";

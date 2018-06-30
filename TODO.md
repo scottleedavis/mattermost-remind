@@ -1,7 +1,7 @@
 # todos 
 
 * Thoughts on recurring reminders
-  * occurences savea 'when' column, that re-evaluates everything the reminder is run.   needs to be intelligent for multi day things like `every friday and saturday`
+  * occurrences savea 'when' column, that re-evaluates everything the reminder is run.   needs to be intelligent for multi day things like `every friday and saturday`
 
 * known bugs
   * ensure day/date select automatically selects 9AM 

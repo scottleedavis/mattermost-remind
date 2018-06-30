@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import scottleedavis.mattermost.remind.io.Webhook;
-import scottleedavis.mattermost.remind.jpa.Reminder;
-import scottleedavis.mattermost.remind.jpa.ReminderRepository;
+import scottleedavis.mattermost.remind.db.Reminder;
+import scottleedavis.mattermost.remind.db.ReminderRepository;
 import scottleedavis.mattermost.remind.messages.Attachment;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 import scottleedavis.mattermost.remind.messages.Response;
@@ -89,7 +89,8 @@ public class Scheduler {
         reminder.setTarget(parsedRequest.getTarget().equals("me") ? "@" + userName : parsedRequest.getTarget());
         reminder.setUserName(userName);
         reminder.setMessage(parsedRequest.getMessage());
-        reminder.setOccurrence(occurrence.calculate(parsedRequest.getWhen()));
+//        reminder.setOccurrence(occurrence.calculate(parsedRequest.getWhen()));
+        //TODO FIX THIS
         reminderRepository.save(reminder);
         return reminder;
     }
@@ -97,15 +98,16 @@ public class Scheduler {
     @Scheduled(fixedRate = 1000)
     public void runSchedule() {
 
-        List<Reminder> reminders = reminderRepository.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        reminders.forEach(reminder -> {
-            logger.info("Sending reminder {} to {} ", reminder.getId(), reminder.getTarget());
-            try {
-                webhook.invoke(reminder.getTarget(), reminder.getMessage(), reminder.getId());
-            } catch (Exception e) {
-                logger.error("Not able to send reminder {}", e);
-            }
-        });
+        //TODO FIX THIS
+//        List<Reminder> reminders = reminderRepository.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+//        reminders.forEach(reminder -> {
+//            logger.info("Sending reminder {} to {} ", reminder.getId(), reminder.getTarget());
+//            try {
+//                webhook.invoke(reminder.getTarget(), reminder.getMessage(), reminder.getId());
+//            } catch (Exception e) {
+//                logger.error("Not able to send reminder {}", e);
+//            }
+//        });
     }
 
 }

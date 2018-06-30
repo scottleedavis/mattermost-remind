@@ -273,6 +273,7 @@ public class OccurrenceTests {
     @Test
     public void calculateEvery() throws Exception {
 
+
         //todo every Thursday
         //todo every January 25
         //todo every 12/18

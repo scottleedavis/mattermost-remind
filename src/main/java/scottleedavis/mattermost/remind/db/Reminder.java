@@ -1,13 +1,15 @@
-package scottleedavis.mattermost.remind.jpa;
+package scottleedavis.mattermost.remind.db;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "reminders")
 public class Reminder {
 
     @Id
+    @Column(name = "reminder_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -15,7 +17,8 @@ public class Reminder {
     @Column(name = "user_name")
     private String userName;
     private String message;
-    private LocalDateTime occurrence;
+    @OneToMany(mappedBy = "reminder", cascade = CascadeType.ALL)
+    private List<ReminderOccurrence> occurrences;
     private boolean complete = false;
 
     public Long getId() {
@@ -50,12 +53,14 @@ public class Reminder {
         this.message = message;
     }
 
-    public LocalDateTime getOccurrence() {
-        return occurrence;
+    public List<ReminderOccurrence> getOccurrences() {
+        if( occurrences == null )
+            occurrences = new ArrayList<>();
+        return occurrences;
     }
 
-    public void setOccurrence(LocalDateTime occurrence) {
-        this.occurrence = occurrence;
+    public void setOccurrences(List<ReminderOccurrence> occurrences) {
+        this.occurrences = occurrences;
     }
 
     public boolean isComplete() {

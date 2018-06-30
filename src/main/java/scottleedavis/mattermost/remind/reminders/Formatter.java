@@ -2,6 +2,7 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import scottleedavis.mattermost.remind.exceptions.FormatterException;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -20,13 +22,19 @@ public class Formatter {
     @Autowired
     private Occurrence occurrence;
 
-    public String upcomingReminder(LocalDateTime occurrence) {
-        return occurrence.getHour() + ":"
-                + occurrence.getMinute()
-                + amPm(occurrence) + " "
-                + capitalize(occurrence.getDayOfWeek().toString()) + ", "
-                + capitalize(occurrence.getMonth().toString()) + " "
-                + daySuffix(occurrence.getDayOfMonth()) + "\n";
+    public String upcomingReminder(List<ReminderOccurrence> occurrences) {
+        if( occurrences.size() > 1 )
+            return "NOT YET IMPLMENTED (occurences > 1";
+        else {
+            ReminderOccurrence reminderOccurrence = occurrences.get(0);
+            LocalDateTime ldt = reminderOccurrence.getOccurrence();
+            return ldt.getHour() + ":"
+                    + ldt.getMinute()
+                    + amPm(ldt) + " "
+                    + capitalize(ldt.getDayOfWeek().toString()) + ", "
+                    + capitalize(ldt.getMonth().toString()) + " "
+                    + daySuffix(ldt.getDayOfMonth()) + "\n";
+        }
     }
 
     public String reminderResponse(ParsedRequest parsedRequest) throws Exception {

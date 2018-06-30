@@ -3,6 +3,7 @@ package scottleedavis.mattermost.remind.db;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import scottleedavis.mattermost.remind.messages.Interaction;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 import scottleedavis.mattermost.remind.reminders.Occurrence;
 
@@ -32,6 +33,11 @@ public class ReminderService {
         return reminderRepository.findByUserName(userName);
     }
 
+    public Reminder findByInteraction(Interaction interaction) throws Exception {
+        return reminderRepository.findById(interaction.getContext().getId())
+                .orElseThrow(() -> new Exception("No reminder found with that id"));
+    }
+
     public Reminder schedule(String userName, ParsedRequest parsedRequest) throws Exception {
         Reminder reminder = new Reminder();
         reminder.setTarget(parsedRequest.getTarget().equals("me") ? "@" + userName : parsedRequest.getTarget());
@@ -48,7 +54,16 @@ public class ReminderService {
         return reminder;
     }
 
-    //todo delete
-    //todo complete
-    //todo snooze
+    public void delete(Reminder reminder) {
+        reminderRepository.delete(reminder);
+    }
+
+    public void complete(Reminder reminder) {
+        reminder.setComplete(true);
+        reminderRepository.save(reminder);
+    }
+
+    public void snooze(Reminder reminder, LocalDateTime ldt) {
+
+    }
 }

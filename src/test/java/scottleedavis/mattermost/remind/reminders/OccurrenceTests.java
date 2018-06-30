@@ -273,16 +273,17 @@ public class OccurrenceTests {
     @Test
     public void calculateEvery() throws Exception {
 
-        //todo every January 25`
-        //todo every Thursday`
-        //todo every other Wednesday`
-        //todo every Monday at 9am`
-        //todo every monday and wednesday`
-        //todo every friday and saturday
+        //todo every Thursday
+        //todo every January 25
+        //todo every 12/18
+        //todo every monday and wednesday
+        //todo every wednesday, thursday
+        //todo every other Wednesday
         //todo every other friday and saturday
+        //todo every Monday at 9am
         //todo every monday, tuesday and sunday at 11:00
         //todo every monday, tuesday at 2pm
-        //todo every wednesday and thursday
+
 
     }
 }

@@ -20,10 +20,16 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind @lima Lunch time! at noon`
   * `/remind #test-team New tests at two`
   * `/remind me Pickup kids at 4:30pm`
-* **/remind [who] [what] on [(Monday-Sunday|Month & Day|MM/DD/YYYY|MM/DD)]**
+* **/remind [who] [what] on [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)]**
   * `/remind me Go to movies on Friday`
   * `/remind #management Send annual salary review report on December 15`
   * `/remind me Mow the lawn on 7th`
+* _(in progress)_ **/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]**
+  * `/remind me to schedule annual reviews every January 25`
+  * `/remind #design Design critique meeting every Thursday`
+  * `/remind me Physiotherapy after work every other Wednesday`
+  * `/remind #team-alpha to update the project status every Monday at 9am`
+  * `/remind me to do things every monday and wednesday`
   
 ### notes
 * You can’t set recurring reminders for other members.

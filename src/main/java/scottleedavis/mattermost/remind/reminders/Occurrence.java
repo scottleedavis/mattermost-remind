@@ -172,10 +172,8 @@ public class Occurrence {
                 break;
         }
 
-        // 12:30PM, 12:30 pm
-        Matcher match = Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)",
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
-        if (match.find()) {
+        if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)",  // 12:30PM, 12:30 pm
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
             int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ') ? 3 : 2;
             String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
             int[] time = Arrays.stream(chronoUnit.substring(0, chronoUnit.length() - amPmOffset).split(":"))
@@ -184,20 +182,14 @@ public class Occurrence {
             time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
             closest = LocalDate.now().atTime(time[0], time[1]);
             return chooseClosest(closest, now, true);
-        }
-        // 12:30
-        match = Pattern.compile("(1[012]|[1-9]):[0-5][0-9]",
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
-        if (match.find()) {
+        } else if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9]", // 12:30
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
             int[] time = Arrays.stream(chronoUnit.split(":")).mapToInt(Integer::parseInt).toArray();
             time[0] = time[0] % 24;
             closest = LocalDate.now().atTime(time[0], time[1]);
             return chooseClosest(closest, now, true);
-        }
-        // 1230pm, 1230 pm
-        match = Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\s)?(?i)(am|pm)",
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
-        if (match.find()) {
+        } else if (Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\s)?(?i)(am|pm)", // 1230pm, 1230 pm
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
             int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ') ? 3 : 2;
             String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
             String subChronoUnit = chronoUnit.substring(0, chronoUnit.length() - amPmOffset);
@@ -208,11 +200,8 @@ public class Occurrence {
             time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
             closest = LocalDate.now().atTime(time[0], time[1]);
             return chooseClosest(closest, now, true);
-        }
-        // 5PM, 7 am
-        match = Pattern.compile("(1[012]|[1-9])(\\s)?(?i)(am|pm)",
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
-        if (match.find()) {
+        } else if (Pattern.compile("(1[012]|[1-9])(\\s)?(?i)(am|pm)",  // 5PM, 7 am
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
             int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ') ? 3 : 2;
             String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
             String subChronoUnit = chronoUnit.substring(0, chronoUnit.length() - amPmOffset);
@@ -220,11 +209,8 @@ public class Occurrence {
             time = amPm.equalsIgnoreCase("pm") ? (time < 12 ? ((time + 12) % 24) : time) : time % 12;
             closest = LocalDate.now().atTime(time, 0);
             return chooseClosest(closest, now, true);
-        }
-        // 1200
-        match = Pattern.compile("(1[012]|[1-9])[0-5][0-9]",
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit);
-        if (match.find()) {
+        } else if (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
+                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
             String[] parts = {chronoUnit.substring(0, 2), chronoUnit.substring(2)};
             int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
             time[0] = time[0] % 24;
@@ -271,19 +257,19 @@ public class Occurrence {
         if (timeChunks.length < 2)
             throw new OccurrenceException("unrecognized time mark.");
 
-        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
+//        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
 //        chronoUnit = formatter.normalizeDate(chronoUnit);
 
-        //todo every January 25`
-        //todo every Thursday`
-        //todo every other Wednesday`
-        //todo every Monday at 9am`
-        //todo every monday and wednesday`
-        //todo every friday and saturday
+        //todo every Thursday
+        //todo every January 25
+        //todo every 12/18
+        //todo every monday and wednesday
+        //todo every wednesday, thursday
+        //todo every other Wednesday
         //todo every other friday and saturday
+        //todo every Monday at 9am
         //todo every monday, tuesday and sunday at 11:00
         //todo every monday, tuesday at 2pm
-        //todo every wednesday and thursday
 
         return null;
     }

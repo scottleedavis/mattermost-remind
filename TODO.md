@@ -26,7 +26,7 @@
   * ensure cannot set recurring reminders for other users
   * ensure channel reminders can’t be snoozed
       
-  
+  * /remind help should display command patterns... with button on bottom saying show examples
 * future planned commands
   * Days of the week
     * `/remind #design Join the meeting Monday`

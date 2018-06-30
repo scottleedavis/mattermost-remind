@@ -27,6 +27,7 @@ public class Updates {
         update.setMessage("Ok! I’ve deleted the reminder “" + reminder.getMessage() + "”.");
         updateResponse.setUpdate(update);
         reminderRepository.delete(reminder);
+        //todo use service
         return updateResponse;
     }
 
@@ -45,6 +46,8 @@ public class Updates {
         updateResponse.setUpdate(update);
         reminder.setComplete(true);
         reminderRepository.save(reminder);
+        //todo use service
+
         return updateResponse;
     }
 
@@ -56,6 +59,8 @@ public class Updates {
         updateResponse.setUpdate(update);
 //        reminder.setOccurrence(reminder.getOccurrence().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
         //TODO FIX THIS
+        //todo use service
+
         reminderRepository.save(reminder);
         return updateResponse;
     }

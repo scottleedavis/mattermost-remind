@@ -36,7 +36,7 @@ public class Formatter {
         String day;
         switch (occurrence.classify(parsedRequest.getWhen())) {
             case AT:
-                ldt = occurrence.calculate(parsedRequest.getWhen());
+                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0); //TODO handle multiple values
                 LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
@@ -47,7 +47,7 @@ public class Formatter {
                 when = time + amPm(ldt) + " " + day;
                 break;
             case ON:
-                ldt = occurrence.calculate(parsedRequest.getWhen());
+                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0); //TODO handle multiple values
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
                 String dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
@@ -62,10 +62,13 @@ public class Formatter {
                 when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day + year;
                 break;
             case EVERY:
-                // in progress
+                // in progress  //TODO handle multiple values
+                String foo = "bar";
                 break;
             case IN:
                 // TODO  normalize the name (e.g. no s, sec... just seconds)
+                // TODO handle multiple values
+                break;
             default:
                 break;
         }

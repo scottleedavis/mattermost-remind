@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import scottleedavis.mattermost.remind.db.ReminderService;
 import scottleedavis.mattermost.remind.io.Webhook;
 import scottleedavis.mattermost.remind.db.Reminder;
 import scottleedavis.mattermost.remind.db.ReminderRepository;
@@ -42,6 +43,9 @@ public class Scheduler {
     @Autowired
     private Formatter formatter;
 
+    @Autowired
+    private ReminderService reminderService;
+
     @Resource
     private ReminderRepository reminderRepository;
 
@@ -62,7 +66,7 @@ public class Scheduler {
                     response.setText(version);
                     break;
                 default:
-                    Reminder reminder = scheduleReminder(userName, parsedRequest);
+                    Reminder reminder = reminderService.schedule(userName, parsedRequest);
                     String responseText = formatter.reminderResponse(parsedRequest);
                     if (channelName.contains(userId)) {
                         Attachment attachment = new Attachment();
@@ -81,18 +85,6 @@ public class Scheduler {
         response.setResponseType(channelName.contains(userId) ? Response.ResponseType.IN_CHANNEL : Response.ResponseType.EPHEMERAL);
 
         return response;
-    }
-
-    private Reminder scheduleReminder(String userName, ParsedRequest parsedRequest) throws Exception {
-
-        Reminder reminder = new Reminder();
-        reminder.setTarget(parsedRequest.getTarget().equals("me") ? "@" + userName : parsedRequest.getTarget());
-        reminder.setUserName(userName);
-        reminder.setMessage(parsedRequest.getMessage());
-//        reminder.setOccurrence(occurrence.calculate(parsedRequest.getWhen()));
-        //TODO FIX THIS
-        reminderRepository.save(reminder);
-        return reminder;
     }
 
     @Scheduled(fixedRate = 1000)

@@ -60,7 +60,11 @@ public class Formatter {
                 }
                 when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day + year;
                 break;
+            case EVERY:
+                // in progress
+                break;
             case IN:
+                // TODO  normalize the name (e.g. no s, sec... just seconds)
             default:
                 break;
         }

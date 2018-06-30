@@ -3,17 +3,15 @@
 * Thoughts on recurring reminders
   * occurences savea 'when' column, that re-evaluates everything the reminder is run.   needs to be intelligent for multi day things like `every friday and saturday`
 
-* minor bugs
+* known bugs
   * ensure day/date select automatically selects 9AM 
   * the word 'to' needs to be removed from start of a message
   * day/date reminders need to be at 9am us with at
   * error response needs to have 'show some examples button'
   * Quote blocks need to be respected " food"
-  * 'on' dates need 'at' after support
-    *  e.g. `/remind me foo on Friday at 12pm`
-  
+
 * upcoming features
-  * create configuation for postgresql
+  * create configuration for postgresql
     * 9.4.15-0+deb8u1  (test locally with docker)
   * snooze choices 
     * (currently only 20 minutes)
@@ -25,26 +23,22 @@
     * past & complete view
   * ensure cannot set recurring reminders for other users
   * ensure channel reminders can’t be snoozed
-      
   * /remind help should display command patterns... with button on bottom saying show examples
+  
+  
 * future planned commands
-  * Days of the week
-    * `/remind #design Join the meeting Monday`
-  * Dates
-    * `/remind @lima Submit report May 30`
-  * Recurring reminders
-    * `/remind me Drink water Everyday`
-    * `/remind me to schedule annual reviews every January 25`
-    * `/remind #design Design critique meeting every Thursday`
-    * `/remind me Physiotherapy after work every other Wednesday`
-    * `/remind me to update the team meeting agenda on Mondays`
+  * Times recurring (at <time> every <recurrent>)
     * `/remind me to attend the team meeting at 11:00 every Tuesday`
     * `/remind me to drink water at 3pm every day`
-    * `/remind #team-alpha to update the project status every Monday at 9am`
-    * `/remind me to do things every monday and wednesday`
+  * Days of the week (without 'on' <day>)
+    * `/remind #design Join the meeting Monday`
+    * `/remind me Smile tomorrow`
+    * `/remind me Drink water Everyday`
+    * `/remind me to update the team meeting agenda on Mondays`
+  * Dates (without 'on' <date>)
+    * `/remind @lima Submit report May 30`
+  * Dates (with 'on' <date> 'at' <time>)
+    * `/remind me foo on Friday at 12pm`
   * Alternate ordering `/remind [who] [when] [what]`
     * `/remind me on June 1st to wish Linda happy birthday`
     * `/remind @peter tomorrow "Please review the office seating plan"`
-  * Misc
-    * `/remind me Smile tomorrow`
-    

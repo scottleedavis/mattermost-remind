@@ -272,6 +272,6 @@ public class OccurrenceTests {
 
     @Test
     public void calculateEvery() throws Exception {
-        
+
     }
 }

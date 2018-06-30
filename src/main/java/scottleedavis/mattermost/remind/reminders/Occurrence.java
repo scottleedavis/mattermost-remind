@@ -240,7 +240,7 @@ public class Occurrence {
         if (timeChunks.length < 2)
             throw new Exception("unrecognized time mark.");
 
-        //todo ensure all the prior works with on <day|date> at <time>
+        //todo ensure this works with on <day|date> at <time>
 
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
         chronoUnit = formatter.normalizeDate(chronoUnit);
@@ -265,7 +265,25 @@ public class Occurrence {
     }
 
     private LocalDateTime every(String when) throws Exception {
-        throw new Exception("not yet supported");
+
+        String[] timeChunks = when.split(" ");
+        if (timeChunks.length < 2)
+            throw new Exception("unrecognized time mark.");
+
+//        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
+//        chronoUnit = formatter.normalizeDate(chronoUnit);
+
+        //todo every January 25`
+        //todo every Thursday`
+        //todo every other Wednesday`
+        //todo every Monday at 9am`
+        //todo every monday and wednesday`
+        //todo every friday and saturday
+        //todo every other friday and saturday
+        //todo every monday, tuesday and sunday at 11:00
+        //todo every monday, tuesday at 2pm
+
+        return null;
     }
 
     private LocalDateTime freeForm(String when) throws Exception {

@@ -64,6 +64,10 @@ public class ReminderService {
     }
 
     public void snooze(Reminder reminder, LocalDateTime ldt) {
-
+        //TODO handle snoozed reminders appropriately
+        ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
+        reminderOccurrence.setOccurrence(ldt);
+        reminderOccurrence.setReminder(reminder);
+        reminderOccurrenceRepository.save(reminderOccurrence);
     }
 }

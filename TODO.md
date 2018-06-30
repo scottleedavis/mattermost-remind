@@ -1,9 +1,7 @@
 # todos 
 
-* Thoughts on recurring reminders
-  * occurrences savea 'when' column, that re-evaluates everything the reminder is run.   needs to be intelligent for multi day things like `every friday and saturday`
-
 * known bugs
+  * updates needs logging
   * ensure day/date select automatically selects 9AM 
   * the word 'to' needs to be removed from start of a message
   * day/date reminders need to be at 9am us with at

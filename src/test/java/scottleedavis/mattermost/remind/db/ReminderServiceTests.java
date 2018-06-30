@@ -66,21 +66,21 @@ public class ReminderServiceTests {
 
     @Test
     public void schedule() {
-
+        assertTrue(false);
     }
 
     @Test
     public void delete() {
-
+        assertTrue(false);
     }
 
     @Test
     public void complete() {
-
+        assertTrue(false);
     }
 
     @Test
     public void snooze() {
-
+        assertTrue(false);
     }
 }

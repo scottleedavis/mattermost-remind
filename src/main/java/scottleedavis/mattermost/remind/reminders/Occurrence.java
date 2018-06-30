@@ -6,12 +6,10 @@ import org.springframework.stereotype.Component;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -206,7 +204,7 @@ public class Occurrence {
             String[] parts = {subChronoUnit.substring(0, 2), subChronoUnit.substring(2)};
             int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
 
-            time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
             closest = LocalDate.now().atTime(time[0], time[1]);
             return chooseClosest(closest, now, true);
         }
@@ -218,7 +216,7 @@ public class Occurrence {
             String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
             String subChronoUnit = chronoUnit.substring(0, chronoUnit.length() - amPmOffset);
             int time = Integer.parseInt(subChronoUnit);
-            time = amPm.toLowerCase().equals("pm") ? (time < 12 ? ((time + 12) % 24) : time) : time % 12;
+            time = amPm.equalsIgnoreCase("pm") ? (time < 12 ? ((time + 12) % 24) : time) : time % 12;
             closest = LocalDate.now().atTime(time, 0);
             return chooseClosest(closest, now, true);
         }
@@ -238,9 +236,6 @@ public class Occurrence {
 
     private LocalDateTime on(String when) throws Exception {
 
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime closest;
-
         String[] timeChunks = when.split(" ");
         if (timeChunks.length < 2)
             throw new Exception("unrecognized time mark.");
@@ -250,7 +245,7 @@ public class Occurrence {
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
         chronoUnit = formatter.normalizeDate(chronoUnit);
 
-        switch(chronoUnit) {
+        switch (chronoUnit) {
             case "MONDAY":
             case "TUESDAY":
             case "WEDNESDAY":
@@ -258,7 +253,7 @@ public class Occurrence {
             case "FRIDAY":
             case "SATURDAY":
             case "SUNDAY":
-                return LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(chronoUnit))).atTime(9,0);
+                return LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(chronoUnit))).atTime(9, 0);
             default:
                 break;
 

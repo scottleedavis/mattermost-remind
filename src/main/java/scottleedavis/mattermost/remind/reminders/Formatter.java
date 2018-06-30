@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -24,9 +23,9 @@ public class Formatter {
         return occurrence.getHour() + ":"
                 + occurrence.getMinute()
                 + amPm(occurrence) + " "
-                + capitalize(occurrence.getDayOfWeek().toString() ) + ", "
-                + capitalize( occurrence.getMonth().toString() ) + " "
-                + daySuffix( occurrence.getDayOfMonth() ) + "\n";
+                + capitalize(occurrence.getDayOfWeek().toString()) + ", "
+                + capitalize(occurrence.getMonth().toString()) + " "
+                + daySuffix(occurrence.getDayOfMonth()) + "\n";
     }
 
     public String reminderResponse(ParsedRequest parsedRequest) throws Exception {
@@ -84,10 +83,10 @@ public class Formatter {
 
     public String normalizeDate(String text) throws Exception {
 
-        if( Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
-                Pattern.CASE_INSENSITIVE).matcher(text).find() ) {
+        if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
-            switch(text.toLowerCase()) {
+            switch (text.toLowerCase()) {
                 case "mon":
                     text = "monday";
                     break;
@@ -128,11 +127,11 @@ public class Formatter {
             text = text.replace(",", "");
             String[] parts = text.toLowerCase().split(" ");
 
-            switch(Integer.toString(parts.length)) {
+            switch (Integer.toString(parts.length)) {
                 case "1":
                     break;
                 case "2":
-                    if ( parts[1].length() > 2 ) {
+                    if (parts[1].length() > 2) {
                         for (int i = 0; i < suffixes.length; i++) {
                             if (suffixes[i].equals(parts[1])) {
                                 parts[1] = parts[1].substring(0, parts[1].length() - 2);
@@ -152,7 +151,7 @@ public class Formatter {
                     parts[2] = Integer.toString(LocalDateTime.now().getYear());
                     break;
                 case "3":
-                    if ( parts[1].length() > 2 ) {
+                    if (parts[1].length() > 2) {
                         for (int i = 0; i < suffixes.length; i++) {
                             if (suffixes[i].equals(parts[1])) {
                                 parts[1] = parts[1].substring(0, parts[1].length() - 2);
@@ -173,7 +172,7 @@ public class Formatter {
                     throw new Exception("unrecognized date format");
             }
 
-            switch(parts[0]) {
+            switch (parts[0]) {
                 case "january":
                 case "jan":
                     parts[0] = "january";
@@ -231,10 +230,10 @@ public class Formatter {
             String[] parts = text.split("(-|/)");
             LocalDateTime ldt;
 
-            switch(Integer.toString(parts.length)) {
+            switch (Integer.toString(parts.length)) {
                 case "2":
                     ldt = LocalDateTime.now().withMonth(Integer.parseInt(parts[0])).withDayOfMonth(Integer.parseInt(parts[1]));
-                    if( ldt.withYear(LocalDateTime.now().getYear()).isBefore(LocalDateTime.now()) ) {
+                    if (ldt.withYear(LocalDateTime.now().getYear()).isBefore(LocalDateTime.now())) {
                         ldt = ldt.withYear(LocalDateTime.now().getYear()).withYear(LocalDateTime.now().getYear()).plusYears(1);
                     } else {
                         ldt = ldt.withYear(LocalDateTime.now().getYear()).withYear(LocalDateTime.now().getYear());
@@ -242,7 +241,7 @@ public class Formatter {
                     return ldt.getMonth().toString() + " " + ldt.getDayOfMonth() + " " + ldt.getYear();
                 case "3":
                     ldt = LocalDateTime.now().withMonth(Integer.parseInt(parts[0])).withDayOfMonth(Integer.parseInt(parts[1]));
-                    if( ldt.withYear(Integer.parseInt(parts[2])).isBefore(LocalDateTime.now()) ) {
+                    if (ldt.withYear(Integer.parseInt(parts[2])).isBefore(LocalDateTime.now())) {
                         ldt = ldt.withYear(LocalDateTime.now().getYear()).withYear(LocalDateTime.now().getYear()).plusYears(1);
                     } else {
                         ldt = ldt.withYear(LocalDateTime.now().getYear()).withYear(Integer.parseInt(parts[2]));
@@ -268,7 +267,7 @@ public class Formatter {
 
             String month = LocalDateTime.now().getMonth().name();
             String year = Integer.toString(LocalDateTime.now().getYear());
-            if( LocalDate.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), Integer.parseInt(text)).isBefore(LocalDate.now()) ) {
+            if (LocalDate.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), Integer.parseInt(text)).isBefore(LocalDate.now())) {
                 month = LocalDateTime.now().getMonth().plus(1).name();
             }
             return month + " " + text + " " + year;

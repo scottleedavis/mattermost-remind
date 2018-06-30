@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 
 import static org.junit.Assert.assertEquals;
@@ -175,99 +174,99 @@ public class OccurrenceTests {
 
         when = "on December 15";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "December 15 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("December 15 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on jan 12";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "January 12 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("January 12 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on July 12th";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "July 12 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("July 12 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on March 22";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "March 22 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("March 22 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on September 7th 2019";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "September 7 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("September 7 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on April 17 2019";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "April 17 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("April 17 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on auguSt tenth 2019";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "August 10 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("August 10 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on 7";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( LocalDate.now().getMonth().name() + " 7 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse(LocalDate.now().getMonth().name() + " 7 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusMonths(1).equals(testDate));
 
         when = "on 7th";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( LocalDate.now().getMonth().name() + " 7 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse(LocalDate.now().getMonth().name() + " 7 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusMonths(1).equals(testDate));
 
         when = "on seven";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( LocalDate.now().getMonth().name() + " 7 "+LocalDateTime.now().getYear()+" 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse(LocalDate.now().getMonth().name() + " 7 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusMonths(1).equals(testDate));
 
         when = "on 1/17/18";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "1 17 2018 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("1 17 2018 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("M d yyyy HH:mm").toFormatter());
-        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on 12/17/2018";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "12 17 2018 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("12 17 2018 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("M d yyyy HH:mm").toFormatter());
-        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on 12/1";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "12 1 2018 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("12 1 2018 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("M d yyyy HH:mm").toFormatter());
-        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on 5-17-18";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "5 17 2018 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("5 17 2018 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("M d yyyy HH:mm").toFormatter());
-        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on 12-5-2018";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "12 5 2018 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("12 5 2018 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("M d yyyy HH:mm").toFormatter());
-        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
         when = "on 12-12";
         testDate = occurrence.calculate(when);
-        checkDate = LocalDateTime.parse( "12 12 2018 09:00", new DateTimeFormatterBuilder()
+        checkDate = LocalDateTime.parse("12 12 2018 09:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("M d yyyy HH:mm").toFormatter());
-        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate) );
+        assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
 
     }

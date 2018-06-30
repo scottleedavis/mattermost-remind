@@ -42,8 +42,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 
 ### requirements
 * Run: [Java8 JRE](http://openjdk.java.net/install/)
-Or
-* Run: [Docker](https://www.docker.com/) (Optional)
+* Run: [Docker](https://www.docker.com/) (Optional instead of Java)
 * Use: [Mattermost](https://mattermost.com/) 
 
 ### setup 
@@ -87,14 +86,14 @@ _Requires slash command and webhook integrations_
 ### build
 * Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
   * `./mvnw  package`
+* Building for tomcat
+  * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
 * Build [Docker](https://www.docker.com/) Image (Optional)
   * `./mvnw install dockerfile:build`
 
 ### execution
 * Running via java
   * `java -jar target/mattermost-remind-#.#.#.jar`
-* Running via tomcat
-  * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
 * Running via docker (Optional)
   * Using a locally built version `docker run -p 8080:8080 -t scottleedavis/mattermost-remind`
   * Using dockerhub latest image: `docker run scottleedavis/mattermost-remind`

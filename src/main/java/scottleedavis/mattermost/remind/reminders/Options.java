@@ -23,7 +23,7 @@ public class Options {
             "* `/remind @jessica about the interview in 3 hours`\n" +
             "* `/remind @peter tomorrow \"Please review the office seating plan\"`\n" +
             "Or, use `/remind list` to see the list of all your reminders.\n" +
-            "Have a bug to report or a feature request?  Create a new [issue](https://github.com/scottleedavis/mattermost-remind/issues).";
+            "Have a bug to report or a feature request?  [Submit your issue here](https://gitreports.com/issue/scottleedavis/mattermost-remind/).";
 
     public static String exceptionText = "Sorry, I didn’t quite get that. I’m easily confused. " +
             "Perhaps try the words in a different order? This usually works: " +

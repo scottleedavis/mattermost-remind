@@ -34,6 +34,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 ### bugs & issues
 
 * Want to see a feature or report a bug?  Head to [issues](https://github.com/scottleedavis/mattermost-remind/issues).
+* Don't have a github account?  [Use this form](https://gitreports.com/issue/scottleedavis/mattermost-remind/})
 
 ### todos
 

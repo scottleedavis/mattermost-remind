@@ -268,6 +268,10 @@ public class OccurrenceTests {
                 .parseCaseInsensitive().appendPattern("M d yyyy HH:mm").toFormatter());
         assertTrue(checkDate.equals(testDate) || checkDate.plusYears(1).equals(testDate));
 
+    }
 
+    @Test
+    public void calculateEvery() throws Exception {
+        
     }
 }

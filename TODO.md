@@ -34,6 +34,7 @@
     * `/remind #design Join the meeting Monday`
     * `/remind me Smile tomorrow`
     * `/remind me Drink water Everyday`
+  * Days of the week recurring (by plural day name)
     * `/remind me to update the team meeting agenda on Mondays`
   * Dates (without 'on' <date>)
     * `/remind @lima Submit report May 30`

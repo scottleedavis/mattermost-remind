@@ -1,6 +1,7 @@
 package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.stereotype.Component;
+import scottleedavis.mattermost.remind.exceptions.ParserException;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
 @Component
@@ -37,7 +38,7 @@ public class Parser {
         else if (parts[0].charAt(0) == '#')
             return parts[0];
 
-        throw new Exception("Unrecognized target");
+        throw new ParserException("Unrecognized target");
 
     }
 
@@ -65,7 +66,7 @@ public class Parser {
             return text.substring(subString).trim();
         }
 
-        throw new Exception("No when found");
+        throw new ParserException("No when found");
 
     }
 }

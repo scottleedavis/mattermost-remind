@@ -2,6 +2,7 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import scottleedavis.mattermost.remind.exceptions.OccurrenceException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -54,7 +55,7 @@ public class Occurrence {
 
         String[] timeChunks = when.split(" ");
         if (timeChunks.length != 3)
-            throw new Exception("unrecognized time mark.");
+            throw new OccurrenceException("unrecognized time mark.");
 
         Integer count;
         try {
@@ -104,7 +105,7 @@ public class Occurrence {
                 date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusYears(count);
                 break;
             default:
-                throw new Exception("Unrecognized time specification");
+                throw new OccurrenceException("Unrecognized time specification");
         }
         return date;
 
@@ -117,7 +118,7 @@ public class Occurrence {
 
         String[] timeChunks = when.split(" ");
         if (timeChunks.length < 2)
-            throw new Exception("unrecognized time mark.");
+            throw new OccurrenceException("unrecognized time mark.");
 
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
         switch (chronoUnit) {
@@ -231,14 +232,14 @@ public class Occurrence {
             return chooseClosest(closest, now, true);
         }
 
-        throw new Exception("time mark not recognized");
+        throw new OccurrenceException("time mark not recognized");
     }
 
     private LocalDateTime on(String when) throws Exception {
 
         String[] timeChunks = when.split(" ");
         if (timeChunks.length < 2)
-            throw new Exception("unrecognized time mark.");
+            throw new OccurrenceException("unrecognized time mark.");
 
         //todo ensure this works with on <day|date> at <time>
 
@@ -268,9 +269,9 @@ public class Occurrence {
 
         String[] timeChunks = when.split(" ");
         if (timeChunks.length < 2)
-            throw new Exception("unrecognized time mark.");
+            throw new OccurrenceException("unrecognized time mark.");
 
-//        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
+        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
 //        chronoUnit = formatter.normalizeDate(chronoUnit);
 
         //todo every January 25`
@@ -282,12 +283,13 @@ public class Occurrence {
         //todo every other friday and saturday
         //todo every monday, tuesday and sunday at 11:00
         //todo every monday, tuesday at 2pm
+        //todo every wednesday and thursday
 
         return null;
     }
 
     private LocalDateTime freeForm(String when) throws Exception {
-        throw new Exception("unrecognized time mark.");
+        throw new OccurrenceException("unrecognized time mark.");
     }
 
     private LocalDateTime chooseClosest(LocalDateTime closest, LocalDateTime now, boolean dayInterval) {

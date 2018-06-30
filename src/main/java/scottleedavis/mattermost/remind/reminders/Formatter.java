@@ -2,6 +2,7 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import scottleedavis.mattermost.remind.exceptions.FormatterException;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
 import java.time.DayOfWeek;
@@ -173,7 +174,7 @@ public class Formatter {
 
                     break;
                 default:
-                    throw new Exception("unrecognized date format");
+                    throw new FormatterException("unrecognized date format");
             }
 
             switch (parts[0]) {
@@ -223,7 +224,7 @@ public class Formatter {
                     parts[0] = "december";
                     break;
                 default:
-                    throw new Exception("month not found");
+                    throw new FormatterException("month not found");
             }
 
             return Arrays.stream(parts).collect(Collectors.joining(" ")).toUpperCase();
@@ -252,7 +253,7 @@ public class Formatter {
                     }
                     return ldt.getMonth().toString() + " " + ldt.getDayOfMonth() + " " + ldt.getYear();
                 default:
-                    throw new Exception("unrecognized date");
+                    throw new FormatterException("unrecognized date");
             }
 
         } else {  //single 'number'
@@ -306,7 +307,7 @@ public class Formatter {
         }
 
         if (sum == 0)
-            throw new Exception("couldn't format number");
+            throw new FormatterException("couldn't format number");
 
         return sum;
     }

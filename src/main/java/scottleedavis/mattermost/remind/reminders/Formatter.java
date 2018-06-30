@@ -53,7 +53,13 @@ public class Formatter {
                 String dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
                 String month = capitalize(ldt.getMonth().toString());
                 day = daySuffix(ldt.getDayOfMonth());
-                when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day;
+                String year = "";
+                if (Pattern.compile("((\\d{2}|\\d{1})(-|/)(\\d{2}|\\d{1})((-|/)(\\d{2}|\\d{4})))",
+                        Pattern.CASE_INSENSITIVE).matcher(parsedRequest.getWhen()).find()) {
+                    String[] parts = parsedRequest.getWhen().split("(-|/)");
+                    year = ", " + LocalDate.now().withYear(Integer.parseInt(parts[2])).getYear();
+                }
+                when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day + year;
                 break;
             case IN:
             default:
@@ -219,21 +225,34 @@ public class Formatter {
 
             return Arrays.stream(parts).collect(Collectors.joining(" ")).toUpperCase();
 
-        } else if (Pattern.compile("(\\d{2}(-|/)\\d{2}((-|/)(\\d{2}|\\d{4}))?)",
+        } else if (Pattern.compile("((\\d{2}|\\d{1})(-|/)(\\d{2}|\\d{1})((-|/)(\\d{2}|\\d{4}))?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
-            //todo: on 12/17/18
-            //todo: on 12/17/2018
-            //todo: on 12/17
-            //todo: on 12-17-18
-            //todo: on 12-17-2018
-            //todo: on 12-17
+            String[] parts = text.split("(-|/)");
+            LocalDateTime ldt;
 
-            String foo = "fooo";
-//            text = text.replace(",", "");
-//            String[] parts = text.toLowerCase().split(" ");
+            switch(Integer.toString(parts.length)) {
+                case "2":
+                    ldt = LocalDateTime.now().withMonth(Integer.parseInt(parts[0])).withDayOfMonth(Integer.parseInt(parts[1]));
+                    if( ldt.withYear(LocalDateTime.now().getYear()).isBefore(LocalDateTime.now()) ) {
+                        ldt = ldt.withYear(LocalDateTime.now().getYear()).withYear(LocalDateTime.now().getYear()).plusYears(1);
+                    } else {
+                        ldt = ldt.withYear(LocalDateTime.now().getYear()).withYear(LocalDateTime.now().getYear());
+                    }
+                    return ldt.getMonth().toString() + " " + ldt.getDayOfMonth() + " " + ldt.getYear();
+                case "3":
+                    ldt = LocalDateTime.now().withMonth(Integer.parseInt(parts[0])).withDayOfMonth(Integer.parseInt(parts[1]));
+                    if( ldt.withYear(Integer.parseInt(parts[2])).isBefore(LocalDateTime.now()) ) {
+                        ldt = ldt.withYear(LocalDateTime.now().getYear()).withYear(LocalDateTime.now().getYear()).plusYears(1);
+                    } else {
+                        ldt = ldt.withYear(LocalDateTime.now().getYear()).withYear(Integer.parseInt(parts[2]));
+                    }
+                    return ldt.getMonth().toString() + " " + ldt.getDayOfMonth() + " " + ldt.getYear();
+                default:
+                    throw new Exception("unrecognized date");
+            }
 
-        } else {
+        } else {  //single 'number'
 
             for (int i = 0; i < suffixes.length; i++) {
                 if (suffixes[i].equals(text)) {
@@ -255,7 +274,7 @@ public class Formatter {
             return month + " " + text + " " + year;
 
         }
-        return text;
+
     }
 
 

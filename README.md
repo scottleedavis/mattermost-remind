@@ -41,8 +41,6 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 * Want to contribute?  Fork this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 
 ### requirements
-* Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
-    * `mvn package`
 * Run: [Java8 JRE](http://openjdk.java.net/install/)
 * Use: [Mattermost](https://mattermost.com/) 
 
@@ -84,11 +82,18 @@ _Requires slash command and webhook integrations_
   * set mattermost system icon
   * put webhook URL in [application.properties](src/main/resources/application.properties) `webhookUrl=<YOUR_WEBHOOK>`
 
+### build
+* Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
+  * `./mvnw  package`
+* Build [Docker](https://www.docker.com/) Image (Optional)
+  * `./mvnw install dockerfile:build`
+
 ### execution
 * Running via java
-  * `java -jar target/remind-#.#.#.jar`
+  * `java -jar target/mattermost-remind-#.#.#.jar`
 * Running via tomcat
   * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
-* Running via docker
-  * _todo_
+* Running via docker (Optional)
+  * Using a locally built version `docker run -p 8080:8080 -t scottleedavis/mattermost-remind`
+  * Using dockerhub latest image: `docker run scottleedavis/mattermost-remind`
 

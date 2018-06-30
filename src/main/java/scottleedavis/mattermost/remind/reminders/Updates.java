@@ -18,7 +18,7 @@ public class Updates {
 
     @Autowired
     private Options options;
-    
+
     @Autowired
     private ReminderService reminderService;
 

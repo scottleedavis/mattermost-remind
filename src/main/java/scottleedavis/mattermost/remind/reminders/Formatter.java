@@ -43,6 +43,7 @@ public class Formatter {
         List<LocalDateTime> ldts;
         LocalDateTime ldt;
         Integer timeRaw;
+        String time;
         String dayOfWeek;
         String month;
         String day;
@@ -53,7 +54,7 @@ public class Formatter {
                 LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                String time = Integer.toString(timeRaw);
+                time = Integer.toString(timeRaw);
                 if (ldt.getMinute() > 0)
                     time += ":" + String.format("%02d", ldt.getMinute());
                 day = (ldt.getDayOfMonth() == now.getDayOfMonth()) ? "today" : "tomorrow";
@@ -75,27 +76,44 @@ public class Formatter {
                 when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day + year;
                 break;
             case EVERY:
-                // in progress  //TODO handle multiple values
-                //  I will remind you “foo” at 9:41AM every other Monday, Tuesday, and Friday.
                 ldts = occurrence.calculate(parsedRequest.getWhen());
+                String other = parsedRequest.getWhen().contains("other") ? " other" : "";
                 ldt = ldts.get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
-                month = capitalize(ldt.getMonth().toString());
-                day = daySuffix(ldt.getDayOfMonth());
-                String other = parsedRequest.getWhen().contains("other") ? " other" : "";
 
-                if( parsedRequest.getWhen().contains(" day ")) {
+                if (parsedRequest.getWhen().contains(" day ")) {
+
                     when = "at " + timeRaw + amPm(ldt) + " every" + other + " day";
                 } else if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
                         Pattern.CASE_INSENSITIVE).matcher(parsedRequest.getWhen()).find()) {
-                    String foo = "bar";
-                    //todo bring in the list of days
-                    //when = "at " + timeRaw + amPm(ldt) + " every " + other + dayOfWeek + ", " + month + " " + day;
+                    when = "at " + timeRaw + amPm(ldt) + " every" + other;
+                    String chronoUnit = Arrays.asList(parsedRequest.getWhen().split(" ")).stream().skip(1).collect(Collectors.joining(" "));
+                    chronoUnit = chronoUnit.contains("other") ? chronoUnit.split("other")[1].trim() : chronoUnit;
+                    String[] dateTimeSplit = chronoUnit.split(" at ");
+                    time = dateTimeSplit.length == 1 ? Occurrence.DEFAULT_TIME : dateTimeSplit[1];
+                    String[] days = Arrays.stream(dateTimeSplit[0].split("and|,")).map(dt -> capitalize(dt.trim())).toArray(String[]::new);
+                    Arrays.sort(days);
+
+                    String daysStr = days[0];
+                    if (days.length > 1) {
+                        String[] subDays = Arrays.copyOfRange(days, 0, days.length - 1);
+                        daysStr = String.join(", ", subDays) + " and " + days[days.length - 1];
+                    }
+                    when += " " + daysStr;
+
                 } else {
-                    //todo, bring in the list of dates
-                    when = "at " + timeRaw + amPm(ldt) + " every " + other + " " + month + " " + day;
+                    when = "at " + timeRaw + amPm(ldt) + " every" + other + " ";
+                    String[] dates = ldts.stream().map(date -> {
+                        return capitalize(date.getMonth().toString()) + " " + daySuffix(date.getDayOfMonth());
+                    }).toArray(String[]::new);
+
+                    String datesStr = dates[0];
+                    if (dates.length > 1) {
+                        String[] subDays = Arrays.copyOfRange(dates, 0, dates.length - 1);
+                        datesStr = String.join(", ", subDays) + " and " + dates[dates.length - 1];
+                    }
+                    when += " " + datesStr;
                 }
 
                 break;

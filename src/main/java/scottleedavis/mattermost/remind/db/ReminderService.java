@@ -47,7 +47,7 @@ public class ReminderService {
             ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
             reminderOccurrence.setReminder(reminder);
             reminderOccurrence.setOccurrence(ldt);
-            if( parsedRequest.getWhen().contains("every") )
+            if (parsedRequest.getWhen().contains("every"))
                 reminderOccurrence.setRepeat(parsedRequest.getWhen());
             return reminderOccurrence;
         }).collect(Collectors.toList()));

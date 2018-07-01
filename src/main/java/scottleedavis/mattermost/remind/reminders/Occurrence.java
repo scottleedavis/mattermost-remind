@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Component
 public class Occurrence {
 
-    private String DEFAULT_TIME = "09:00";
+    public static String DEFAULT_TIME = "09:00";
 
     @Autowired
     private Formatter formatter;
@@ -263,23 +263,14 @@ public class Occurrence {
         String[] timeChunks = when.split(" ");
         if (timeChunks.length < 2)
             throw new OccurrenceException("unrecognized time mark.");
+
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
-
-        boolean everyOther = chronoUnit.contains("other");
-        if (everyOther)
-            chronoUnit = chronoUnit.split("other")[1].trim();
-
+        chronoUnit = chronoUnit.contains("other") ? chronoUnit.split("other")[1].trim() : chronoUnit;
         String[] dateTimeSplit = chronoUnit.split(" at ");
         final String time = dateTimeSplit.length == 1 ? DEFAULT_TIME : dateTimeSplit[1];
-
-        String[] chronoChunks = new String[0];
-        boolean multiDay = dateTimeSplit[0].matches(".*(and|,)*");
-        if (multiDay)
-            chronoChunks = Arrays.stream(dateTimeSplit[0].split("and|,")).map(s -> s.trim()).toArray(String[]::new);
-
         List<LocalDateTime> ldts = new ArrayList<>();
         List<Exception> caughtExceptions = new ArrayList<>();
-        Arrays.stream(chronoChunks).forEach(chrono -> {
+        Arrays.stream(dateTimeSplit[0].split("and|,")).map(s -> s.trim()).forEach(chrono -> {
             try {
                 String timeUnit = formatter.normalizeTime(time);
                 String dateUnit = formatter.normalizeDate(chrono);

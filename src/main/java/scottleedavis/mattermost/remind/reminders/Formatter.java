@@ -40,12 +40,16 @@ public class Formatter {
 
     public String reminderResponse(ParsedRequest parsedRequest) throws Exception {
         String when = parsedRequest.getWhen();
+        List<LocalDateTime> ldts;
         LocalDateTime ldt;
         Integer timeRaw;
+        String dayOfWeek;
+        String month;
         String day;
+        String year;
         switch (occurrence.classify(parsedRequest.getWhen())) {
-            case AT:
-                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0); //TODO handle multiple values
+            case AT: //TODO handle multiple values (e.g. 4pm and 2:32 am)
+                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0);
                 LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
@@ -55,14 +59,14 @@ public class Formatter {
                 day = (ldt.getDayOfMonth() == now.getDayOfMonth()) ? "today" : "tomorrow";
                 when = time + amPm(ldt) + " " + day;
                 break;
-            case ON:
-                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0); //TODO handle multiple values
+            case ON:  //TODO handle multiple values  (e.g. 12/18 and 4-01)
+                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                String dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
-                String month = capitalize(ldt.getMonth().toString());
+                dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
+                month = capitalize(ldt.getMonth().toString());
                 day = daySuffix(ldt.getDayOfMonth());
-                String year = "";
+                year = "";
                 if (Pattern.compile("((\\d{2}|\\d{1})(-|/)(\\d{2}|\\d{1})((-|/)(\\d{2}|\\d{4})))",
                         Pattern.CASE_INSENSITIVE).matcher(parsedRequest.getWhen()).find()) {
                     String[] parts = parsedRequest.getWhen().split("(-|/)");
@@ -72,11 +76,31 @@ public class Formatter {
                 break;
             case EVERY:
                 // in progress  //TODO handle multiple values
-                String foo = "bar";
+                //  I will remind you “foo” at 9:41AM every other Monday, Tuesday, and Friday.
+                ldts = occurrence.calculate(parsedRequest.getWhen());
+                ldt = ldts.get(0);
+                timeRaw = ldt.getHour() % 12;
+                timeRaw = timeRaw == 0 ? 12 : timeRaw;
+                dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
+                month = capitalize(ldt.getMonth().toString());
+                day = daySuffix(ldt.getDayOfMonth());
+                String other = parsedRequest.getWhen().contains("other") ? " other" : "";
+
+                if( parsedRequest.getWhen().contains(" day ")) {
+                    when = "at " + timeRaw + amPm(ldt) + " every" + other + " day";
+                } else if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+                        Pattern.CASE_INSENSITIVE).matcher(parsedRequest.getWhen()).find()) {
+                    String foo = "bar";
+                    //todo bring in the list of days
+                    //when = "at " + timeRaw + amPm(ldt) + " every " + other + dayOfWeek + ", " + month + " " + day;
+                } else {
+                    //todo, bring in the list of dates
+                    when = "at " + timeRaw + amPm(ldt) + " every " + other + " " + month + " " + day;
+                }
+
                 break;
-            case IN:
-                // TODO  normalize the name (e.g. no s, sec... just seconds)
-                // TODO handle multiple values
+            case IN: // TODO handle multiple values
+                // TODO  normalize the name (e.g. no s, sec... just seconds) e.g. 2 sec => 2 seconds
                 break;
             default:
                 break;

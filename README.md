@@ -30,6 +30,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind me Physiotherapy after work every other Wednesday`
   * `/remind #team-alpha to update the project status every Monday at 9am`
   * `/remind me to do things every monday and wednesday at noon`
+  * `/remind me to exercise every other day`
   
 ### notes
 * You can’t set recurring reminders for other members.
@@ -41,16 +42,12 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 
 * Tracked in [Github projects](https://github.com/scottleedavis/mattermost-remind/projects)
 * Next release targeted: [Release 0.0.2](https://github.com/scottleedavis/mattermost-remind/projects/1)
+* Want to contribute?  Fork this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 
 ### bugs & issues
 
 * Request a feature or report a bug in [Github issues](https://github.com/scottleedavis/mattermost-remind/issues).
 * Don't have a github account?  [Use this form](https://gitreports.com/issue/scottleedavis/mattermost-remind/)
-
-### todos
-
-* See the [TODO](TODO.md) page for planned coming features.
-* Want to contribute?  Fork this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 
 ### setup 
 
@@ -83,7 +80,8 @@ _Requires slash command and webhook integrations_
   * `Enable integrations to override usernames` & `Enable integrations to override profile picture icons`
     * OR... create a `mattermost-remind` user to setup the slash command and webhook with system icon
 * create `remind` as slash command
-  * Title & Autocomplete: `Set a reminder`
+  * Title & "Autocomplete Description": `Set a reminder`
+  * Leave "Description" blank
   * Response Username: `mattermost-remind`
   * Autocomplete hint: `[@someone or #channel] [what] [when]`
   * Request URL: `<path_to_mattermost-remind>/remind`

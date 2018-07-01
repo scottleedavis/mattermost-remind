@@ -12,7 +12,7 @@ public class ReminderOccurrence {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "remind_id", nullable = false)
+    @JoinColumn(name = "reminder_id", nullable = false)
     private Reminder reminder;
     private LocalDateTime occurrence;
     private String repeat;

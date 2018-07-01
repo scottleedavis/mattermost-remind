@@ -8,6 +8,7 @@
   * error response needs to have 'show some examples button'
   * Quote blocks need to be respected " food"
   * 'in ##s' need to work  (only uses space currently)
+  * update the scripts/*.sql to match current schema
 
 * upcoming features
   * create configuration for postgresql

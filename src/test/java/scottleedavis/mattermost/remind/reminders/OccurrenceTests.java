@@ -275,13 +275,16 @@ public class OccurrenceTests {
 
 
         //todo every Thursday
-        //todo every January 25
+        //todo every day
         //todo every 12/18
+        //todo every January 25
         //todo every monday and wednesday
         //todo every wednesday, thursday
         //todo every other Wednesday
         //todo every other friday and saturday
+        //todo every day at 11:32am
         //todo every Monday at 9am
+        //todo every 7/20 at 1100
         //todo every monday, tuesday and sunday at 11:00
         //todo every monday, tuesday at 2pm
 

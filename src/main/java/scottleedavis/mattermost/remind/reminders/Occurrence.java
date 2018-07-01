@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class Occurrence {
+
+    private String DEFAULT_TIME = "09:00";
 
     @Autowired
     private Formatter formatter;
@@ -252,7 +255,7 @@ public class Occurrence {
 
         }
 
-        return Arrays.asList(LocalDateTime.parse(chronoUnit + " 09:00", new DateTimeFormatterBuilder()
+        return Arrays.asList(LocalDateTime.parse(chronoUnit + " "+DEFAULT_TIME, new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter()));
 
     }
@@ -262,11 +265,51 @@ public class Occurrence {
         String[] timeChunks = when.split(" ");
         if (timeChunks.length < 2)
             throw new OccurrenceException("unrecognized time mark.");
+        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
 
-//        String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
-//        chronoUnit = formatter.normalizeDate(chronoUnit);
+        boolean everyOther = chronoUnit.contains("other");
+        if( everyOther )
+            chronoUnit = chronoUnit.split("other")[1].trim();
+
+        String[] dateTimeSplit = chronoUnit.split(" at ");
+        if(dateTimeSplit.length == 1)
+            dateTimeSplit = new String[]{dateTimeSplit[0], DEFAULT_TIME };
+
+        String [] chronoChunks = new String[0];
+        boolean multiDay = dateTimeSplit[0].matches(".*(and|,)*");
+        if (multiDay)
+            chronoChunks = Arrays.stream(dateTimeSplit[0].split("and|,")).map(s -> s.trim()).toArray(String[]::new);
+
+        List<LocalDateTime> ldts = new ArrayList<>();
+        List<Exception> caughtExceptions = new ArrayList<>();
+        Arrays.stream(chronoChunks).forEach( chrono -> {
+            try {
+                String dateUnit = formatter.normalizeDate(chrono);
+//                String timeUnit =
+
+            } catch (Exception e) {
+                caughtExceptions.add(e);
+            }
+        });
+        if( caughtExceptions.size() > 0 )
+            throw new OccurrenceException("error normalizing date");
+
+        //todo every Thursday
+        //todo every day
+        //todo every 12/18
+        //todo every January 25
+        //todo every monday and wednesday
+        //todo every wednesday, thursday
+        //todo every other Wednesday
+        //todo every other friday and saturday
+        //todo every day at 11:32am
+        //todo every Monday at 9am
+        //todo every 7/20 at 1100
+        //todo every monday, tuesday and sunday at 11:00
+        //todo every monday, tuesday at 2pm
 
 
+        String foo = "bar";
 
         return null;
     }

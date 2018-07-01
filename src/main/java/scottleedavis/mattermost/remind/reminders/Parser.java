@@ -43,15 +43,14 @@ public class Parser {
     }
 
     private String findWhen(String text) throws Exception {
-        //find in, at, on, every starting from the back
         int subString = -1;
 
-        subString = text.indexOf(" at ");
+        subString = text.indexOf(" in ");
         if (subString > -1) {
             return text.substring(subString).trim();
         }
 
-        subString = text.indexOf(" in ");
+        subString = text.indexOf(" every ");
         if (subString > -1) {
             return text.substring(subString).trim();
         }
@@ -61,7 +60,7 @@ public class Parser {
             return text.substring(subString).trim();
         }
 
-        subString = text.indexOf(" every ");
+        subString = text.indexOf(" at ");
         if (subString > -1) {
             return text.substring(subString).trim();
         }

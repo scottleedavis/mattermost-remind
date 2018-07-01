@@ -6,16 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import scottleedavis.mattermost.remind.db.Reminder;
 import scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import scottleedavis.mattermost.remind.db.ReminderService;
 import scottleedavis.mattermost.remind.io.Webhook;
-import scottleedavis.mattermost.remind.db.Reminder;
-import scottleedavis.mattermost.remind.db.ReminderRepository;
 import scottleedavis.mattermost.remind.messages.Attachment;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 import scottleedavis.mattermost.remind.messages.Response;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;

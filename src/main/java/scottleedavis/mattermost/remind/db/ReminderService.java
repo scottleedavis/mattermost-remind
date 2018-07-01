@@ -43,7 +43,7 @@ public class ReminderService {
         reminder.setTarget(parsedRequest.getTarget().equals("me") ? "@" + userName : parsedRequest.getTarget());
         reminder.setUserName(userName);
         reminder.setMessage(parsedRequest.getMessage());
-        reminder.setOccurrences(occurrence.calculate(parsedRequest.getWhen()).stream().map( ldt -> {
+        reminder.setOccurrences(occurrence.calculate(parsedRequest.getWhen()).stream().map(ldt -> {
             ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
             reminderOccurrence.setReminder(reminder);
             reminderOccurrence.setOccurrence(ldt);

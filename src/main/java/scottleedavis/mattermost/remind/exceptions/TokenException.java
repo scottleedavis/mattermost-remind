@@ -5,5 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.FORBIDDEN)
 public class TokenException extends Exception {
-    public TokenException(String message){ super(message); }
+    public TokenException(String message) {
+        super(message);
+    }
 }

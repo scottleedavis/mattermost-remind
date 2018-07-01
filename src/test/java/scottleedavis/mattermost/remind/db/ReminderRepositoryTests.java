@@ -1,6 +1,5 @@
 package scottleedavis.mattermost.remind.db;
 
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +13,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -94,7 +95,7 @@ public class ReminderRepositoryTests {
 
         List<ReminderOccurrence> occurrences = reminderOccurrenceRepository.findAll();
 
-        assertTrue( occurrences.size() == 0 );
+        assertTrue(occurrences.size() == 0);
 
     }
 

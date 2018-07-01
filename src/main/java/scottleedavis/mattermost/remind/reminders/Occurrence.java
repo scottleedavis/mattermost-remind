@@ -13,7 +13,6 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -252,10 +251,9 @@ public class Occurrence {
                 return Arrays.asList(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(chronoUnit))).atTime(9, 0));
             default:
                 break;
-
         }
 
-        return Arrays.asList(LocalDateTime.parse(chronoUnit + " "+DEFAULT_TIME, new DateTimeFormatterBuilder()
+        return Arrays.asList(LocalDateTime.parse(chronoUnit + " " + DEFAULT_TIME, new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter()));
 
     }
@@ -268,50 +266,54 @@ public class Occurrence {
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
 
         boolean everyOther = chronoUnit.contains("other");
-        if( everyOther )
+        if (everyOther)
             chronoUnit = chronoUnit.split("other")[1].trim();
 
         String[] dateTimeSplit = chronoUnit.split(" at ");
-        if(dateTimeSplit.length == 1)
-            dateTimeSplit = new String[]{dateTimeSplit[0], DEFAULT_TIME };
+        final String time = dateTimeSplit.length == 1 ? DEFAULT_TIME : dateTimeSplit[1];
 
-        String [] chronoChunks = new String[0];
+        String[] chronoChunks = new String[0];
         boolean multiDay = dateTimeSplit[0].matches(".*(and|,)*");
         if (multiDay)
             chronoChunks = Arrays.stream(dateTimeSplit[0].split("and|,")).map(s -> s.trim()).toArray(String[]::new);
 
         List<LocalDateTime> ldts = new ArrayList<>();
         List<Exception> caughtExceptions = new ArrayList<>();
-        Arrays.stream(chronoChunks).forEach( chrono -> {
+        Arrays.stream(chronoChunks).forEach(chrono -> {
             try {
+                String timeUnit = formatter.normalizeTime(time);
                 String dateUnit = formatter.normalizeDate(chrono);
-//                String timeUnit =
+                LocalDate ld;
+                switch (dateUnit) {
+                    case "DAY":
+                        ld = LocalDate.now().plusDays(1);
+                        dateUnit = ld.getMonth().name().toUpperCase() + " " + ld.getDayOfMonth() + " " + ld.getYear();
+                        break;
+                    case "MONDAY":
+                    case "TUESDAY":
+                    case "WEDNESDAY":
+                    case "THURSDAY":
+                    case "FRIDAY":
+                    case "SATURDAY":
+                    case "SUNDAY":
+                        ld = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(dateUnit)));
+                        dateUnit = ld.getMonth().name().toUpperCase() + " " + ld.getDayOfMonth() + " " + ld.getYear();
+                        break;
+                    default:
+                        break;
+                }
+
+                ldts.add(LocalDateTime.parse(dateUnit + " " + timeUnit, new DateTimeFormatterBuilder()
+                        .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter()));
 
             } catch (Exception e) {
                 caughtExceptions.add(e);
             }
         });
-        if( caughtExceptions.size() > 0 )
+        if (caughtExceptions.size() > 0)
             throw new OccurrenceException("error normalizing date");
 
-        //todo every Thursday
-        //todo every day
-        //todo every 12/18
-        //todo every January 25
-        //todo every monday and wednesday
-        //todo every wednesday, thursday
-        //todo every other Wednesday
-        //todo every other friday and saturday
-        //todo every day at 11:32am
-        //todo every Monday at 9am
-        //todo every 7/20 at 1100
-        //todo every monday, tuesday and sunday at 11:00
-        //todo every monday, tuesday at 2pm
-
-
-        String foo = "bar";
-
-        return null;
+        return ldts;
     }
 
     private List<LocalDateTime> freeForm(String when) throws Exception {

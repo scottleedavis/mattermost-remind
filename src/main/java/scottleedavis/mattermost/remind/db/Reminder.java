@@ -54,7 +54,7 @@ public class Reminder {
     }
 
     public List<ReminderOccurrence> getOccurrences() {
-        if( occurrences == null )
+        if (occurrences == null)
             occurrences = new ArrayList<>();
         return occurrences;
     }

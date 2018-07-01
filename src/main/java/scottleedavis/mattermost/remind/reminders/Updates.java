@@ -3,13 +3,11 @@ package scottleedavis.mattermost.remind.reminders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import scottleedavis.mattermost.remind.db.Reminder;
-import scottleedavis.mattermost.remind.db.ReminderRepository;
 import scottleedavis.mattermost.remind.db.ReminderService;
 import scottleedavis.mattermost.remind.messages.Interaction;
 import scottleedavis.mattermost.remind.messages.Update;
 import scottleedavis.mattermost.remind.messages.UpdateResponse;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 

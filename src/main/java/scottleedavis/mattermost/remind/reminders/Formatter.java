@@ -9,6 +9,7 @@ import scottleedavis.mattermost.remind.messages.ParsedRequest;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class Formatter {
     private Occurrence occurrence;
 
     public String upcomingReminder(List<ReminderOccurrence> occurrences) {
-        if( occurrences.size() > 1 )
+        if (occurrences.size() > 1)
             return "NOT YET IMPLMENTED (occurences > 1";
         else {
             ReminderOccurrence reminderOccurrence = occurrences.get(0);
@@ -97,9 +98,101 @@ public class Formatter {
         return (ldt.getHour() >= 12) ? "PM" : "AM";
     }
 
+    public String normalizeTime(String text) throws Exception {
+        switch (text) {
+            case "noon":
+                return LocalTime.of(12, 0).toString();
+            case "midnight":
+                return LocalTime.of(0, 0).toString();
+            case "one":
+            case "two":
+            case "three":
+            case "four":
+            case "five":
+            case "six":
+            case "seven":
+            case "eight":
+            case "nine":
+            case "ten":
+            case "eleven":
+            case "twelve":
+                return LocalTime.of(wordToNumber(text), 0).toString();
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+            case "10":
+            case "11":
+            case "12":
+            case "13":
+            case "14":
+            case "15":
+            case "16":
+            case "17":
+            case "18":
+            case "19":
+            case "20":
+            case "21":
+            case "22":
+            case "23":
+                return LocalTime.of(Integer.parseInt(text), 0).toString();
+            default:
+                break;
+        }
+
+        if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)",  // 12:30PM, 12:30 pm
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            int amPmOffset = (text.charAt(text.length() - 3) == ' ') ? 3 : 2;
+            String amPm = text.substring(text.length() - amPmOffset).trim();
+            int[] time = Arrays.stream(text.substring(0, text.length() - amPmOffset).split(":"))
+                    .mapToInt(Integer::parseInt).toArray();
+            time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            return LocalTime.of(time[0], time[1]).toString();
+        } else if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9]", // 12:30
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            int[] time = Arrays.stream(text.split(":")).mapToInt(Integer::parseInt).toArray();
+            time[0] = time[0] % 24;
+            return LocalTime.of(time[0], time[1]).toString();
+        } else if (Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\s)?(?i)(am|pm)", // 1230pm, 1230 pm
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            int amPmOffset = (text.charAt(text.length() - 3) == ' ') ? 3 : 2;
+            String amPm = text.substring(text.length() - amPmOffset).trim();
+            String subChronoUnit = text.substring(0, text.length() - amPmOffset);
+            subChronoUnit = String.format("%4s", subChronoUnit).replace(' ', '0');
+            String[] parts = {subChronoUnit.substring(0, 2), subChronoUnit.substring(2)};
+            int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
+            time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            return LocalTime.of(time[0], time[1]).toString();
+        } else if (Pattern.compile("(1[012]|[1-9])(\\s)?(?i)(am|pm)",  // 5PM, 7 am
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            int amPmOffset = (text.charAt(text.length() - 3) == ' ') ? 3 : 2;
+            String amPm = text.substring(text.length() - amPmOffset).trim();
+            String subChronoUnit = text.substring(0, text.length() - amPmOffset);
+            int time = Integer.parseInt(subChronoUnit);
+            time = amPm.equalsIgnoreCase("pm") ? (time < 12 ? ((time + 12) % 24) : time) : time % 12;
+            return LocalTime.of(time, 0).toString();
+        } else if (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            String[] parts = {text.substring(0, 2), text.substring(2)};
+            int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
+            time[0] = time[0] % 24;
+            return LocalTime.of(time[0], time[1]).toString();
+        }
+
+        throw new FormatterException("unable to normalize time");
+    }
+
     public String normalizeDate(String text) throws Exception {
 
-        if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+        if (text.equalsIgnoreCase("day"))
+            return text.toUpperCase();
+        else if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
             switch (text.toLowerCase()) {

@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -14,11 +16,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ReminderServiceTests {
+
+    private Reminder reminder;
 
     @Autowired
     ReminderService reminderService;
@@ -43,6 +47,7 @@ public class ReminderServiceTests {
         reminderOccurrence2.setReminder(reminder);
         reminder.setOccurrences(Arrays.asList(reminderOccurrence, reminderOccurrence2));
         reminderRepository.save(reminder);
+        this.reminder = reminder;
     }
 
     @After
@@ -64,22 +69,58 @@ public class ReminderServiceTests {
     }
 
     @Test
-    public void schedule() {
-        assertTrue(false);
+    public void schedule() throws Exception {
+        ParsedRequest parsedRequest = new ParsedRequest();
+        parsedRequest.setWhen("on 12/18");
+        parsedRequest.setTarget("@scottd");
+        parsedRequest.setMessage("Super doo");
+        String userName = "scottd";
+        Reminder reminder = reminderService.schedule(userName, parsedRequest);
+
+        assertEquals(reminder.getUserName(), userName);
+
+        assertEquals(reminder.getMessage(), "Super doo");
+
+        assertEquals(reminder.getTarget(), "@scottd");
+
+        assertTrue(reminder.getOccurrences().size() == 1);
+
     }
 
     @Test
     public void delete() {
-        assertTrue(false);
+
+        reminderService.delete(reminder);
+
+        List<Reminder> reminders = reminderRepository.findAll();
+
+        assertTrue(reminders.size() == 0);
     }
 
     @Test
     public void complete() {
-        assertTrue(false);
+
+        reminderService.complete(reminder);
+
+        Reminder reminder1 = reminderRepository.findById(reminder.getId()).orElse(null);
+
+        assertNotNull(reminder1);
+
+        assertTrue(reminder1.isComplete());
     }
 
     @Test
+    @Transactional
     public void snooze() {
-        assertTrue(false);
+
+        LocalDateTime testTime = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        reminderService.snooze(reminder, testTime);
+
+        List<ReminderOccurrence> reminderOccurrence = reminderOccurrenceRepository.findAllByOccurrence(testTime);
+
+        assertTrue(reminderOccurrence.size() == 1);
+
+        assertEquals(reminderOccurrence.get(0).getOccurrence(), testTime);
+
     }
 }

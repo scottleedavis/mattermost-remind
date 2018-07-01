@@ -272,22 +272,127 @@ public class OccurrenceTests {
 
     @Test
     public void calculateEvery() throws Exception {
+        String when;
+        LocalDateTime testDate;
+        LocalDateTime checkDate;
+        LocalDateTime checkDate2;
+
+        when = "every Thursday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "every day";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().plusDays(1).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "every 12/18";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDateTime.parse("December 18 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        assertEquals(testDate, checkDate);
+
+        when = "every January 25";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDateTime.parse("January 25 " + LocalDateTime.now().getYear() + " 09:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        assertEquals(testDate, checkDate);
+
+        when = "every other Wednesday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "every day at 11:32am";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().plusDays(1).atTime(11, 32);
+        assertEquals(testDate, checkDate);
+
+        when = "every 5/5 at 7";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDateTime.parse("May 5 " + LocalDateTime.now().getYear() + " 07:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        checkDate2 = LocalDateTime.parse("May 5 " + LocalDateTime.now().plusYears(1).getYear() + " 07:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        assertTrue(testDate.equals(checkDate) || testDate.equals(checkDate2));
+
+        when = "every 7/20 at 1100";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDateTime.parse("July 20 " + LocalDateTime.now().getYear() + " 11:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        assertEquals(testDate, checkDate);
+
+        when = "every Monday at 7:32am";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(7, 32);
+        assertEquals(testDate, checkDate);
+
+        when = "every monday and wednesday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        testDate = occurrence.calculate(when).get(1);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "every wednesday, thursday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        testDate = occurrence.calculate(when).get(1);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "every other friday and saturday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        testDate = occurrence.calculate(when).get(1);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SATURDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "every monday and wednesday at 1:39am";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(1, 39);
+        assertEquals(testDate, checkDate);
+        testDate = occurrence.calculate(when).get(1);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(1, 39);
+        assertEquals(testDate, checkDate);
+
+        when = "every monday, tuesday and sunday at 11:00";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(11, 0);
+        assertEquals(testDate, checkDate);
+        testDate = occurrence.calculate(when).get(1);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(11, 0);
+        assertEquals(testDate, checkDate);
+        testDate = occurrence.calculate(when).get(2);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).atTime(11, 0);
+        assertEquals(testDate, checkDate);
 
 
-        //todo every Thursday
-        //todo every day
-        //todo every 12/18
-        //todo every January 25
-        //todo every monday and wednesday
-        //todo every wednesday, thursday
-        //todo every other Wednesday
-        //todo every other friday and saturday
-        //todo every day at 11:32am
-        //todo every Monday at 9am
-        //todo every 5/5 at 7
-        //todo every 7/20 at 1100
-        //todo every monday, tuesday and sunday at 11:00
-        //todo every monday, tuesday at 2pm
+        when = "every monday, tuesday at 2pm";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(14, 0);
+        assertEquals(testDate, checkDate);
+        testDate = occurrence.calculate(when).get(1);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(14, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "every 1/30 and 9/30 at noon";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDateTime.parse("January 30 " + LocalDateTime.now().getYear() + " 12:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        checkDate2 = LocalDateTime.parse("January 30 " + LocalDateTime.now().plusYears(1).getYear() + " 12:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        assertTrue(testDate.equals(checkDate) || testDate.equals(checkDate2));
+        testDate = occurrence.calculate(when).get(1);
+        checkDate = LocalDateTime.parse("September 30 " + LocalDateTime.now().getYear() + " 12:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        checkDate2 = LocalDateTime.parse("September 30 " + LocalDateTime.now().plusYears(1).getYear() + " 12:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        assertTrue(testDate.equals(checkDate) || testDate.equals(checkDate2));
 
 
     }

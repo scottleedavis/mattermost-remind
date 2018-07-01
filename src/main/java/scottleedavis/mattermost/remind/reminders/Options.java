@@ -2,8 +2,9 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import scottleedavis.mattermost.remind.jpa.Reminder;
-import scottleedavis.mattermost.remind.jpa.ReminderRepository;
+import scottleedavis.mattermost.remind.db.Reminder;
+import scottleedavis.mattermost.remind.db.ReminderRepository;
+import scottleedavis.mattermost.remind.db.ReminderService;
 import scottleedavis.mattermost.remind.messages.Action;
 import scottleedavis.mattermost.remind.messages.Context;
 import scottleedavis.mattermost.remind.messages.Integration;
@@ -32,10 +33,13 @@ public class Options {
     private String appUrl;
 
     @Autowired
-    Formatter formatter;
+    private ReminderService reminderService;
+
+    @Autowired
+    private Formatter formatter;
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     public void setAppUrl(String appUrl) {
         this.appUrl = appUrl;
@@ -51,13 +55,13 @@ public class Options {
 
     public String listReminders(String userName) {
 
-        List<Reminder> reminders = reminderRepository.findByUserName(userName);
+        List<Reminder> reminders = reminderService.findByUsername(userName);
 
         if (reminders.size() > 0) {
             return "*Upcoming*:\n"
                     + reminders.stream()
                     .map(r -> "* \"" + r.getMessage() + "\" at "
-                            + formatter.upcomingReminder(r.getOccurrence()))
+                            + formatter.upcomingReminder(r.getOccurrences()))
                     .reduce("", String::concat);
         }
 

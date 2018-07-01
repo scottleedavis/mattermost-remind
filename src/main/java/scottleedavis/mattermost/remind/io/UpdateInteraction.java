@@ -12,7 +12,7 @@ import scottleedavis.mattermost.remind.reminders.Updates;
 public class UpdateInteraction {
 
     @Autowired
-    Updates updates;
+    private Updates updates;
 
     @RequestMapping(value = "/delete", produces = "application/json")
     public UpdateResponse delete(@RequestBody Interaction interaction) throws Exception {

@@ -1,6 +1,7 @@
 package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.stereotype.Component;
+import scottleedavis.mattermost.remind.exceptions.ParserException;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
 @Component
@@ -37,25 +38,14 @@ public class Parser {
         else if (parts[0].charAt(0) == '#')
             return parts[0];
 
-        throw new Exception("Unrecognized target");
+        throw new ParserException("Unrecognized target");
 
     }
 
     private String findWhen(String text) throws Exception {
-        //find in, at, on, every starting from the back
         int subString = -1;
 
-        subString = text.indexOf(" at ");
-        if (subString > -1) {
-            return text.substring(subString).trim();
-        }
-
         subString = text.indexOf(" in ");
-        if (subString > -1) {
-            return text.substring(subString).trim();
-        }
-
-        subString = text.indexOf(" on ");
         if (subString > -1) {
             return text.substring(subString).trim();
         }
@@ -65,7 +55,17 @@ public class Parser {
             return text.substring(subString).trim();
         }
 
-        throw new Exception("No when found");
+        subString = text.indexOf(" on ");
+        if (subString > -1) {
+            return text.substring(subString).trim();
+        }
+
+        subString = text.indexOf(" at ");
+        if (subString > -1) {
+            return text.substring(subString).trim();
+        }
+
+        throw new ParserException("No when found");
 
     }
 }

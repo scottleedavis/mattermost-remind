@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import scottleedavis.mattermost.remind.db.Reminder;
+import scottleedavis.mattermost.remind.db.ReminderOccurrence;
+import scottleedavis.mattermost.remind.db.ReminderService;
 import scottleedavis.mattermost.remind.io.Webhook;
-import scottleedavis.mattermost.remind.jpa.Reminder;
-import scottleedavis.mattermost.remind.jpa.ReminderRepository;
 import scottleedavis.mattermost.remind.messages.Attachment;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 import scottleedavis.mattermost.remind.messages.Response;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -25,25 +25,22 @@ public class Scheduler {
     private static Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
     @Value("${version}")
-    String version;
+    private String version;
 
     @Autowired
-    Parser parser;
+    private Parser parser;
 
     @Autowired
-    Webhook webhook;
+    private Webhook webhook;
 
     @Autowired
-    Options options;
+    private Options options;
 
     @Autowired
-    Occurrence occurrence;
+    private Formatter formatter;
 
     @Autowired
-    Formatter formatter;
-
-    @Resource
-    ReminderRepository reminderRepository;
+    private ReminderService reminderService;
 
     public Response setReminder(String userName, String payload, String userId, String channelName) {
 
@@ -62,7 +59,7 @@ public class Scheduler {
                     response.setText(version);
                     break;
                 default:
-                    Reminder reminder = scheduleReminder(userName, parsedRequest);
+                    Reminder reminder = reminderService.schedule(userName, parsedRequest);
                     String responseText = formatter.reminderResponse(parsedRequest);
                     if (channelName.contains(userId)) {
                         Attachment attachment = new Attachment();
@@ -83,25 +80,15 @@ public class Scheduler {
         return response;
     }
 
-    private Reminder scheduleReminder(String userName, ParsedRequest parsedRequest) throws Exception {
-
-        Reminder reminder = new Reminder();
-        reminder.setTarget(parsedRequest.getTarget().equals("me") ? "@" + userName : parsedRequest.getTarget());
-        reminder.setUserName(userName);
-        reminder.setMessage(parsedRequest.getMessage());
-        reminder.setOccurrence(occurrence.calculate(parsedRequest.getWhen()));
-        reminderRepository.save(reminder);
-        return reminder;
-    }
-
     @Scheduled(fixedRate = 1000)
     public void runSchedule() {
 
-        List<Reminder> reminders = reminderRepository.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        reminders.forEach(reminder -> {
-            logger.info("Sending reminder {} to {} ", reminder.getId(), reminder.getTarget());
+        List<ReminderOccurrence> reminderOccurrences = reminderService.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrences.forEach(occurrence -> {
+            //TODO CHECK IF THE REMINDEROCCURRENCE has .getRepeat(), and use that to reschedule/update the reminder
+            logger.info("Sending reminder {} to {} ", occurrence.getId(), occurrence.getReminder().getTarget());
             try {
-                webhook.invoke(reminder.getTarget(), reminder.getMessage(), reminder.getId());
+                webhook.invoke(occurrence.getReminder().getTarget(), occurrence.getReminder().getMessage(), occurrence.getReminder().getId());
             } catch (Exception e) {
                 logger.error("Not able to send reminder {}", e);
             }

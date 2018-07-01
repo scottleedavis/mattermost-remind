@@ -2,14 +2,18 @@ package scottleedavis.mattermost.remind.reminders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import scottleedavis.mattermost.remind.db.ReminderOccurrence;
+import scottleedavis.mattermost.remind.exceptions.FormatterException;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -17,42 +21,53 @@ import java.util.stream.Collectors;
 public class Formatter {
 
     @Autowired
-    Occurrence occurrence;
+    private Occurrence occurrence;
 
-    public String upcomingReminder(LocalDateTime occurrence) {
-        return occurrence.getHour() + ":"
-                + occurrence.getMinute()
-                + amPm(occurrence) + " "
-                + capitalize(occurrence.getDayOfWeek().toString()) + ", "
-                + capitalize(occurrence.getMonth().toString()) + " "
-                + daySuffix(occurrence.getDayOfMonth()) + "\n";
+    public String upcomingReminder(List<ReminderOccurrence> occurrences) {
+        if (occurrences.size() > 1)
+            return "NOT YET IMPLMENTED (occurences > 1";
+        else {
+            ReminderOccurrence reminderOccurrence = occurrences.get(0);
+            LocalDateTime ldt = reminderOccurrence.getOccurrence();
+            return ldt.getHour() + ":"
+                    + ldt.getMinute()
+                    + amPm(ldt) + " "
+                    + capitalize(ldt.getDayOfWeek().toString()) + ", "
+                    + capitalize(ldt.getMonth().toString()) + " "
+                    + daySuffix(ldt.getDayOfMonth()) + "\n";
+        }
     }
 
     public String reminderResponse(ParsedRequest parsedRequest) throws Exception {
         String when = parsedRequest.getWhen();
+        List<LocalDateTime> ldts;
         LocalDateTime ldt;
         Integer timeRaw;
+        String time;
+        String dayOfWeek;
+        String month;
         String day;
+        String year;
         switch (occurrence.classify(parsedRequest.getWhen())) {
-            case AT:
-                ldt = occurrence.calculate(parsedRequest.getWhen());
+            case AT: //TODO handle multiple values (e.g. 4pm and 2:32 am)
+                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0);
                 LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                String time = Integer.toString(timeRaw);
+                time = Integer.toString(timeRaw);
                 if (ldt.getMinute() > 0)
                     time += ":" + String.format("%02d", ldt.getMinute());
                 day = (ldt.getDayOfMonth() == now.getDayOfMonth()) ? "today" : "tomorrow";
                 when = time + amPm(ldt) + " " + day;
                 break;
-            case ON:
-                ldt = occurrence.calculate(parsedRequest.getWhen());
+            case ON:  //TODO handle multiple values  (e.g. 12/18 and 4-01)
+                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                String dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
-                String month = capitalize(ldt.getMonth().toString());
+                dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
+                month = capitalize(ldt.getMonth().toString());
                 day = daySuffix(ldt.getDayOfMonth());
-                String year = "";
+                year = "";
                 if (Pattern.compile("((\\d{2}|\\d{1})(-|/)(\\d{2}|\\d{1})((-|/)(\\d{2}|\\d{4})))",
                         Pattern.CASE_INSENSITIVE).matcher(parsedRequest.getWhen()).find()) {
                     String[] parts = parsedRequest.getWhen().split("(-|/)");
@@ -60,7 +75,51 @@ public class Formatter {
                 }
                 when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day + year;
                 break;
-            case IN:
+            case EVERY:
+                ldts = occurrence.calculate(parsedRequest.getWhen());
+                String other = parsedRequest.getWhen().contains("other") ? " other" : "";
+                ldt = ldts.get(0);
+                timeRaw = ldt.getHour() % 12;
+                timeRaw = timeRaw == 0 ? 12 : timeRaw;
+
+                if (parsedRequest.getWhen().contains(" day ")) {
+
+                    when = "at " + timeRaw + amPm(ldt) + " every" + other + " day";
+                } else if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+                        Pattern.CASE_INSENSITIVE).matcher(parsedRequest.getWhen()).find()) {
+                    when = "at " + timeRaw + amPm(ldt) + " every" + other;
+                    String chronoUnit = Arrays.asList(parsedRequest.getWhen().split(" ")).stream().skip(1).collect(Collectors.joining(" "));
+                    chronoUnit = chronoUnit.contains("other") ? chronoUnit.split("other")[1].trim() : chronoUnit;
+                    String[] dateTimeSplit = chronoUnit.split(" at ");
+                    time = dateTimeSplit.length == 1 ? Occurrence.DEFAULT_TIME : dateTimeSplit[1];
+                    String[] days = Arrays.stream(dateTimeSplit[0].split("and|,")).map(dt -> capitalize(dt.trim())).toArray(String[]::new);
+                    Arrays.sort(days);
+
+                    String daysStr = days[0];
+                    if (days.length > 1) {
+                        String[] subDays = Arrays.copyOfRange(days, 0, days.length - 1);
+                        daysStr = String.join(", ", subDays) + " and " + days[days.length - 1];
+                    }
+                    when += " " + daysStr;
+
+                } else {
+                    when = "at " + timeRaw + amPm(ldt) + " every" + other + " ";
+                    String[] dates = ldts.stream().map(date -> {
+                        return capitalize(date.getMonth().toString()) + " " + daySuffix(date.getDayOfMonth());
+                    }).toArray(String[]::new);
+
+                    String datesStr = dates[0];
+                    if (dates.length > 1) {
+                        String[] subDays = Arrays.copyOfRange(dates, 0, dates.length - 1);
+                        datesStr = String.join(", ", subDays) + " and " + dates[dates.length - 1];
+                    }
+                    when += " " + datesStr;
+                }
+
+                break;
+            case IN: // TODO handle multiple values
+                // TODO  normalize the name (e.g. no s, sec... just seconds) e.g. 2 sec => 2 seconds
+                break;
             default:
                 break;
         }
@@ -81,9 +140,101 @@ public class Formatter {
         return (ldt.getHour() >= 12) ? "PM" : "AM";
     }
 
+    public String normalizeTime(String text) throws Exception {
+        switch (text) {
+            case "noon":
+                return LocalTime.of(12, 0).toString();
+            case "midnight":
+                return LocalTime.of(0, 0).toString();
+            case "one":
+            case "two":
+            case "three":
+            case "four":
+            case "five":
+            case "six":
+            case "seven":
+            case "eight":
+            case "nine":
+            case "ten":
+            case "eleven":
+            case "twelve":
+                return LocalTime.of(wordToNumber(text), 0).toString();
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+            case "10":
+            case "11":
+            case "12":
+            case "13":
+            case "14":
+            case "15":
+            case "16":
+            case "17":
+            case "18":
+            case "19":
+            case "20":
+            case "21":
+            case "22":
+            case "23":
+                return LocalTime.of(Integer.parseInt(text), 0).toString();
+            default:
+                break;
+        }
+
+        if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)",  // 12:30PM, 12:30 pm
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            int amPmOffset = (text.charAt(text.length() - 3) == ' ') ? 3 : 2;
+            String amPm = text.substring(text.length() - amPmOffset).trim();
+            int[] time = Arrays.stream(text.substring(0, text.length() - amPmOffset).split(":"))
+                    .mapToInt(Integer::parseInt).toArray();
+            time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            return LocalTime.of(time[0], time[1]).toString();
+        } else if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9]", // 12:30
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            int[] time = Arrays.stream(text.split(":")).mapToInt(Integer::parseInt).toArray();
+            time[0] = time[0] % 24;
+            return LocalTime.of(time[0], time[1]).toString();
+        } else if (Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\s)?(?i)(am|pm)", // 1230pm, 1230 pm
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            int amPmOffset = (text.charAt(text.length() - 3) == ' ') ? 3 : 2;
+            String amPm = text.substring(text.length() - amPmOffset).trim();
+            String subChronoUnit = text.substring(0, text.length() - amPmOffset);
+            subChronoUnit = String.format("%4s", subChronoUnit).replace(' ', '0');
+            String[] parts = {subChronoUnit.substring(0, 2), subChronoUnit.substring(2)};
+            int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
+            time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            return LocalTime.of(time[0], time[1]).toString();
+        } else if (Pattern.compile("(1[012]|[1-9])(\\s)?(?i)(am|pm)",  // 5PM, 7 am
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            int amPmOffset = (text.charAt(text.length() - 3) == ' ') ? 3 : 2;
+            String amPm = text.substring(text.length() - amPmOffset).trim();
+            String subChronoUnit = text.substring(0, text.length() - amPmOffset);
+            int time = Integer.parseInt(subChronoUnit);
+            time = amPm.equalsIgnoreCase("pm") ? (time < 12 ? ((time + 12) % 24) : time) : time % 12;
+            return LocalTime.of(time, 0).toString();
+        } else if (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
+                Pattern.CASE_INSENSITIVE).matcher(text).find()) {
+            String[] parts = {text.substring(0, 2), text.substring(2)};
+            int[] time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
+            time[0] = time[0] % 24;
+            return LocalTime.of(time[0], time[1]).toString();
+        }
+
+        throw new FormatterException("unable to normalize time");
+    }
+
     public String normalizeDate(String text) throws Exception {
 
-        if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+        if (text.equalsIgnoreCase("day"))
+            return text.toUpperCase();
+        else if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
             switch (text.toLowerCase()) {
@@ -169,7 +320,7 @@ public class Formatter {
 
                     break;
                 default:
-                    throw new Exception("unrecognized date format");
+                    throw new FormatterException("unrecognized date format");
             }
 
             switch (parts[0]) {
@@ -219,7 +370,7 @@ public class Formatter {
                     parts[0] = "december";
                     break;
                 default:
-                    throw new Exception("month not found");
+                    throw new FormatterException("month not found");
             }
 
             return Arrays.stream(parts).collect(Collectors.joining(" ")).toUpperCase();
@@ -248,7 +399,7 @@ public class Formatter {
                     }
                     return ldt.getMonth().toString() + " " + ldt.getDayOfMonth() + " " + ldt.getYear();
                 default:
-                    throw new Exception("unrecognized date");
+                    throw new FormatterException("unrecognized date");
             }
 
         } else {  //single 'number'
@@ -302,7 +453,7 @@ public class Formatter {
         }
 
         if (sum == 0)
-            throw new Exception("couldn't format number");
+            throw new FormatterException("couldn't format number");
 
         return sum;
     }

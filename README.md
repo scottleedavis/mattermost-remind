@@ -1,4 +1,4 @@
-# mattermost-remind [![Build Status](https://travis-ci.org/scottleedavis/mattermost-remind.svg?branch=master)](https://travis-ci.org/scottleedavis/mattermost-remind) [![codecov](https://codecov.io/gh/scottleedavis/mattermost-remind/branch/master/graph/badge.svg)](https://codecov.io/gh/scottleedavis/mattermost-remind)
+# mattermost-remind [![Build Status](https://travis-ci.org/scottleedavis/mattermost-remind.svg?branch=master)](https://travis-ci.org/scottleedavis/mattermost-remind) [![codecov](https://codecov.io/gh/scottleedavis/mattermost-remind/branch/master/graph/badge.svg)](https://codecov.io/gh/scottleedavis/mattermost-remind) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/11948b43df244a46b8f453e59998f488)](https://www.codacy.com/app/scottleedavis/mattermost-remind?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scottleedavis/mattermost-remind&amp;utm_campaign=Badge_Grade)
 
 A /remind slash command for [Mattermost](https://mattermost.com/) built with [Spring Boot](https://spring.io/projects/spring-boot)
 
@@ -20,10 +20,18 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind @lima Lunch time! at noon`
   * `/remind #test-team New tests at two`
   * `/remind me Pickup kids at 4:30pm`
-* **/remind [who] [what] on [(Monday-Sunday|Month & Day|MM/DD/YYYY|MM/DD)]**
+* **/remind [who] [what] on [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)]**
   * `/remind me Go to movies on Friday`
   * `/remind #management Send annual salary review report on December 15`
   * `/remind me Mow the lawn on 7th`
+* **/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]**
+  * `/remind me to schedule annual reviews every January 25`
+  * `/remind #design Design critique meeting every Thursday at 12:30`
+  * `/remind me Physiotherapy after work every other Wednesday`
+  * `/remind #team-alpha to update the project status every Monday at 9am`
+  * `/remind me to do things every monday and wednesday at noon`
+  * `/remind me to exercise every other day`
+  * `/remind me Remember the children's birthdays every 1/30 and 9/30 at noon`
   
 ### notes
 * You can’t set recurring reminders for other members.
@@ -31,22 +39,24 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 * Message buttons don’t show up for `/remind` in channels other than with yourself
   * [This is because Ephemeral messages do not have a state, and therefore do not support interactive message buttons at this time.](https://docs.mattermost.com/developer/interactive-message-buttons.html#troubleshooting)
 
-### bugs & issues
+### releases
 
-* Want to see a feature or report a bug?  Head to [issues](https://github.com/scottleedavis/mattermost-remind/issues).
-* Don't have a github account?  [Use this form](https://gitreports.com/issue/scottleedavis/mattermost-remind/)
-
-### todos
-
-* See the [TODO](TODO.md) page for works in progress and coming features.
+* Tracked in [Github projects](https://github.com/scottleedavis/mattermost-remind/projects)
+* Next release targeted: [Release 0.0.2](https://github.com/scottleedavis/mattermost-remind/projects/1)
 * Want to contribute?  Fork this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 
-### requirements
+### bugs & issues
+
+* Request a feature or report a bug in [Github issues](https://github.com/scottleedavis/mattermost-remind/issues).
+* Don't have a github account?  [Use this form](https://gitreports.com/issue/scottleedavis/mattermost-remind/)
+
+### setup 
+
+#### requirements
 * Run: [Java8 JRE](http://openjdk.java.net/install/)
 * Run: [Docker](https://www.docker.com/) (Optional)
 * Use: [Mattermost](https://mattermost.com/) 
 
-### setup 
 ##### Datasource
 * Default database is [h2](http://www.h2database.com/html/main.html) (an auto-generated in-memory database)
 * [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) can be used by changing [application.properties](src/main/resources/application.properties) and creating a reminders table  (_[reminders.example.sqlserver.sql](scripts/reminders.example.sqlserver.sql)_)
@@ -71,7 +81,8 @@ _Requires slash command and webhook integrations_
   * `Enable integrations to override usernames` & `Enable integrations to override profile picture icons`
     * OR... create a `mattermost-remind` user to setup the slash command and webhook with system icon
 * create `remind` as slash command
-  * Title & Autocomplete: `Set a reminder`
+  * Title & "Autocomplete Description": `Set a reminder`
+  * Leave "Description" blank
   * Response Username: `mattermost-remind`
   * Autocomplete hint: `[@someone or #channel] [what] [when]`
   * Request URL: `<path_to_mattermost-remind>/remind`
@@ -97,5 +108,5 @@ _Requires slash command and webhook integrations_
   * `java -jar target/mattermost-remind-#.#.#.jar`
 * Running via docker (Optional)
   * Using a locally built version `docker run -p 8080:8080 -t scottleedavis/mattermost-remind`
-  * Using dockerhub latest image: `docker run scottleedavis/mattermost-remind`
+  * Using [dockerhub latest image](https://hub.docker.com/r/scottleedavis/mattermost-remind/): `docker run scottleedavis/mattermost-remind`
 

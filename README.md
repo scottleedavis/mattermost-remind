@@ -103,5 +103,5 @@ _Requires slash command and webhook integrations_
   * `java -jar target/mattermost-remind-#.#.#.jar`
 * Running via docker (Optional)
   * Using a locally built version `docker run -p 8080:8080 -t scottleedavis/mattermost-remind`
-  * Using dockerhub latest image: `docker run scottleedavis/mattermost-remind`
+  * Using [dockerhub latest image](https://hub.docker.com/r/scottleedavis/mattermost-remind/): `docker run scottleedavis/mattermost-remind`
 

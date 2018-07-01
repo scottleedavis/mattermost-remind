@@ -37,6 +37,10 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 * Message buttons don’t show up for `/remind` in channels other than with yourself
   * [This is because Ephemeral messages do not have a state, and therefore do not support interactive message buttons at this time.](https://docs.mattermost.com/developer/interactive-message-buttons.html#troubleshooting)
 
+### releases
+
+* Currently targeting [Release 0.0.2](https://github.com/scottleedavis/mattermost-remind/projects/1)
+
 ### bugs & issues
 
 * Want to see a feature or report a bug?  Head to [issues](https://github.com/scottleedavis/mattermost-remind/issues).
@@ -44,15 +48,16 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 
 ### todos
 
-* See the [TODO](TODO.md) page for works in progress and coming features.
+* See the [TODO](TODO.md) page for planned coming features.
 * Want to contribute?  Fork this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 
-### requirements
+### setup 
+
+#### requirements
 * Run: [Java8 JRE](http://openjdk.java.net/install/)
 * Run: [Docker](https://www.docker.com/) (Optional)
 * Use: [Mattermost](https://mattermost.com/) 
 
-### setup 
 ##### Datasource
 * Default database is [h2](http://www.h2database.com/html/main.html) (an auto-generated in-memory database)
 * [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) can be used by changing [application.properties](src/main/resources/application.properties) and creating a reminders table  (_[reminders.example.sqlserver.sql](scripts/reminders.example.sqlserver.sql)_)

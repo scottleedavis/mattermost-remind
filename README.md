@@ -24,7 +24,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind me Go to movies on Friday`
   * `/remind #management Send annual salary review report on December 15`
   * `/remind me Mow the lawn on 7th`
-* _(in progress)_ **/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]**
+* **/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]**
   * `/remind me to schedule annual reviews every January 25`
   * `/remind #design Design critique meeting every Thursday at 12:30`
   * `/remind me Physiotherapy after work every other Wednesday`

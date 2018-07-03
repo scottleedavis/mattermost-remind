@@ -3,6 +3,7 @@ package scottleedavis.mattermost.remind.db;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import scottleedavis.mattermost.remind.exceptions.ReminderException;
 import scottleedavis.mattermost.remind.messages.Interaction;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 import scottleedavis.mattermost.remind.reminders.Occurrence;
@@ -70,5 +71,28 @@ public class ReminderService {
         reminderOccurrence.setOccurrence(ldt);
         reminderOccurrence.setReminder(reminder);
         reminderOccurrenceRepository.save(reminderOccurrence);
+    }
+
+    public void reschedule(ReminderOccurrence reminderOccurrence) throws Exception {
+
+        List<LocalDateTime> occurrences = occurrence.calculate(reminderOccurrence.getRepeat());
+
+        LocalDateTime newOccurrence = occurrences.stream()
+                .filter(o -> {
+                    return o.getDayOfWeek() == reminderOccurrence.getOccurrence().getDayOfWeek();
+                })
+                .findFirst().orElse(null);
+
+        if (newOccurrence != null) {
+            reminderOccurrence.setOccurrence(newOccurrence);
+            reminderOccurrenceRepository.save(reminderOccurrence);
+        } else {
+            newOccurrence = occurrences.stream()
+                    .filter(o -> o.getDayOfYear() == reminderOccurrence.getOccurrence().getDayOfYear())
+                    .findFirst().orElseThrow(() -> new ReminderException("No matching occurences to reschedule"));
+            reminderOccurrence.setOccurrence(newOccurrence);
+            reminderOccurrenceRepository.save(reminderOccurrence);
+        }
+
     }
 }

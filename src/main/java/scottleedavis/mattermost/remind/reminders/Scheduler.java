@@ -85,10 +85,10 @@ public class Scheduler {
 
         List<ReminderOccurrence> reminderOccurrences = reminderService.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         reminderOccurrences.forEach(occurrence -> {
-            //TODO CHECK IF THE REMINDEROCCURRENCE has .getRepeat(), and use that to reschedule/update the reminder
             logger.info("Sending reminder {} to {} ", occurrence.getId(), occurrence.getReminder().getTarget());
             try {
                 webhook.invoke(occurrence.getReminder().getTarget(), occurrence.getReminder().getMessage(), occurrence.getReminder().getId());
+                reminderService.reschedule(occurrence);
             } catch (Exception e) {
                 logger.error("Not able to send reminder {}", e);
             }

@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
 import javax.annotation.Resource;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.List;
 
@@ -121,6 +124,48 @@ public class ReminderServiceTests {
         assertTrue(reminderOccurrence.size() == 1);
 
         assertEquals(reminderOccurrence.get(0).getOccurrence(), testTime);
+
+    }
+
+    @Test
+    @Transactional
+    public void reschedule() throws Exception {
+
+        ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
+        reminderOccurrence.setOccurrence(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).minusWeeks(1l).atStartOfDay().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence.setReminder(reminder);
+        reminderOccurrence.setRepeat("every wednesday");
+        LocalDateTime testTime = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS);
+        reminderService.reschedule(reminderOccurrence);
+        assertEquals(reminderOccurrence.getOccurrence(), testTime);
+
+    }
+
+    @Test
+    @Transactional
+    public void rescheduleEveryOther() throws Exception {
+
+        ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
+        reminderOccurrence.setOccurrence(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).minusWeeks(1l).atStartOfDay().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence.setReminder(reminder);
+        reminderOccurrence.setRepeat("every other wednesday");
+        LocalDateTime testTime = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS);
+        reminderService.reschedule(reminderOccurrence);
+        assertEquals(reminderOccurrence.getOccurrence(), testTime);
+
+    }
+
+    @Test
+    @Transactional
+    public void rescheduleEveryYear() throws Exception {
+
+        ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
+        reminderOccurrence.setOccurrence(LocalDate.now().withMonth(1).withDayOfMonth(18).atStartOfDay().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence.setReminder(reminder);
+        reminderOccurrence.setRepeat("every 1/18");
+        LocalDateTime testTime = LocalDate.now().withMonth(1).withDayOfMonth(18).plusYears(1L).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS);
+        reminderService.reschedule(reminderOccurrence);
+        assertEquals(reminderOccurrence.getOccurrence(), testTime);
 
     }
 }

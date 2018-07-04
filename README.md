@@ -91,13 +91,13 @@ _Requires slash command and webhook integrations_
   * Autocomplete hint: `[@someone or #channel] [what] [when]`
   * Request URL: `<path_to_mattermost-remind>/remind`
   * set mattermost system icon
-  * put token in [application.properties](src/main/resources/application.properties) `slashCommandToken=<YOUR_TOKEN>`
+  * put token in [application.properties](application/src/main/resources/application.properties) `slashCommandToken=<YOUR_TOKEN>`
 * create incoming webhook
   * Title & Description: `Set a reminder`
   * Channel: `Town Square`  <= (won't be used)
   * Username: `mattermost-remind`
   * set mattermost system icon
-  * put webhook URL in [application.properties](src/main/resources/application.properties) `webhookUrl=<YOUR_WEBHOOK>`
+  * put webhook URL in [application.properties](application/src/main/resources/application.properties) `webhookUrl=<YOUR_WEBHOOK>`
 
 ### build
 * Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)

@@ -3,7 +3,6 @@ package io.github.scottleedavis.mattermost.remind.reminders;
 import io.github.scottleedavis.mattermost.remind.exceptions.OccurrenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import io.github.scottleedavis.mattermost.remind.exceptions.OccurrenceException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

@@ -1,9 +1,8 @@
 package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.exceptions.ParserException;
-import org.springframework.stereotype.Component;
-import io.github.scottleedavis.mattermost.remind.exceptions.ParserException;
 import io.github.scottleedavis.mattermost.remind.messages.ParsedRequest;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,5 +1,6 @@
 package io.github.scottleedavis.mattermost.remind.io;
 
+import io.github.scottleedavis.mattermost.remind.exceptions.TokenException;
 import io.github.scottleedavis.mattermost.remind.messages.Response;
 import io.github.scottleedavis.mattermost.remind.reminders.Options;
 import io.github.scottleedavis.mattermost.remind.reminders.Scheduler;
@@ -9,10 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.github.scottleedavis.mattermost.remind.exceptions.TokenException;
-import io.github.scottleedavis.mattermost.remind.messages.Response;
-import io.github.scottleedavis.mattermost.remind.reminders.Options;
-import io.github.scottleedavis.mattermost.remind.reminders.Scheduler;
 
 
 @RestController

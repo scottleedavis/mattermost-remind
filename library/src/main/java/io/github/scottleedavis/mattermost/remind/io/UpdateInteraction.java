@@ -1,13 +1,12 @@
 package io.github.scottleedavis.mattermost.remind.io;
 
+import io.github.scottleedavis.mattermost.remind.messages.Interaction;
+import io.github.scottleedavis.mattermost.remind.messages.UpdateResponse;
 import io.github.scottleedavis.mattermost.remind.reminders.Updates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.github.scottleedavis.mattermost.remind.messages.Interaction;
-import io.github.scottleedavis.mattermost.remind.messages.UpdateResponse;
-import io.github.scottleedavis.mattermost.remind.reminders.Updates;
 
 @RestController
 public class UpdateInteraction {

@@ -1,10 +1,10 @@
 package io.github.scottleedavis.mattermost.remind.reminders;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.exceptions.FormatterException;
 import io.github.scottleedavis.mattermost.remind.messages.ParsedRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

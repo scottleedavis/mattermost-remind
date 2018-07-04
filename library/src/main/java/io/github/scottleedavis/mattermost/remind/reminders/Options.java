@@ -1,15 +1,13 @@
 package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
-import io.github.scottleedavis.mattermost.remind.messages.Action;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderRepository;
 import io.github.scottleedavis.mattermost.remind.db.ReminderService;
 import io.github.scottleedavis.mattermost.remind.messages.Action;
 import io.github.scottleedavis.mattermost.remind.messages.Context;
 import io.github.scottleedavis.mattermost.remind.messages.Integration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Arrays;

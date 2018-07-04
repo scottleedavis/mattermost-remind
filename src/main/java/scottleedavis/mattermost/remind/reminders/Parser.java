@@ -4,6 +4,11 @@ import org.springframework.stereotype.Component;
 import scottleedavis.mattermost.remind.exceptions.ParserException;
 import scottleedavis.mattermost.remind.messages.ParsedRequest;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.IntStream;
+
 @Component
 public class Parser {
 
@@ -13,9 +18,21 @@ public class Parser {
         text = text.replace(parsedRequest.getTarget(), "").trim();
         if (text.length() == 0)
             return parsedRequest;
+        boolean hasQuotes = true;
+        try {
+            String message = findMessage(text);
+            if (message.charAt(0) == '"' && message.charAt(message.length() - 1) == '"')
+                parsedRequest.setMessage(message.substring(1, message.length() - 1));
+            else
+                parsedRequest.setMessage(message);
+            text = text.replace(message, "");
+        } catch (Exception e) {
+            hasQuotes = false;
+        }
         parsedRequest.setWhen(findWhen(text));
         text = text.replace(parsedRequest.getWhen(), "").trim();
-        parsedRequest.setMessage(text);
+        if (!hasQuotes)
+            parsedRequest.setMessage(text);
         return parsedRequest;
     }
 
@@ -39,6 +56,23 @@ public class Parser {
             return parts[0];
 
         throw new ParserException("Unrecognized target");
+
+    }
+
+    private String findMessage(String text) throws Exception {
+        List<Integer> indexes = new ArrayList<>();
+        IntStream.range(0, text.length())
+                .forEach(index -> {
+                    if (text.charAt(index) == '"')
+                        indexes.add(index);
+                });
+        if (indexes.size() >= 2) {
+            int min = Collections.min(indexes);
+            int max = Collections.max(indexes);
+            return text.substring(min, max + 1);
+        }
+
+        throw new ParserException("Could not determine message.");
 
     }
 

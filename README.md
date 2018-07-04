@@ -63,7 +63,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 
 ##### Datasource
 * Default database is [h2](http://www.h2database.com/html/main.html) (an auto-generated in-memory database)
-* [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) can be used by changing [application.properties](src/main/resources/application.properties) and creating a reminders table  (_[reminders.example.sqlserver.sql](scripts/reminders.example.sqlserver.sql)_)
+* [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) can be used by changing [application.properties](application/src/main/resources/application.properties) and creating a reminders table  (_[reminders.example.sqlserver.sql](scripts/reminders.example.sqlserver.sql)_)
   ```$xslt
     spring.datasource.url=jdbc:sqlserver://YOUR_DATABASE_SERVER;databaseName=YOUR_DATABASE_NAME
     spring.datasource.username=YOUR_DATABASE_USER
@@ -71,7 +71,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
     spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
     spring.jpa.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
   ```
-* [PostgreSQL](https://www.postgresql.org/) can be used by changing [application.properties](src/main/resources/application.properties) and creating a reminders table (_[reminders.example.postgresql.sql](scripts/reminders.example.postgresql.sql)_)
+* [PostgreSQL](https://www.postgresql.org/) can be used by changing [application.properties](application/src/main/resources/application.properties) and creating a reminders table (_[reminders.example.postgresql.sql](scripts/reminders.example.postgresql.sql)_)
   ```$xslt
     spring.datasource.url=jdbc:postgresql://YOUR_DATABASE_SERVER:5432/YOUR_DATABASE_NAME 
     spring.datasource.username=YOUR_DATABASE_USER 

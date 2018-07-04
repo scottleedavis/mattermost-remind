@@ -88,7 +88,8 @@ public class Scheduler {
             logger.info("Sending reminder {} to {} ", occurrence.getId(), occurrence.getReminder().getTarget());
             try {
                 webhook.invoke(occurrence.getReminder().getTarget(), occurrence.getReminder().getMessage(), occurrence.getReminder().getId());
-                reminderService.reschedule(occurrence);
+                if( occurrence.getRepeat() != null )
+                    reminderService.reschedule(occurrence);
             } catch (Exception e) {
                 logger.error("Not able to send reminder {}", e);
             }

@@ -236,16 +236,13 @@ public class Occurrence {
         if (timeChunks.length < 2)
             throw new OccurrenceException("unrecognized time mark.");
 
-        //todo ensure this works with on <day|date> at <time>
-
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
         String[] dateTimeSplit = chronoUnit.split(" at ");
         final String time = dateTimeSplit.length == 1 ? DEFAULT_TIME : dateTimeSplit[1];
 
         String dateUnit = formatter.normalizeDate(dateTimeSplit[0]);
         String timeUnit = formatter.normalizeTime(time);
-
-
+        
         switch (dateUnit) {
             case "MONDAY":
             case "TUESDAY":

@@ -1,5 +1,6 @@
 package io.github.scottleedavis.mattermost.remind;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.SpringApplication;
@@ -13,8 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class BaseTest {
 
     @Test
-    public void foo() {
-
+    public void sanityCheck() {
+        //sanity check
+        assertTrue(true);
     }
 
     public static void main(String[] args) {

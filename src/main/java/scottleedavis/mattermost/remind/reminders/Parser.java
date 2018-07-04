@@ -21,8 +21,8 @@ public class Parser {
         boolean hasQuotes = true;
         try {
             String message = findMessage(text);
-            if( message.charAt(0) == '"' && message.charAt(message.length()-1) == '"' )
-                parsedRequest.setMessage(message.substring(1, message.length()-1));
+            if (message.charAt(0) == '"' && message.charAt(message.length() - 1) == '"')
+                parsedRequest.setMessage(message.substring(1, message.length() - 1));
             else
                 parsedRequest.setMessage(message);
             text = text.replace(message, "");
@@ -31,7 +31,7 @@ public class Parser {
         }
         parsedRequest.setWhen(findWhen(text));
         text = text.replace(parsedRequest.getWhen(), "").trim();
-        if( !hasQuotes )
+        if (!hasQuotes)
             parsedRequest.setMessage(text);
         return parsedRequest;
     }
@@ -63,13 +63,13 @@ public class Parser {
         List<Integer> indexes = new ArrayList<>();
         IntStream.range(0, text.length())
                 .forEach(index -> {
-                    if( text.charAt(index) == '"' )
+                    if (text.charAt(index) == '"')
                         indexes.add(index);
                 });
-        if( indexes.size() >= 2 ) {
+        if (indexes.size() >= 2) {
             int min = Collections.min(indexes);
             int max = Collections.max(indexes);
-            return text.substring(min, max+1);
+            return text.substring(min, max + 1);
         }
 
         throw new ParserException("Could not determine message.");

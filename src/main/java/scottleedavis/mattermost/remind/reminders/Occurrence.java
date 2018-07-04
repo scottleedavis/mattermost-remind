@@ -7,6 +7,7 @@ import scottleedavis.mattermost.remind.exceptions.OccurrenceException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
@@ -238,9 +239,14 @@ public class Occurrence {
         //todo ensure this works with on <day|date> at <time>
 
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
-        chronoUnit = formatter.normalizeDate(chronoUnit);
+        String[] dateTimeSplit = chronoUnit.split(" at ");
+        final String time = dateTimeSplit.length == 1 ? DEFAULT_TIME : dateTimeSplit[1];
 
-        switch (chronoUnit) {
+        String dateUnit = formatter.normalizeDate(dateTimeSplit[0]);
+        String timeUnit = formatter.normalizeTime(time);
+
+
+        switch (dateUnit) {
             case "MONDAY":
             case "TUESDAY":
             case "WEDNESDAY":
@@ -248,12 +254,12 @@ public class Occurrence {
             case "FRIDAY":
             case "SATURDAY":
             case "SUNDAY":
-                return Arrays.asList(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(chronoUnit))).atTime(9, 0));
+                return Arrays.asList(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(dateUnit))).atTime(LocalTime.parse(timeUnit))); //.atTime(9, 0));
             default:
                 break;
         }
 
-        return Arrays.asList(LocalDateTime.parse(chronoUnit + " " + DEFAULT_TIME, new DateTimeFormatterBuilder()
+        return Arrays.asList(LocalDateTime.parse(dateUnit + " " + timeUnit, new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter()));
 
     }

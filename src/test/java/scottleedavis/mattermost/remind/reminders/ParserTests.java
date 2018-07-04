@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ParserTests {
-    
+
     @Autowired
     private Parser parser;
 

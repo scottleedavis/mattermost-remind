@@ -20,10 +20,12 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind @lima Lunch time! at noon`
   * `/remind #test-team New tests at two`
   * `/remind me Pickup kids at 4:30pm`
-* **/remind [who] [what] on [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)]**
+* **/remind [who] [what] on [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)] (at) [time]**
   * `/remind me Go to movies on Friday`
   * `/remind #management Send annual salary review report on December 15`
   * `/remind me Mow the lawn on 7th`
+  * `/remind me Pick up kids on tuesday at 7:30am`
+  * `/remind #Off-Topic "meet us downtown!" on 7/13 at noon`
 * **/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]**
   * `/remind me to schedule annual reviews every January 25`
   * `/remind #design Design critique meeting every Thursday at 12:30`
@@ -38,6 +40,8 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 * Channel reminders can’t be snoozed.
 * Message buttons don’t show up for `/remind` in channels other than with yourself
   * [This is because Ephemeral messages do not have a state, and therefore do not support interactive message buttons at this time.](https://docs.mattermost.com/developer/interactive-message-buttons.html#troubleshooting)
+* Use quotes around long messages, especially when using words like 'on', 'at, 'in' and 'every'.
+  * `/remind me "Use quotes on and at in and around every thing" at noon`
 
 ### releases
 

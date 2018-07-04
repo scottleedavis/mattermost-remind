@@ -64,7 +64,7 @@ public class Formatter {
                 ldt = occurrence.calculate(parsedRequest.getWhen()).get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                time = ldt.getMinute() > 0 ? timeRaw + ":"+ldt.getMinute() : Integer.toString(timeRaw);
+                time = ldt.getMinute() > 0 ? timeRaw + ":" + ldt.getMinute() : Integer.toString(timeRaw);
                 dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
                 month = capitalize(ldt.getMonth().toString());
                 day = daySuffix(ldt.getDayOfMonth());
@@ -82,7 +82,7 @@ public class Formatter {
                 ldt = ldts.get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
-                time = ldt.getMinute() > 0 ? timeRaw + ":"+ldt.getMinute() : Integer.toString(timeRaw);
+                time = ldt.getMinute() > 0 ? timeRaw + ":" + ldt.getMinute() : Integer.toString(timeRaw);
 
                 if (parsedRequest.getWhen().contains(" day ")) {
 

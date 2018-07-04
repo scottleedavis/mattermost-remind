@@ -13,16 +13,14 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ParserTests {
-
-    private ParsedRequest parsedRequest;
-
+    
     @Autowired
     private Parser parser;
 
     @Test
     public void extract() throws Exception {
 
-        parsedRequest = parser.extract("me FooBar at noon");
+        ParsedRequest parsedRequest = parser.extract("me FooBar at noon");
         assertEquals(parsedRequest.getMessage(), "FooBar");
         assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "at noon");

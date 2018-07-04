@@ -14,10 +14,10 @@ import static org.junit.Assert.assertNull;
 @SpringBootTest
 public class ParserTests {
 
-    ParsedRequest parsedRequest;
+    private ParsedRequest parsedRequest;
 
     @Autowired
-    Parser parser;
+    private Parser parser;
 
     @Test
     public void extract() throws Exception {

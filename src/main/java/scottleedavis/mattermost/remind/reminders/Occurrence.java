@@ -242,7 +242,7 @@ public class Occurrence {
 
         String dateUnit = formatter.normalizeDate(dateTimeSplit[0]);
         String timeUnit = formatter.normalizeTime(time);
-        
+
         switch (dateUnit) {
             case "MONDAY":
             case "TUESDAY":

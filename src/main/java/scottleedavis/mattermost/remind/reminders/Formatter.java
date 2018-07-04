@@ -64,6 +64,7 @@ public class Formatter {
                 ldt = occurrence.calculate(parsedRequest.getWhen()).get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
+                time = ldt.getMinute() > 0 ? timeRaw + ":"+ldt.getMinute() : Integer.toString(timeRaw);
                 dayOfWeek = capitalize(DayOfWeek.of(ldt.getDayOfWeek().getValue()).toString());
                 month = capitalize(ldt.getMonth().toString());
                 day = daySuffix(ldt.getDayOfMonth());
@@ -73,7 +74,7 @@ public class Formatter {
                     String[] parts = parsedRequest.getWhen().split("(-|/)");
                     year = ", " + LocalDate.now().withYear(Integer.parseInt(parts[2])).getYear();
                 }
-                when = "at " + timeRaw + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day + year;
+                when = "at " + time + amPm(ldt) + " " + dayOfWeek + ", " + month + " " + day + year;
                 break;
             case EVERY:
                 ldts = occurrence.calculate(parsedRequest.getWhen());
@@ -81,17 +82,17 @@ public class Formatter {
                 ldt = ldts.get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
+                time = ldt.getMinute() > 0 ? timeRaw + ":"+ldt.getMinute() : Integer.toString(timeRaw);
 
                 if (parsedRequest.getWhen().contains(" day ")) {
 
-                    when = "at " + timeRaw + amPm(ldt) + " every" + other + " day";
+                    when = "at " + time + amPm(ldt) + " every" + other + " day";
                 } else if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
                         Pattern.CASE_INSENSITIVE).matcher(parsedRequest.getWhen()).find()) {
-                    when = "at " + timeRaw + amPm(ldt) + " every" + other;
+                    when = "at " + time + amPm(ldt) + " every" + other;
                     String chronoUnit = Arrays.asList(parsedRequest.getWhen().split(" ")).stream().skip(1).collect(Collectors.joining(" "));
                     chronoUnit = chronoUnit.contains("other") ? chronoUnit.split("other")[1].trim() : chronoUnit;
                     String[] dateTimeSplit = chronoUnit.split(" at ");
-                    time = dateTimeSplit.length == 1 ? Occurrence.DEFAULT_TIME : dateTimeSplit[1];
                     String[] days = Arrays.stream(dateTimeSplit[0].split("and|,")).map(dt -> capitalize(dt.trim())).toArray(String[]::new);
                     Arrays.sort(days);
 
@@ -103,7 +104,7 @@ public class Formatter {
                     when += " " + daysStr;
 
                 } else {
-                    when = "at " + timeRaw + amPm(ldt) + " every" + other + " ";
+                    when = "at " + time + amPm(ldt) + " every" + other + " ";
                     String[] dates = ldts.stream().map(date -> {
                         return capitalize(date.getMonth().toString()) + " " + daySuffix(date.getDayOfMonth());
                     }).toArray(String[]::new);

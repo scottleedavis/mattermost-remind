@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SlashCommand {
 
-    @Value("${remindSlashCommandToken}")
+    @Value("${remind.SlashCommandToken}")
     private String slashCommandToken;
 
     @Autowired

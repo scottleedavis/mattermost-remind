@@ -19,7 +19,7 @@ public class Webhook {
 
     private static Logger logger = LoggerFactory.getLogger(Webhook.class);
 
-    @Value("${webhookUrl}")
+    @Value("${remind.webhookUrl}")
     private String webhookUrl;
 
     @Autowired

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     List<Reminder> findByUserName(String userName);
 }

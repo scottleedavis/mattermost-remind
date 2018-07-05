@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+@Component(value = "remind")
 public class Options {
 
     public static String helpMessage = ":wave: Need some help with `/remind`?\n" +

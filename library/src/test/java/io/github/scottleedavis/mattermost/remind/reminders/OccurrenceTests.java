@@ -435,6 +435,23 @@ public class OccurrenceTests {
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
         assertTrue(testDate.equals(checkDate) || testDate.equals(checkDate2));
 
+    }
+
+    @Test
+    public void calcuateDayOfWeekEnding() throws Exception {
+        String when;
+        LocalDateTime testDate;
+        LocalDateTime checkDate;
+
+        when = "friday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "tomorrow";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().plusDays(1).atTime(9, 0);
+        assertEquals(testDate, checkDate);
 
     }
 }

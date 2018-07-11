@@ -347,6 +347,8 @@ public class Occurrence {
     private List<LocalDateTime> freeForm(String when) throws Exception {
 
         switch (when.toUpperCase()) {
+            case "TOMORROW":
+                return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString());
             case "MONDAY":
             case "TUESDAY":
             case "WEDNESDAY":
@@ -354,15 +356,11 @@ public class Occurrence {
             case "FRIDAY":
             case "SATURDAY":
             case "SUNDAY":
-                return on("on " + when);
-            case "TOMORROW":
-                return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString());
             default:
-                break;
+                return on("on " + when);
 
         }
 
-        throw new OccurrenceException("unrecognized time mark.");
     }
 
     private LocalDateTime chooseClosest(LocalDateTime closest, LocalDateTime now, boolean dayInterval) {

@@ -16,6 +16,11 @@ public class Parser {
     @Autowired
     private Formatter formatter;
 
+    private static class WhenPattern {
+        public String raw;
+        public String normalized;
+    }
+
     public ParsedRequest extract(String text) throws Exception {
         ParsedRequest parsedRequest = new ParsedRequest();
 
@@ -36,10 +41,13 @@ public class Parser {
             hasQuotes = false;
         }
 
-        parsedRequest.setWhen(findWhen(text));
-        text = text.replaceAll("(?i)" + parsedRequest.getWhen(), "").trim();
+        WhenPattern whenPattern = findWhen(text);
+        parsedRequest.setWhen(whenPattern.normalized);
+        text = text.replaceAll( whenPattern.raw, "").trim();
+
         if (!hasQuotes)
             parsedRequest.setMessage(text);
+
         return parsedRequest;
     }
 
@@ -83,43 +91,61 @@ public class Parser {
 
     }
 
-    private String findWhen(String text) throws Exception {
+    private WhenPattern findWhen(String text) throws Exception {
+
+        WhenPattern whenPattern = new WhenPattern();
         int subStringA = -1;
         int subStringB = -1;
 
         subStringA = text.indexOf(" in ");
         if (subStringA > -1) {
-            return text.substring(subStringA).trim();
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
         }
 
         subStringA = text.indexOf(" every ");
         subStringB = text.indexOf(" at ");
         if ((subStringA > -1 && subStringB == -1) || (subStringB > subStringA) && subStringA != -1) {
-            return text.substring(subStringA).trim();
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
         }
 
         subStringA = text.indexOf(" on ");
         if (subStringA > -1) {
-            return text.substring(subStringA).trim();
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
         }
 
         subStringA = text.indexOf(" at ");
         subStringB = text.indexOf(" every ");
         if ((subStringA > -1 && subStringB == -1) || (subStringB > subStringA) && subStringA != -1) {
-            return text.substring(subStringA).trim();
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
         }
 
         String[] textSplit = text.split(" ");
-        String lastWord = textSplit[textSplit.length - 1];
+        String lastWord = textSplit[textSplit.length - 2] + " " + textSplit[textSplit.length - 1];
         try {
-            return formatter.capitalize(formatter.normalizeDate(lastWord));
+
+            whenPattern.raw = lastWord;
+            whenPattern.normalized = formatter.capitalize(formatter.normalizeDate(lastWord));
+            return whenPattern;
+
         } catch (Exception e) {
-            if (lastWord.equalsIgnoreCase("tomorrow"))
-                return formatter.capitalize(lastWord);
+
+            lastWord = textSplit[textSplit.length - 1];
+
+            if (lastWord.equalsIgnoreCase("tomorrow")) {
+                whenPattern.raw = lastWord;
+                whenPattern.normalized = formatter.capitalize(lastWord);
+                return whenPattern;
+            }
 
             try {
-                lastWord = textSplit[textSplit.length - 2] + " " + textSplit[textSplit.length - 1];
-                return formatter.capitalize(formatter.normalizeDate(lastWord));
+
+                whenPattern.raw = lastWord;
+                whenPattern.normalized = formatter.capitalize(formatter.normalizeDate(lastWord));
+                return whenPattern;
             } catch (Exception er) {
                 throw new ParserException("No when found", er);
             }

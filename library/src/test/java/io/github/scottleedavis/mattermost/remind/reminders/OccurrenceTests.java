@@ -149,6 +149,16 @@ public class OccurrenceTests {
         checkDate = LocalDate.now().atTime(14, 00).truncatedTo(ChronoUnit.SECONDS);
         assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
 
+        when = "at 11:00 every Thursday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY)).atTime(11, 00).truncatedTo(ChronoUnit.SECONDS);
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
+
+        when = "at 3pm every day";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().plusDays(1).atTime(15, 00).truncatedTo(ChronoUnit.SECONDS);
+        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
+
     }
 
     @Test

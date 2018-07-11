@@ -77,26 +77,29 @@ public class Parser {
     }
 
     private String findWhen(String text) throws Exception {
-        int subString = -1;
+        int subStringA = -1;
+        int subStringB = -1;
 
-        subString = text.indexOf(" in ");
-        if (subString > -1) {
-            return text.substring(subString).trim();
+        subStringA = text.indexOf(" in ");
+        if (subStringA > -1) {
+            return text.substring(subStringA).trim();
         }
 
-        subString = text.indexOf(" every ");
-        if (subString > -1) {
-            return text.substring(subString).trim();
+        subStringA = text.indexOf(" every ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB == -1) || (subStringB > subStringA) && subStringA != -1) {
+            return text.substring(subStringA).trim();
         }
 
-        subString = text.indexOf(" on ");
-        if (subString > -1) {
-            return text.substring(subString).trim();
+        subStringA = text.indexOf(" on ");
+        if (subStringA > -1) {
+            return text.substring(subStringA).trim();
         }
 
-        subString = text.indexOf(" at ");
-        if (subString > -1) {
-            return text.substring(subString).trim();
+        subStringA = text.indexOf(" at ");
+        subStringB = text.indexOf(" every ");
+        if ((subStringA > -1 && subStringB == -1) || (subStringB > subStringA) && subStringA != -1) {
+            return text.substring(subStringA).trim();
         }
 
         throw new ParserException("No when found");

@@ -80,6 +80,17 @@ public class ParserTests {
         assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "at 3pm");
 
+        parsedRequest = parser.extract("me SuperFoo at 3pm every tuesday");
+        assertEquals(parsedRequest.getMessage(), "SuperFoo");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "at 3pm every tuesday");
+
+        parsedRequest = parser.extract("me SuperFoo at 4:30am every day");
+        assertEquals(parsedRequest.getMessage(), "SuperFoo");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "at 4:30am every day");
+
+
     }
 
 }

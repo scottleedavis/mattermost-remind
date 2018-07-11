@@ -357,6 +357,8 @@ public class Occurrence {
                 return on("on " + when);
             case "TOMORROW":
                 return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString());
+            default:
+                break;
 
         }
 

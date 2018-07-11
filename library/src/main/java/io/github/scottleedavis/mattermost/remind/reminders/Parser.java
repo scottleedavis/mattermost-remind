@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 public class Parser {
 
     @Autowired
-    Formatter formatter;
+    private Formatter formatter;
 
     public ParsedRequest extract(String text) throws Exception {
         ParsedRequest parsedRequest = new ParsedRequest();

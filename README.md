@@ -22,12 +22,14 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind me Pickup kids at 4:30pm`
   * `/remind me to attend the team meeting at 11:00 every Tuesday`
   * `/remind me to drink water at 3pm every day`
-* **/remind [who] [what] on [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)] (at) [time]**
+* **/remind [who] [what] (on) [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)] (at) [time]**
   * `/remind me Go to movies on Friday`
   * `/remind #management Send annual salary review report on December 15`
   * `/remind me Mow the lawn on 7th`
   * `/remind me Pick up kids on tuesday at 7:30am`
   * `/remind #Off-Topic "meet us downtown!" on 7/13 at noon`
+  * `/remind #design Join the meeting Monday`
+  * `/remind me Smile tomorrow`
 * **/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]**
   * `/remind me to schedule annual reviews every January 25`
   * `/remind #design Design critique meeting every Thursday at 12:30`

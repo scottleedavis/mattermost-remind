@@ -2,6 +2,7 @@ package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.exceptions.ParserException;
 import io.github.scottleedavis.mattermost.remind.messages.ParsedRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,12 +13,17 @@ import java.util.stream.IntStream;
 @Component
 public class Parser {
 
+    @Autowired
+    private Formatter formatter;
+
     public ParsedRequest extract(String text) throws Exception {
         ParsedRequest parsedRequest = new ParsedRequest();
+
         parsedRequest.setTarget(findTarget(text));
         text = text.replaceFirst(parsedRequest.getTarget(), "").trim();
         if (text.length() == 0)
             return parsedRequest;
+
         boolean hasQuotes = true;
         try {
             String message = findMessage(text);
@@ -29,8 +35,9 @@ public class Parser {
         } catch (Exception e) {
             hasQuotes = false;
         }
+
         parsedRequest.setWhen(findWhen(text));
-        text = text.replace(parsedRequest.getWhen(), "").trim();
+        text = text.replaceAll("(?i)" + parsedRequest.getWhen(), "").trim();
         if (!hasQuotes)
             parsedRequest.setMessage(text);
         return parsedRequest;
@@ -102,7 +109,20 @@ public class Parser {
             return text.substring(subStringA).trim();
         }
 
-        throw new ParserException("No when found");
+        String[] textSplit = text.split(" ");
+        String lastWord = textSplit[textSplit.length - 1];
+        try {
+            return formatter.capitalize(formatter.normalizeDate(lastWord));
+        } catch (Exception e) {
+            if (lastWord.equalsIgnoreCase("tomorrow"))
+                return formatter.capitalize(lastWord);
 
+            try {
+                lastWord = textSplit[textSplit.length - 2] + " " + textSplit[textSplit.length - 1];
+                return formatter.capitalize(formatter.normalizeDate(lastWord));
+            } catch (Exception er) {
+                throw new ParserException("No when found", er);
+            }
+        }
     }
 }

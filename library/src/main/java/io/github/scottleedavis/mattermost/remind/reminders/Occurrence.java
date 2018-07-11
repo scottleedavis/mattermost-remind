@@ -134,13 +134,13 @@ public class Occurrence {
         switch (chronoUnit) {
             case "noon":
                 if (recurrentDates.size() > 0) {
-                    return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(12, 0)).collect(Collectors.toList());
+                    return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(12, 0), now, true)).collect(Collectors.toList());
                 }
                 closest = LocalDate.now().atTime(12, 0);
                 return Arrays.asList(chooseClosest(closest, now, true));
             case "midnight":
                 if (recurrentDates.size() > 0) {
-                    return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(0, 0)).collect(Collectors.toList());
+                    return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(0, 0), now, true)).collect(Collectors.toList());
                 }
                 closest = LocalDate.now().atTime(0, 0);
                 return Arrays.asList(chooseClosest(closest, now, true));
@@ -158,7 +158,7 @@ public class Occurrence {
             case "twelve":
                 if (recurrentDates.size() > 0) {
                     Integer builtHour = formatter.wordToNumber(chronoUnit);
-                    return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(builtHour, 0)).collect(Collectors.toList());
+                    return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(builtHour, 0), now, false)).collect(Collectors.toList());
                 }
                 closest = LocalDate.now().atTime(formatter.wordToNumber(chronoUnit), 0);
                 return Arrays.asList(chooseClosest(closest, now, false));
@@ -187,7 +187,7 @@ public class Occurrence {
             case "22":
             case "23":
                 if (recurrentDates.size() > 0) {
-                    return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(Integer.parseInt(chronoUnit), 0)).collect(Collectors.toList());
+                    return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(Integer.parseInt(chronoUnit), 0), now, false)).collect(Collectors.toList());
                 }
                 closest = LocalDate.now().atTime(Integer.parseInt(chronoUnit), 0);
                 return Arrays.asList(chooseClosest(closest, now, false));
@@ -204,7 +204,7 @@ public class Occurrence {
 
             time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
             if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(time[0], time[1])).collect(Collectors.toList());
+                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
             }
             closest = LocalDate.now().atTime(time[0], time[1]);
             return Arrays.asList(chooseClosest(closest, now, true));
@@ -214,7 +214,7 @@ public class Occurrence {
             time = Arrays.stream(chronoUnit.split(":")).mapToInt(Integer::parseInt).toArray();
             time[0] = time[0] % 24;
             if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(time[0], time[1])).collect(Collectors.toList());
+                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
             }
             closest = LocalDate.now().atTime(time[0], time[1]);
             return Arrays.asList(chooseClosest(closest, now, true));
@@ -230,7 +230,7 @@ public class Occurrence {
 
             time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
             if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(time[0], time[1])).collect(Collectors.toList());
+                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
             }
             closest = LocalDate.now().atTime(time[0], time[1]);
             return Arrays.asList(chooseClosest(closest, now, true));
@@ -243,7 +243,7 @@ public class Occurrence {
             int time_check = Integer.parseInt(subChronoUnit);
             final int time_solo = amPm.equalsIgnoreCase("pm") ? (time_check < 12 ? ((time_check + 12) % 24) : time_check) : time_check % 12;
             if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(time_solo, 0)).collect(Collectors.toList());
+                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time_solo, 0), now, true)).collect(Collectors.toList());
             }
             closest = LocalDate.now().atTime(time_solo, 0);
             return Arrays.asList(chooseClosest(closest, now, true));
@@ -254,7 +254,7 @@ public class Occurrence {
             time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
             time[0] = time[0] % 24;
             if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> ldt_rd.toLocalDate().atTime(time[0], time[1])).collect(Collectors.toList());
+                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
             }
             closest = LocalDate.now().atTime(time[0], time[1]);
             return Arrays.asList(chooseClosest(closest, now, true));

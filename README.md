@@ -16,10 +16,12 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 * **/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]**
   * `/remind me Do the dishes in 1 day`
   * `/remind @jessica about the interview in three hours`
-* **/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)]**  
+* **/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)] (every) [day|date]**  
   * `/remind @lima Lunch time! at noon`
   * `/remind #test-team New tests at two`
   * `/remind me Pickup kids at 4:30pm`
+  * `/remind me to attend the team meeting at 11:00 every Tuesday`
+  * `/remind me to drink water at 3pm every day`
 * **/remind [who] [what] on [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)] (at) [time]**
   * `/remind me Go to movies on Friday`
   * `/remind #management Send annual salary review report on December 15`

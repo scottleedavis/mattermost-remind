@@ -15,7 +15,7 @@ public class Parser {
     public ParsedRequest extract(String text) throws Exception {
         ParsedRequest parsedRequest = new ParsedRequest();
         parsedRequest.setTarget(findTarget(text));
-        text = text.replace(parsedRequest.getTarget(), "").trim();
+        text = text.replaceFirst(parsedRequest.getTarget(), "").trim();
         if (text.length() == 0)
             return parsedRequest;
         boolean hasQuotes = true;

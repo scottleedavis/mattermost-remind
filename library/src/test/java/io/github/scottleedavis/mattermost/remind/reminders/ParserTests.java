@@ -18,14 +18,18 @@ public class ParserTests {
     private Parser parser;
 
     @Test
-    public void extract() throws Exception {
+    public void extractTarget() throws Exception {
 
-        ParsedRequest parsedRequest = parser.extract("me FooBar at noon");
-        assertEquals(parsedRequest.getMessage(), "FooBar");
+        ParsedRequest parsedRequest = parser.extract("me me me me, doe ray so fa la ti do at noon");
+        assertEquals(parsedRequest.getMessage(), "me me me, doe ray so fa la ti do");
         assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "at noon");
 
-        parsedRequest = parser.extract("list");
+    }
+
+    @Test
+    public void extractOptions() throws Exception {
+        ParsedRequest parsedRequest = parser.extract("list");
         assertNull(parsedRequest.getMessage());
         assertEquals(parsedRequest.getTarget(), "list");
         assertNull(parsedRequest.getWhen());
@@ -39,6 +43,30 @@ public class ParserTests {
         assertNull(parsedRequest.getMessage());
         assertEquals(parsedRequest.getTarget(), "version");
         assertNull(parsedRequest.getWhen());
+    }
+
+    @Test
+    public void extractQuotes() throws Exception {
+
+        ParsedRequest parsedRequest = parser.extract("me \"I'd really like to do it at at one every\" at noon");
+        assertEquals(parsedRequest.getMessage(), "I'd really like to do it at at one every");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "at noon");
+
+        parsedRequest = parser.extract("me \"Joe joes and \" joe \"is a joe|'|'\" joe joe\" at noon");
+        assertEquals(parsedRequest.getMessage(), "Joe joes and \" joe \"is a joe|'|'\" joe joe");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "at noon");
+
+    }
+
+    @Test
+    public void extractDateTime() throws Exception {
+
+        ParsedRequest parsedRequest = parser.extract("me FooBar at noon");
+        assertEquals(parsedRequest.getMessage(), "FooBar");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "at noon");
 
         parsedRequest = parser.extract("@anybody FooBar at noon");
         assertEquals(parsedRequest.getMessage(), "FooBar");
@@ -48,16 +76,6 @@ public class ParserTests {
         parsedRequest = parser.extract("#Off-Topic FooBar at noon");
         assertEquals(parsedRequest.getMessage(), "FooBar");
         assertEquals(parsedRequest.getTarget(), "#Off-Topic");
-        assertEquals(parsedRequest.getWhen(), "at noon");
-
-        parsedRequest = parser.extract("me \"I'd really like to do it at at one every\" at noon");
-        assertEquals(parsedRequest.getMessage(), "I'd really like to do it at at one every");
-        assertEquals(parsedRequest.getTarget(), "me");
-        assertEquals(parsedRequest.getWhen(), "at noon");
-
-        parsedRequest = parser.extract("me \"Joe joes and \" joe \"is a joe|'|'\" joe joe\" at noon");
-        assertEquals(parsedRequest.getMessage(), "Joe joes and \" joe \"is a joe|'|'\" joe joe");
-        assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "at noon");
 
         parsedRequest = parser.extract("me SuperFoo in 1 second");

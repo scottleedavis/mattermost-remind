@@ -235,7 +235,7 @@ public class Formatter {
 
         if (text.equalsIgnoreCase("day"))
             return text.toUpperCase();
-        else if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+        else if (Pattern.compile("^((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
             switch (text.toLowerCase()) {
@@ -273,7 +273,7 @@ public class Formatter {
                     break;
             }
             return text.toUpperCase();
-        } else if (Pattern.compile("(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june|july|aug(ust)?|sept(ember)?|oct(ober)?|nov(ember)?|dec(ember)?)",
+        } else if (Pattern.compile("^(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june|july|aug(ust)?|sept(ember)?|oct(ober)?|nov(ember)?|dec(ember)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
             text = text.replace(",", "");
@@ -376,7 +376,7 @@ public class Formatter {
 
             return Arrays.stream(parts).collect(Collectors.joining(" ")).toUpperCase();
 
-        } else if (Pattern.compile("((\\d{2}|\\d{1})(-|/)(\\d{2}|\\d{1})((-|/)(\\d{2}|\\d{4}))?)",
+        } else if (Pattern.compile("^((\\d{2}|\\d{1})(-|/)(\\d{2}|\\d{1})((-|/)(\\d{2}|\\d{4}))?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 
             String[] parts = text.split("(-|/)");

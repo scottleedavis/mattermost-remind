@@ -41,13 +41,13 @@ public class Occurrence {
     }
 
     public OccurrenceType classify(String when) {
-        if (when.startsWith("in"))
+        if (when.startsWith("in "))
             return OccurrenceType.IN;
-        else if (when.startsWith("at"))
+        else if (when.startsWith("at "))
             return OccurrenceType.AT;
-        else if (when.startsWith("on"))
+        else if (when.startsWith("on "))
             return OccurrenceType.ON;
-        else if (when.startsWith("every"))
+        else if (when.startsWith("every "))
             return OccurrenceType.EVERY;
         else
             return OccurrenceType.FREEFORM;
@@ -286,6 +286,14 @@ public class Occurrence {
             case "SATURDAY":
             case "SUNDAY":
                 return Arrays.asList(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(dateUnit))).atTime(LocalTime.parse(timeUnit))); //.atTime(9, 0));
+            case "MONDAYS":
+            case "TUESDAYS":
+            case "WEDNESDAYS":
+            case "THURSDAYS":
+            case "FRIDAYS":
+            case "SATURDAYS":
+            case "SUNDAYS":
+                return every("every "+dateUnit.substring(0, dateUnit.length()-1)+" at "+timeUnit);
             default:
                 break;
         }
@@ -296,6 +304,7 @@ public class Occurrence {
     }
 
     private List<LocalDateTime> every(String when) throws Exception {
+
 
         String[] timeChunks = when.split(" ");
         if (timeChunks.length < 2)
@@ -349,6 +358,16 @@ public class Occurrence {
         switch (when.toUpperCase()) {
             case "TOMORROW":
                 return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString());
+            case "EVERYDAY":
+                return every("every day");
+            case "MONDAYS":
+            case "TUESDAYS":
+            case "WEDNESDAYS":
+            case "THURSDAYS":
+            case "FRIDAYS":
+            case "SATURDAYS":
+            case "SUNDAYS":
+                return every("every "+when.substring(0, when.length()-1));
             case "MONDAY":
             case "TUESDAY":
             case "WEDNESDAY":

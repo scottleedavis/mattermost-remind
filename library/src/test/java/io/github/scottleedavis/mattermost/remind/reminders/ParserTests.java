@@ -98,7 +98,17 @@ public class ParserTests {
         assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "at 3pm");
 
-        parsedRequest = parser.extract("me SuperFoo at 3pm every tuesday");
+        parsedRequest = parser.extract("me Smile May 30");
+        assertEquals(parsedRequest.getMessage(), "Smile");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "May 30 2018");
+
+    }
+
+    @Test
+    public void extractDayOfWeek() throws Exception {
+
+        ParsedRequest parsedRequest = parser.extract("me SuperFoo at 3pm every tuesday");
         assertEquals(parsedRequest.getMessage(), "SuperFoo");
         assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "at 3pm every tuesday");
@@ -118,10 +128,45 @@ public class ParserTests {
         assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "Tomorrow");
 
-        parsedRequest = parser.extract("me Smile May 30");
+        parsedRequest = parser.extract("me Smile everyday");
         assertEquals(parsedRequest.getMessage(), "Smile");
         assertEquals(parsedRequest.getTarget(), "me");
-        assertEquals(parsedRequest.getWhen(), "May 30 2018");
+        assertEquals(parsedRequest.getWhen(), "Everyday");
+
+        parsedRequest = parser.extract("me Smile Mondays");
+        assertEquals(parsedRequest.getMessage(), "Smile");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "Mondays");
+
+        parsedRequest = parser.extract("me Smile Tuesdays");
+        assertEquals(parsedRequest.getMessage(), "Smile");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "Tuesdays");
+        
+        parsedRequest = parser.extract("me Smile Wednesdays");
+        assertEquals(parsedRequest.getMessage(), "Smile");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "Wednesdays");
+
+        parsedRequest = parser.extract("me Smile Thursdays");
+        assertEquals(parsedRequest.getMessage(), "Smile");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "Thursdays");
+
+        parsedRequest = parser.extract("me Smile Fridays");
+        assertEquals(parsedRequest.getMessage(), "Smile");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "Fridays");
+
+        parsedRequest = parser.extract("me Smile Saturdays");
+        assertEquals(parsedRequest.getMessage(), "Smile");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "Saturdays");
+
+        parsedRequest = parser.extract("me Smile Sundays");
+        assertEquals(parsedRequest.getMessage(), "Smile");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "Sundays");
 
     }
 

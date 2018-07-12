@@ -167,10 +167,48 @@ public class OccurrenceTests {
         LocalDateTime testDate;
         LocalDateTime checkDate;
 
+        when = "on Monday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "on Tuesday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "on Wednesday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "on Thursday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
         when = "on Friday";
         testDate = occurrence.calculate(when).get(0);
         checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(9, 0);
         assertEquals(testDate, checkDate);
+
+        when = "on Mondays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "on Tuesdays at 11:15";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(11, 15);
+        assertEquals(testDate, checkDate);
+        when = "on Wednesdays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "on Thursdays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "on Fridays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
 
         when = "on mon";
         testDate = occurrence.calculate(when).get(0);
@@ -443,6 +481,22 @@ public class OccurrenceTests {
         LocalDateTime testDate;
         LocalDateTime checkDate;
 
+        when = "monday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "tuesday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "wednesday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "thursday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
         when = "friday";
         testDate = occurrence.calculate(when).get(0);
         checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(9, 0);
@@ -451,6 +505,32 @@ public class OccurrenceTests {
         when = "tomorrow";
         testDate = occurrence.calculate(when).get(0);
         checkDate = LocalDate.now().plusDays(1).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "everyday";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().plusDays(1).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+
+        when = "mondays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "tuesdays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "wednesdays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "thursdays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY)).atTime(9, 0);
+        assertEquals(testDate, checkDate);
+        when = "fridays";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(9, 0);
         assertEquals(testDate, checkDate);
 
     }

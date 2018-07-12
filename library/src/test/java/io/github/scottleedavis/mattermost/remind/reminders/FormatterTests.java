@@ -70,7 +70,9 @@ public class FormatterTests {
 
     @Test
     public void capitalize() {
-
+        String test = "aBCDEfg";
+        String check = formatter.capitalize(test);
+        assertEquals("Abcdefg", check);
     }
 
     @Test

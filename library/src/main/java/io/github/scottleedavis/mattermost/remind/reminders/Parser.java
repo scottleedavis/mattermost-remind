@@ -43,7 +43,7 @@ public class Parser {
 
         WhenPattern whenPattern = findWhen(text);
         parsedRequest.setWhen(whenPattern.normalized);
-        text = text.replaceAll( whenPattern.raw, "").trim();
+        text = text.replaceAll(whenPattern.raw, "").trim();
 
         if (!hasQuotes)
             parsedRequest.setMessage(text);
@@ -124,6 +124,8 @@ public class Parser {
         }
 
         String[] textSplit = text.split(" ");
+
+        // dates <month> <day>
         String lastWord = textSplit[textSplit.length - 2] + " " + textSplit[textSplit.length - 1];
         try {
 
@@ -133,12 +135,26 @@ public class Parser {
 
         } catch (Exception e) {
 
+            // tomorrow
             lastWord = textSplit[textSplit.length - 1];
-
-            if (lastWord.equalsIgnoreCase("tomorrow")) {
-                whenPattern.raw = lastWord;
-                whenPattern.normalized = formatter.capitalize(lastWord);
-                return whenPattern;
+            switch (lastWord.toLowerCase()) {
+                case "tomorrow":
+                    whenPattern.raw = lastWord;
+                    whenPattern.normalized = formatter.capitalize(lastWord);
+                    return whenPattern;
+                case "everyday":
+                case "mondays":
+                case "tuesdays":
+                case "wednesdays":
+                case "thursdays":
+                case "fridays":
+                case "saturdays":
+                case "sundays":
+                    whenPattern.raw = lastWord;
+                    whenPattern.normalized = formatter.capitalize(lastWord);
+                    return whenPattern;
+                default:
+                    break;
             }
 
             try {

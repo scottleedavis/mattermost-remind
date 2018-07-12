@@ -73,6 +73,8 @@ public class ReminderService {
         reminderOccurrenceRepository.save(reminderOccurrence);
     }
 
+    //todo currently fails with 'every other day at <time>
+    //todo test all other scenarios
     public void reschedule(ReminderOccurrence reminderOccurrence) throws Exception {
 
         List<LocalDateTime> occurrences = occurrence.calculate(reminderOccurrence.getRepeat());

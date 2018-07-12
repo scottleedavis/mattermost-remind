@@ -116,6 +116,61 @@ public class Parser {
             return whenPattern;
         }
 
+        subStringA = text.indexOf(" everyday ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+        subStringA = text.indexOf(" tomorrow ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+        subStringA = text.indexOf(" monday ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+        subStringA = text.indexOf(" tuesday ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+        subStringA = text.indexOf(" wednesday ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+        subStringA = text.indexOf(" thursday ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+        subStringA = text.indexOf(" friday ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+        subStringA = text.indexOf(" saturday ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+        subStringA = text.indexOf(" sunday ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
+
         subStringA = text.indexOf(" at ");
         subStringB = text.indexOf(" every ");
         if ((subStringA > -1 && subStringB == -1) || (subStringB > subStringA) && subStringA != -1) {

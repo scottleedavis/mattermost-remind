@@ -170,4 +170,55 @@ public class ParserTests {
 
     }
 
+    @Test
+    public void outlierForms() throws Exception {
+
+        ///remind
+        ParsedRequest parsedRequest = parser.extract("@sam to book meeting room tomorrow at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "tomorrow at 4pm");
+
+        parsedRequest = parser.extract("@sam to book meeting room everyday at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "everyday at 4pm");
+
+        parsedRequest = parser.extract("@sam to book meeting room monday at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "monday at 4pm");
+
+        parsedRequest = parser.extract("@sam to book meeting room tuesday at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "tuesday at 4pm");
+
+        parsedRequest = parser.extract("@sam to book meeting room wednesday at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "wednesday at 4pm");
+
+        parsedRequest = parser.extract("@sam to book meeting room thursday at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "thursday at 4pm");
+
+        parsedRequest = parser.extract("@sam to book meeting room friday at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "friday at 4pm");
+
+        parsedRequest = parser.extract("@sam to book meeting room saturday at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "saturday at 4pm");
+
+        parsedRequest = parser.extract("@sam to book meeting room sunday at 4pm");
+        assertEquals(parsedRequest.getMessage(), "to book meeting room");
+        assertEquals(parsedRequest.getTarget(), "@sam");
+        assertEquals(parsedRequest.getWhen(), "sunday at 4pm");
+
+    }
+
 }

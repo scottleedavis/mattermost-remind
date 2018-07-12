@@ -142,7 +142,7 @@ public class ParserTests {
         assertEquals(parsedRequest.getMessage(), "Smile");
         assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "Tuesdays");
-        
+
         parsedRequest = parser.extract("me Smile Wednesdays");
         assertEquals(parsedRequest.getMessage(), "Smile");
         assertEquals(parsedRequest.getTarget(), "me");

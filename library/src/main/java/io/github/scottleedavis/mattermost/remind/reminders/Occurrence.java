@@ -293,7 +293,7 @@ public class Occurrence {
             case "FRIDAYS":
             case "SATURDAYS":
             case "SUNDAYS":
-                return every("every "+dateUnit.substring(0, dateUnit.length()-1)+" at "+timeUnit);
+                return every("every " + dateUnit.substring(0, dateUnit.length() - 1) + " at " + timeUnit);
             default:
                 break;
         }
@@ -367,7 +367,7 @@ public class Occurrence {
             case "FRIDAYS":
             case "SATURDAYS":
             case "SUNDAYS":
-                return every("every "+when.substring(0, when.length()-1));
+                return every("every " + when.substring(0, when.length() - 1));
             case "MONDAY":
             case "TUESDAY":
             case "WEDNESDAY":

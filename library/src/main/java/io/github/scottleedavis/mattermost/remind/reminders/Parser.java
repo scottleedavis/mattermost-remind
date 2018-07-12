@@ -43,7 +43,7 @@ public class Parser {
 
         WhenPattern whenPattern = findWhen(text);
         parsedRequest.setWhen(whenPattern.normalized);
-        text = text.replaceAll( whenPattern.raw, "").trim();
+        text = text.replaceAll(whenPattern.raw, "").trim();
 
         if (!hasQuotes)
             parsedRequest.setMessage(text);
@@ -137,7 +137,7 @@ public class Parser {
 
             // tomorrow
             lastWord = textSplit[textSplit.length - 1];
-            switch(lastWord.toLowerCase()) {
+            switch (lastWord.toLowerCase()) {
                 case "tomorrow":
                     whenPattern.raw = lastWord;
                     whenPattern.normalized = formatter.capitalize(lastWord);

@@ -235,6 +235,10 @@ public class Formatter {
 
         if (text.equalsIgnoreCase("day"))
             return text.toUpperCase();
+        else if (text.equalsIgnoreCase("everyday") )
+            return text.toUpperCase();
+        else if (text.equalsIgnoreCase("tomorrow") )
+            return text.toUpperCase();
         else if (Pattern.compile("^((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
 

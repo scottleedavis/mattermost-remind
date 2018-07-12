@@ -355,11 +355,16 @@ public class Occurrence {
 
     private List<LocalDateTime> freeForm(String when) throws Exception {
 
-        switch (when.toUpperCase()) {
+        String[] dateTimeSplit = when.split(" at ");
+        final String time = dateTimeSplit.length == 1 ? DEFAULT_TIME : dateTimeSplit[1];
+        String dateUnit = formatter.normalizeDate(dateTimeSplit[0]);
+        String timeUnit = formatter.normalizeTime(time);
+
+        switch (dateUnit) {
             case "TOMORROW":
-                return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString());
+                return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString() + " at "+timeUnit);
             case "EVERYDAY":
-                return every("every day");
+                return every("every day at "+ timeUnit);
             case "MONDAYS":
             case "TUESDAYS":
             case "WEDNESDAYS":
@@ -367,7 +372,7 @@ public class Occurrence {
             case "FRIDAYS":
             case "SATURDAYS":
             case "SUNDAYS":
-                return every("every " + when.substring(0, when.length() - 1));
+                return every("every " + dateUnit.substring(0, when.length() - 1) + " at "+timeUnit);
             case "MONDAY":
             case "TUESDAY":
             case "WEDNESDAY":
@@ -376,7 +381,7 @@ public class Occurrence {
             case "SATURDAY":
             case "SUNDAY":
             default:
-                return on("on " + when);
+                return on("on " + dateUnit + " at "+timeUnit);
 
         }
 

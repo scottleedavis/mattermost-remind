@@ -124,9 +124,16 @@ public class Formatter {
             default:
                 break;
         }
+
+        String message = parsedRequest.getMessage();
+        boolean useTo = false;
+        if (message.startsWith("to ") ) {
+            message = message.substring(3);
+            useTo = true;
+        }
         return ":thumbsup: I will remind " +
                 (parsedRequest.getTarget().equals("me") ? "you" : parsedRequest.getTarget()) +
-                " \"" + parsedRequest.getMessage() + "\" " + when;
+                (useTo ? " to" : "") + " \"" + message + "\" " + when;
     }
 
     public String capitalize(String text) {

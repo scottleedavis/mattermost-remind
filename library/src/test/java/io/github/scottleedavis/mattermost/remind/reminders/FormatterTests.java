@@ -66,6 +66,13 @@ public class FormatterTests {
 //        output = formatter.reminderResponse(parsedRequest);
 //        assertNotNull(output);
 //        assertEquals(output, ":thumbsup: I will remind scottd \"FooBar\" in 2 seconds");
+
+        parsedRequest.setMessage("to FooBar");
+        parsedRequest.setWhen("in 20 seconds");
+        output = formatter.reminderResponse(parsedRequest);
+        assertNotNull(output);
+        assertEquals(output, ":thumbsup: I will remind scottd to \"FooBar\" in 20 seconds");
+
     }
 
     @Test

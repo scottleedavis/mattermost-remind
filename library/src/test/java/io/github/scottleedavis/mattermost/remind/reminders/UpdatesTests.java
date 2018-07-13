@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -48,22 +49,51 @@ public class UpdatesTests {
         List<ReminderOccurrence> list = new ArrayList<>();
         list.add(reminderOccurrence);
         reminder.setOccurrences(list);
+        reminderRepository.save(reminder);
     }
 
-//    @Test
-//    public void delete() {
-//
-//    }
-//
-//    @Test
-//    public void view() {
-//
-//    }
-//
-//    @Test
-//    public void complete() {
-//
-//    }
+    @Test
+    public void delete() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("delete");
+        context.setId(this.reminder.getId());
+        interaction.setContext(context);
+        interaction.setUserId("FOO");
+        interaction.setContext(context);
+        UpdateResponse updateResponse = updates.delete(interaction);
+        assertEquals(updateResponse.getUpdate().getMessage(), "Ok! I’ve deleted the reminder “" + reminder.getMessage() + "”.");
+
+    }
+
+    @Test
+    @Transactional
+    public void view() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("view");
+        context.setId(this.reminder.getId());
+        interaction.setContext(context);
+        interaction.setUserId("FOO");
+        interaction.setContext(context);
+        UpdateResponse updateResponse = updates.view(interaction);
+        assertNotNull(updateResponse.getEphemeralText());
+
+    }
+
+    @Test
+    public void complete() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("view");
+        context.setId(this.reminder.getId());
+        interaction.setContext(context);
+        interaction.setUserId("FOO");
+        interaction.setContext(context);
+        UpdateResponse updateResponse = updates.complete(interaction);
+        assertEquals(updateResponse.getUpdate().getMessage(), "Ok! I’ve marked the reminder  “" + reminder.getMessage() + "” as complete.");
+
+    }
 
     @Test
     @Transactional

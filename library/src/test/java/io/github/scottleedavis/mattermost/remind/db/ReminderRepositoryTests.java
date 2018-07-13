@@ -21,10 +21,10 @@ import static org.junit.Assert.assertTrue;
 public class ReminderRepositoryTests {
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     @Resource
-    ReminderOccurrenceRepository reminderOccurrenceRepository;
+    private ReminderOccurrenceRepository reminderOccurrenceRepository;
 
     @Before
     public void setUp() {

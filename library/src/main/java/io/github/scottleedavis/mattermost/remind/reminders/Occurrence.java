@@ -202,7 +202,7 @@ public class Occurrence {
             time = Arrays.stream(chronoUnit.substring(0, chronoUnit.length() - amPmOffset).split(":"))
                     .mapToInt(Integer::parseInt).toArray();
 
-            time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
             if (recurrentDates.size() > 0) {
                 return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
             }

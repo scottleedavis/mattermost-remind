@@ -23,6 +23,86 @@ public class Formatter {
     @Autowired
     private Occurrence occurrence;
 
+    private static String[] suffixes =
+            {"0th", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th",
+                    "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th",
+                    "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th",
+                    "30th", "31st"};
+
+    private static HashMap<String, Integer> numbers = new HashMap<String, Integer>();
+    private static HashMap<String, Integer> onumbers = new HashMap<String, Integer>();
+    private static HashMap<String, Integer> tnumbers = new HashMap<String, Integer>();
+
+    static {
+        numbers.put("zero", 0);
+        numbers.put("one", 1);
+        numbers.put("two", 2);
+        numbers.put("three", 3);
+        numbers.put("four", 4);
+        numbers.put("five", 5);
+        numbers.put("six", 6);
+        numbers.put("seven", 7);
+        numbers.put("eight", 8);
+        numbers.put("nine", 9);
+        numbers.put("ten", 10);
+        numbers.put("eleven", 11);
+        numbers.put("twelve", 12);
+        numbers.put("thirteen", 13);
+        numbers.put("fourteen", 14);
+        numbers.put("fifteen", 15);
+        numbers.put("sixteen", 16);
+        numbers.put("seventeen", 17);
+        numbers.put("eighteen", 18);
+        numbers.put("nineteen", 19);
+
+        tnumbers.put("twenty", 20);
+        tnumbers.put("thirty", 30);
+        tnumbers.put("fourty", 40);
+        tnumbers.put("fifty", 50);
+        tnumbers.put("sixty", 60);
+        tnumbers.put("seventy", 70);
+        tnumbers.put("eighty", 80);
+        tnumbers.put("ninety", 90);
+
+        onumbers.put("hundred", 100);
+        onumbers.put("thousand", 1000);
+        onumbers.put("million", 1000000);
+        onumbers.put("billion", 1000000000);
+
+        numbers.put("first", 1);
+        numbers.put("second", 2);
+        numbers.put("third", 3);
+        numbers.put("fourth", 4);
+        numbers.put("fifth", 5);
+        numbers.put("sixth", 6);
+        numbers.put("seventh", 7);
+        numbers.put("eighth", 8);
+        numbers.put("nineth", 9);
+        numbers.put("tenth", 10);
+        numbers.put("eleventh", 11);
+        numbers.put("twelveth", 12);
+        numbers.put("thirteenth", 13);
+        numbers.put("fourteenth", 14);
+        numbers.put("fifteenth", 15);
+        numbers.put("sixteenth", 16);
+        numbers.put("seventeenth", 17);
+        numbers.put("eighteenth", 18);
+        numbers.put("nineteenth", 19);
+        tnumbers.put("twenteth", 20);
+        tnumbers.put("twentyfirst", 21);
+        tnumbers.put("twentysecond", 22);
+        tnumbers.put("twentythird", 23);
+        tnumbers.put("twentyfourth", 24);
+        tnumbers.put("twentyfifth", 25);
+        tnumbers.put("twentysixth", 26);
+        tnumbers.put("twentyseventh", 27);
+        tnumbers.put("twentyeight", 28);
+        tnumbers.put("twentynineth", 29);
+        tnumbers.put("thirteth", 30);
+        tnumbers.put("thirtyfirst", 31);
+
+    }
+
     public String upcomingReminder(List<ReminderOccurrence> occurrences) {
         if (occurrences.size() > 1)
             return "NOT YET IMPLMENTED (occurences > 1";
@@ -202,7 +282,7 @@ public class Formatter {
             String amPm = text.substring(text.length() - amPmOffset).trim();
             int[] time = Arrays.stream(text.substring(0, text.length() - amPmOffset).split(":"))
                     .mapToInt(Integer::parseInt).toArray();
-            time[0] = amPm.toLowerCase().equals("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
+            time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
             return LocalTime.of(time[0], time[1]).toString();
         } else if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9]", // 12:30
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {
@@ -468,86 +548,6 @@ public class Formatter {
             throw new FormatterException("couldn't format number");
 
         return sum;
-    }
-
-    private static String[] suffixes =
-            {"0th", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th",
-                    "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th",
-                    "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th",
-                    "30th", "31st"};
-
-    private static HashMap<String, Integer> numbers = new HashMap<String, Integer>();
-    private static HashMap<String, Integer> onumbers = new HashMap<String, Integer>();
-    private static HashMap<String, Integer> tnumbers = new HashMap<String, Integer>();
-
-    static {
-        numbers.put("zero", 0);
-        numbers.put("one", 1);
-        numbers.put("two", 2);
-        numbers.put("three", 3);
-        numbers.put("four", 4);
-        numbers.put("five", 5);
-        numbers.put("six", 6);
-        numbers.put("seven", 7);
-        numbers.put("eight", 8);
-        numbers.put("nine", 9);
-        numbers.put("ten", 10);
-        numbers.put("eleven", 11);
-        numbers.put("twelve", 12);
-        numbers.put("thirteen", 13);
-        numbers.put("fourteen", 14);
-        numbers.put("fifteen", 15);
-        numbers.put("sixteen", 16);
-        numbers.put("seventeen", 17);
-        numbers.put("eighteen", 18);
-        numbers.put("nineteen", 19);
-
-        tnumbers.put("twenty", 20);
-        tnumbers.put("thirty", 30);
-        tnumbers.put("fourty", 40);
-        tnumbers.put("fifty", 50);
-        tnumbers.put("sixty", 60);
-        tnumbers.put("seventy", 70);
-        tnumbers.put("eighty", 80);
-        tnumbers.put("ninety", 90);
-
-        onumbers.put("hundred", 100);
-        onumbers.put("thousand", 1000);
-        onumbers.put("million", 1000000);
-        onumbers.put("billion", 1000000000);
-
-        numbers.put("first", 1);
-        numbers.put("second", 2);
-        numbers.put("third", 3);
-        numbers.put("fourth", 4);
-        numbers.put("fifth", 5);
-        numbers.put("sixth", 6);
-        numbers.put("seventh", 7);
-        numbers.put("eighth", 8);
-        numbers.put("nineth", 9);
-        numbers.put("tenth", 10);
-        numbers.put("eleventh", 11);
-        numbers.put("twelveth", 12);
-        numbers.put("thirteenth", 13);
-        numbers.put("fourteenth", 14);
-        numbers.put("fifteenth", 15);
-        numbers.put("sixteenth", 16);
-        numbers.put("seventeenth", 17);
-        numbers.put("eighteenth", 18);
-        numbers.put("nineteenth", 19);
-        tnumbers.put("twenteth", 20);
-        tnumbers.put("twentyfirst", 21);
-        tnumbers.put("twentysecond", 22);
-        tnumbers.put("twentythird", 23);
-        tnumbers.put("twentyfourth", 24);
-        tnumbers.put("twentyfifth", 25);
-        tnumbers.put("twentysixth", 26);
-        tnumbers.put("twentyseventh", 27);
-        tnumbers.put("twentyeight", 28);
-        tnumbers.put("twentynineth", 29);
-        tnumbers.put("thirteth", 30);
-        tnumbers.put("thirtyfirst", 31);
-
     }
 
 }

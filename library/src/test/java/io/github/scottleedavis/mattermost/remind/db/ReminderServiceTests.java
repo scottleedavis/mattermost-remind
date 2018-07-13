@@ -28,13 +28,13 @@ public class ReminderServiceTests {
     private Reminder reminder;
 
     @Autowired
-    ReminderService reminderService;
+    private ReminderService reminderService;
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     @Resource
-    ReminderOccurrenceRepository reminderOccurrenceRepository;
+    private ReminderOccurrenceRepository reminderOccurrenceRepository;
 
     @Before
     public void setUp() {

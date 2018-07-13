@@ -2,9 +2,9 @@ package io.github.scottleedavis.mattermost.remind.messages;
 
 public class ParsedRequest {
 
-    String target;
-    String message;
-    String when;
+    private String target;
+    private String message;
+    private String when;
 
     public String getTarget() {
         return target;

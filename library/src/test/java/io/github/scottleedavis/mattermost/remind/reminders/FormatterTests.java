@@ -84,21 +84,32 @@ public class FormatterTests {
 
     @Test
     public void daySuffix() {
-
+        assertEquals(formatter.daySuffix(1), "1st");
     }
 
     @Test
-    public void normalizeTime() {
-
+    public void normalizeTime() throws Exception {
+        assertEquals(formatter.normalizeTime("noon"), "12:00");
+        assertEquals(formatter.normalizeTime("midnight"), "00:00");
+        assertEquals(formatter.normalizeTime("three"), "03:00");
+        assertEquals(formatter.normalizeTime("22"), "22:00");
+        assertEquals(formatter.normalizeTime("12:30 pm"), "12:30");
     }
 
     @Test
-    public void normalizeDate() {
-
+    public void normalizeDate() throws Exception {
+        assertEquals(formatter.normalizeDate("day"), "DAY");
+        assertEquals(formatter.normalizeDate("everyday"), "EVERYDAY");
+        assertEquals(formatter.normalizeDate("tomorrow"), "TOMORROW");
+        assertEquals(formatter.normalizeDate("wednES"), "WEDNESDAY");
+        assertEquals(formatter.normalizeDate("jan 12"), "JANUARY 12 2018");
+        assertEquals(formatter.normalizeDate("4/4/18"), "APRIL 4 2019");
     }
 
     @Test
-    public void wordToNumber() {
-
+    public void wordToNumber() throws Exception {
+        assertTrue(formatter.wordToNumber("first") == 1);
+        assertTrue(formatter.wordToNumber("third") == 3);
+        assertTrue(formatter.wordToNumber("fourteenth") == 14);
     }
 }

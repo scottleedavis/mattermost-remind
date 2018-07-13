@@ -127,7 +127,7 @@ public class Formatter {
 
         String message = parsedRequest.getMessage();
         boolean useTo = false;
-        if (message.startsWith("to ") ) {
+        if (message.startsWith("to ")) {
             message = message.substring(3);
             useTo = true;
         }
@@ -242,9 +242,9 @@ public class Formatter {
 
         if (text.equalsIgnoreCase("day"))
             return text.toUpperCase();
-        else if (text.equalsIgnoreCase("everyday") )
+        else if (text.equalsIgnoreCase("everyday"))
             return text.toUpperCase();
-        else if (text.equalsIgnoreCase("tomorrow") )
+        else if (text.equalsIgnoreCase("tomorrow"))
             return text.toUpperCase();
         else if (Pattern.compile("^((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
                 Pattern.CASE_INSENSITIVE).matcher(text).find()) {

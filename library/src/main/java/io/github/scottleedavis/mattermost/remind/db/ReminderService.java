@@ -78,9 +78,7 @@ public class ReminderService {
         List<LocalDateTime> occurrences = occurrence.calculate(reminderOccurrence.getRepeat());
 
         LocalDateTime newOccurrence = occurrences.stream()
-                .filter(o -> {
-                    return o.getDayOfWeek() == reminderOccurrence.getOccurrence().getDayOfWeek();
-                })
+                .filter(o -> o.toLocalTime().equals(reminderOccurrence.getOccurrence().toLocalTime()))
                 .findFirst().orElse(null);
 
         if (newOccurrence != null) {
@@ -89,7 +87,7 @@ public class ReminderService {
         } else {
             newOccurrence = occurrences.stream()
                     .filter(o -> o.getDayOfYear() == reminderOccurrence.getOccurrence().getDayOfYear())
-                    .findFirst().orElseThrow(() -> new ReminderException("No matching occurences to reschedule"));
+                    .findFirst().orElseThrow(() -> new ReminderException("No matching occurrences to reschedule"));
             reminderOccurrence.setOccurrence(newOccurrence);
             reminderOccurrenceRepository.save(reminderOccurrence);
         }

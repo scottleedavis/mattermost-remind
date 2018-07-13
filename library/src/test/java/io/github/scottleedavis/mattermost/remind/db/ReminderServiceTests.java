@@ -132,7 +132,7 @@ public class ReminderServiceTests {
     public void reschedule() throws Exception {
 
         ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
-        reminderOccurrence.setOccurrence(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).minusWeeks(1l).atStartOfDay().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence.setOccurrence(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).minusWeeks(1l).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
         reminderOccurrence.setReminder(reminder);
         reminderOccurrence.setRepeat("every wednesday");
         LocalDateTime testTime = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS);
@@ -146,10 +146,10 @@ public class ReminderServiceTests {
     public void rescheduleEveryOther() throws Exception {
 
         ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
-        reminderOccurrence.setOccurrence(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).minusWeeks(1l).atStartOfDay().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence.setOccurrence(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).minusWeeks(1l).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
         reminderOccurrence.setReminder(reminder);
         reminderOccurrence.setRepeat("every other wednesday");
-        LocalDateTime testTime = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS);
+        LocalDateTime testTime = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).plusWeeks(1).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS);
         reminderService.reschedule(reminderOccurrence);
         assertEquals(reminderOccurrence.getOccurrence(), testTime);
 

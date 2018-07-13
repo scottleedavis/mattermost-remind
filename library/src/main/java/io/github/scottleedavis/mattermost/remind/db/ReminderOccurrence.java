@@ -16,6 +16,7 @@ public class ReminderOccurrence {
     private Reminder reminder;
     private LocalDateTime occurrence;
     private String repeat;
+    private boolean snoozed;
 
     public Long getId() {
         return id;
@@ -47,5 +48,13 @@ public class ReminderOccurrence {
 
     public void setRepeat(String repeat) {
         this.repeat = repeat;
+    }
+
+    public boolean isSnoozed() {
+        return snoozed;
+    }
+
+    public void setSnoozed(boolean snoozed) {
+        this.snoozed = snoozed;
     }
 }

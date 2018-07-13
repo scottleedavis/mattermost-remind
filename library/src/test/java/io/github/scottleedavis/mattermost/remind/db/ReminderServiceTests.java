@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -48,7 +48,10 @@ public class ReminderServiceTests {
         ReminderOccurrence reminderOccurrence2 = new ReminderOccurrence();
         reminderOccurrence2.setOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         reminderOccurrence2.setReminder(reminder);
-        reminder.setOccurrences(Arrays.asList(reminderOccurrence, reminderOccurrence2));
+        List<ReminderOccurrence> list = new ArrayList<>();
+        list.add(reminderOccurrence);
+        list.add(reminderOccurrence2);
+        reminder.setOccurrences(list);
         reminderRepository.save(reminder);
         this.reminder = reminder;
     }

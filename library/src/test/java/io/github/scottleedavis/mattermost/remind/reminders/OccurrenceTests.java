@@ -380,7 +380,7 @@ public class OccurrenceTests {
 
         when = "every other Wednesday";
         testDate = occurrence.calculate(when).get(0);
-        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).atTime(9, 0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY)).plusWeeks(1).atTime(9, 0);
         assertEquals(testDate, checkDate);
 
         when = "every day at 11:32am";
@@ -425,10 +425,10 @@ public class OccurrenceTests {
 
         when = "every other friday and saturday";
         testDate = occurrence.calculate(when).get(0);
-        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(9, 0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).plusWeeks(1).atTime(9, 0);
         assertEquals(testDate, checkDate);
         testDate = occurrence.calculate(when).get(1);
-        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SATURDAY)).atTime(9, 0);
+        checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SATURDAY)).plusWeeks(1).atTime(9, 0);
         assertEquals(testDate, checkDate);
 
         when = "every monday and wednesday at 1:39am";

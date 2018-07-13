@@ -1,12 +1,13 @@
 package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.messages.Response;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

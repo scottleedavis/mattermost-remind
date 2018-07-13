@@ -72,17 +72,13 @@ public class ReminderService {
         reminderOccurrence.setReminder(reminder);
         reminderOccurrenceRepository.save(reminderOccurrence);
     }
-
-    //todo currently fails with 'every other day at <time>
-    //todo test all other scenarios
+    
     public void reschedule(ReminderOccurrence reminderOccurrence) throws Exception {
 
         List<LocalDateTime> occurrences = occurrence.calculate(reminderOccurrence.getRepeat());
 
         LocalDateTime newOccurrence = occurrences.stream()
-                .filter(o -> {
-                    return o.getDayOfWeek() == reminderOccurrence.getOccurrence().getDayOfWeek();
-                })
+                .filter(o -> o.toLocalTime().equals(reminderOccurrence.getOccurrence().toLocalTime()))
                 .findFirst().orElse(null);
 
         if (newOccurrence != null) {
@@ -91,7 +87,7 @@ public class ReminderService {
         } else {
             newOccurrence = occurrences.stream()
                     .filter(o -> o.getDayOfYear() == reminderOccurrence.getOccurrence().getDayOfYear())
-                    .findFirst().orElseThrow(() -> new ReminderException("No matching occurences to reschedule"));
+                    .findFirst().orElseThrow(() -> new ReminderException("No matching occurrences to reschedule"));
             reminderOccurrence.setOccurrence(newOccurrence);
             reminderOccurrenceRepository.save(reminderOccurrence);
         }

@@ -311,7 +311,8 @@ public class Occurrence {
             throw new OccurrenceException("unrecognized time mark.");
 
         String chronoUnit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" "));
-        chronoUnit = chronoUnit.contains("other") ? chronoUnit.split("other")[1].trim() : chronoUnit;
+        boolean everyOther = chronoUnit.contains("other");
+        chronoUnit = everyOther ? chronoUnit.split("other")[1].trim() : chronoUnit;
         String[] dateTimeSplit = chronoUnit.split(" at ");
         final String time = dateTimeSplit.length == 1 ? DEFAULT_TIME : dateTimeSplit[1];
         List<LocalDateTime> ldts = new ArrayList<>();
@@ -321,10 +322,13 @@ public class Occurrence {
                 String timeUnit = formatter.normalizeTime(time);
                 String dateUnit = formatter.normalizeDate(chrono);
                 LocalDate ld;
+                LocalDateTime ldt;
                 switch (dateUnit) {
                     case "DAY":
-                        ld = LocalDate.now().plusDays(1);
+                        ld = LocalDate.now().plusDays(everyOther ? 2 : 1);
                         dateUnit = ld.getMonth().name().toUpperCase() + " " + ld.getDayOfMonth() + " " + ld.getYear();
+                        ldt = LocalDateTime.parse(dateUnit + " " + timeUnit, new DateTimeFormatterBuilder()
+                                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
                         break;
                     case "MONDAY":
                     case "TUESDAY":
@@ -333,15 +337,18 @@ public class Occurrence {
                     case "FRIDAY":
                     case "SATURDAY":
                     case "SUNDAY":
-                        ld = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(dateUnit)));
+                        ld = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(dateUnit))).plusWeeks(everyOther ? 1 : 0);
                         dateUnit = ld.getMonth().name().toUpperCase() + " " + ld.getDayOfMonth() + " " + ld.getYear();
+                        ldt = LocalDateTime.parse(dateUnit + " " + timeUnit, new DateTimeFormatterBuilder()
+                                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
                         break;
                     default:
+                        ldt = LocalDateTime.parse(dateUnit + " " + timeUnit, new DateTimeFormatterBuilder()
+                                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter()).plusYears(everyOther ? 1 : 0);
                         break;
                 }
 
-                ldts.add(LocalDateTime.parse(dateUnit + " " + timeUnit, new DateTimeFormatterBuilder()
-                        .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter()));
+                ldts.add(ldt);
 
             } catch (Exception e) {
                 caughtExceptions.add(e);
@@ -362,9 +369,9 @@ public class Occurrence {
 
         switch (dateUnit) {
             case "TOMORROW":
-                return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString() + " at "+timeUnit);
+                return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString() + " at " + timeUnit);
             case "EVERYDAY":
-                return every("every day at "+ timeUnit);
+                return every("every day at " + timeUnit);
             case "MONDAYS":
             case "TUESDAYS":
             case "WEDNESDAYS":
@@ -372,7 +379,7 @@ public class Occurrence {
             case "FRIDAYS":
             case "SATURDAYS":
             case "SUNDAYS":
-                return every("every " + dateUnit.substring(0, when.length() - 1) + " at "+timeUnit);
+                return every("every " + dateUnit.substring(0, when.length() - 1) + " at " + timeUnit);
             case "MONDAY":
             case "TUESDAY":
             case "WEDNESDAY":
@@ -381,7 +388,7 @@ public class Occurrence {
             case "SATURDAY":
             case "SUNDAY":
             default:
-                return on("on " + dateUnit + " at "+timeUnit);
+                return on("on " + dateUnit + " at " + timeUnit);
 
         }
 

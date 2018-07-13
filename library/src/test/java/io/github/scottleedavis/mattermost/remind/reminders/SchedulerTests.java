@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class SchedulerTests {
 
     @Autowired
-    Scheduler scheduler;
+    private Scheduler scheduler;
 
     @Test
     public void setReminder() {

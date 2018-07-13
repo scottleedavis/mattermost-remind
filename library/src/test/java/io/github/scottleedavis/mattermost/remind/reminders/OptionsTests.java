@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,7 +29,8 @@ public class OptionsTests {
     @Test
     public void setActions() {
         List<Action> actions = options.setActions(1L);
-        actions.stream().forEach(action -> assertNotNull(action));
+        assertTrue(actions.size() > 0);
+        actions.forEach(action -> assertNotNull(action));
     }
 
     @Test

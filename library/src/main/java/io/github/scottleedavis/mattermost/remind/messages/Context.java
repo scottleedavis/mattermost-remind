@@ -6,8 +6,17 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Context {
 
-    private String action;
     private Long id;
+    private String action;
+    private String argument;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getAction() {
         return action;
@@ -17,11 +26,11 @@ public class Context {
         this.action = action;
     }
 
-    public Long getId() {
-        return id;
+    public String getArgument() {
+        return argument;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setArgument(String argument) {
+        this.argument = argument;
     }
 }

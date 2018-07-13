@@ -50,7 +50,13 @@ public class Options {
     }
 
     public List<Action> finishedActions(Long id) {
-        return Arrays.asList(complete(id), delete(id), snooze(id));
+        return Arrays.asList(complete(id),
+                delete(id),
+                snooze(id, ArgumentType.TWENTY_MINUTES),
+                snooze(id, ArgumentType.ONE_HOUR),
+                snooze(id, ArgumentType.THREE_HOURS),
+                snooze(id, ArgumentType.TOMORROW_AT_9AM),
+                snooze(id, ArgumentType.NEXT_WEEK));
     }
 
     public String listReminders(String userName) {
@@ -107,16 +113,17 @@ public class Options {
         return action;
     }
 
-    private Action snooze(Long id) {
+    private Action snooze(Long id, String argument) {
         Context context = new Context();
         context.setAction("snooze");
+        context.setArgument(argument);
         context.setId(id);
         Integration integration = new Integration();
         integration.setContext(context);
         integration.setUrl(appUrl + "snooze");
         Action action = new Action();
         action.setIntegration(integration);
-        action.setName("Snooze 20 minutes");
+        action.setName("Snooze " + argument);
         return action;
     }
 }

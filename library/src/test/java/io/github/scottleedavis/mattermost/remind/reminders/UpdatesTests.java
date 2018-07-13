@@ -30,7 +30,7 @@ public class UpdatesTests {
     private Updates updates;
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     private Reminder reminder;
 
@@ -50,20 +50,20 @@ public class UpdatesTests {
         reminder.setOccurrences(list);
     }
 
-    @Test
-    public void delete() {
-
-    }
-
-    @Test
-    public void view() {
-
-    }
-
-    @Test
-    public void complete() {
-
-    }
+//    @Test
+//    public void delete() {
+//
+//    }
+//
+//    @Test
+//    public void view() {
+//
+//    }
+//
+//    @Test
+//    public void complete() {
+//
+//    }
 
     @Test
     @Transactional

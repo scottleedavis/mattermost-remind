@@ -66,6 +66,7 @@ public class Updates {
                 break;
             default:
                 update.setMessage("Whoops!   Something went wrong.");
+                break;
         }
         updateResponse.setUpdate(update);
         switch (interaction.getContext().getArgument()) {
@@ -86,6 +87,7 @@ public class Updates {
                 break;
             default:
                 update.setMessage("Whoops!   Something went wrong.");
+                break;
         }
         return updateResponse;
     }

@@ -43,6 +43,6 @@ public class OptionsTests {
         assertTrue(actions.size() == 7);
 
         actions = options.finishedActions(1L, true);
-        assertTrue( actions.size() == 5);
+        assertTrue(actions.size() == 5);
     }
 }

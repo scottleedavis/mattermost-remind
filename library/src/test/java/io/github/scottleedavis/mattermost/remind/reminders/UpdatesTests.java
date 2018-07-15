@@ -7,7 +7,6 @@ import io.github.scottleedavis.mattermost.remind.db.ReminderRepository;
 import io.github.scottleedavis.mattermost.remind.messages.Context;
 import io.github.scottleedavis.mattermost.remind.messages.Interaction;
 import io.github.scottleedavis.mattermost.remind.messages.UpdateResponse;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

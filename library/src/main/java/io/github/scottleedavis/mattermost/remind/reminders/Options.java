@@ -45,7 +45,7 @@ public class Options {
     }
 
     public List<Action> finishedActions(Long id, boolean isRepeated) {
-        if( isRepeated )
+        if (isRepeated)
             return Arrays.asList(
                     snooze(id, ArgumentType.TWENTY_MINUTES),
                     snooze(id, ArgumentType.ONE_HOUR),

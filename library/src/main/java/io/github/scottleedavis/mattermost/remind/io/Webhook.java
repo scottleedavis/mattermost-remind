@@ -33,7 +33,7 @@ public class Webhook {
         response.setUsername("mattermost-remind");
         response.setResponseType(Response.ResponseType.EPHEMERAL);
         Attachment attachment = new Attachment();
-        attachment.setActions(options.finishedActions(reminderOccurrence.getId(),reminderOccurrence.getRepeat() != null ));
+        attachment.setActions(options.finishedActions(reminderOccurrence.getId(), reminderOccurrence.getRepeat() != null));
         attachment.setText("You asked me to remind you \"" + reminderOccurrence.getReminder().getMessage() + "\".");
         response.setAttachments(Arrays.asList(attachment));
 

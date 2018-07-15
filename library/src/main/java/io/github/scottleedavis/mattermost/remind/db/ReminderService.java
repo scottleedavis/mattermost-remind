@@ -1,6 +1,7 @@
 package io.github.scottleedavis.mattermost.remind.db;
 
 import io.github.scottleedavis.mattermost.remind.exceptions.ReminderException;
+import io.github.scottleedavis.mattermost.remind.exceptions.ReminderServiceException;
 import io.github.scottleedavis.mattermost.remind.messages.Interaction;
 import io.github.scottleedavis.mattermost.remind.messages.ParsedRequest;
 import io.github.scottleedavis.mattermost.remind.reminders.Occurrence;
@@ -30,13 +31,18 @@ public class ReminderService {
         return reminderOccurrenceRepository.findAllByOccurrence(occurrence);
     }
 
+    public List<ReminderOccurrence> findBySnoozed(LocalDateTime snoozed) {
+        return reminderOccurrenceRepository.findAllBySnoozed(snoozed);
+    }
+
     public List<Reminder> findByUsername(String userName) {
         return reminderRepository.findByUserName(userName);
     }
 
-    public Reminder findByInteraction(Interaction interaction) throws Exception {
-        return reminderRepository.findById(interaction.getContext().getId())
-                .orElseThrow(() -> new Exception("No reminder found with that id"));
+    public ReminderOccurrence findByInteraction(Interaction interaction) throws Exception {
+        return reminderOccurrenceRepository.findById(interaction.getContext().getId())
+                .orElseThrow(() -> new ReminderServiceException("No occurrence found with that id."));
+
     }
 
     public Reminder schedule(String userName, ParsedRequest parsedRequest) throws Exception {
@@ -65,11 +71,8 @@ public class ReminderService {
         reminderRepository.save(reminder);
     }
 
-    public void snooze(Reminder reminder, LocalDateTime ldt) {
-        ReminderOccurrence reminderOccurrence = reminder.getOccurrences().get(0);
-        reminderOccurrence.setOccurrence(ldt);
-        reminderOccurrence.setReminder(reminder);
-        reminderOccurrence.setSnoozed(true);
+    public void snooze(ReminderOccurrence reminderOccurrence, LocalDateTime ldt) {
+        reminderOccurrence.setSnoozed(ldt);
         reminderOccurrenceRepository.save(reminderOccurrence);
     }
 

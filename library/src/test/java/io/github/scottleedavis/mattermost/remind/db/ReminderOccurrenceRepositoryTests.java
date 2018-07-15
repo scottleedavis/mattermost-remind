@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -32,6 +33,19 @@ public class ReminderOccurrenceRepositoryTests {
         reminder.setMessage("foo to the bar");
         reminder.setTarget("@foo");
         reminder.setUserName("@foo");
+        ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
+        reminderOccurrence.setOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence.setReminder(reminder);
+        reminderOccurrenceRepository.save(reminderOccurrence);
+        ReminderOccurrence reminderOccurrence2 = new ReminderOccurrence();
+        reminderOccurrence2.setOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence2.setSnoozed(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence2.setReminder(reminder);
+        reminderOccurrenceRepository.save(reminderOccurrence2);
+        List<ReminderOccurrence> list = new ArrayList<>();
+        list.add(reminderOccurrence);
+        list.add(reminderOccurrence2);
+        reminder.setOccurrences(list);
         reminderRepository.save(reminder);
         this.reminder = reminder;
     }
@@ -39,16 +53,25 @@ public class ReminderOccurrenceRepositoryTests {
     @Test
     @Transactional
     public void findAllByOccurrence() {
-        ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
-        reminderOccurrence.setOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        reminderOccurrence.setReminder(reminder);
-        reminderOccurrenceRepository.save(reminderOccurrence);
-        ReminderOccurrence reminderOccurrence2 = new ReminderOccurrence();
-        reminderOccurrence2.setOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        reminderOccurrence2.setReminder(reminder);
-        reminderOccurrenceRepository.save(reminderOccurrence2);
+
         List<ReminderOccurrence> reminderOccurrences = reminderOccurrenceRepository.findAllByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
         assertTrue(reminderOccurrences.size() == 2);
+    }
+
+    @Test
+    @Transactional
+    public void findAllByReminder() {
+        List<ReminderOccurrence> reminderOccurrences = reminderOccurrenceRepository.findAllByReminder(this.reminder);
+
+        assertTrue(reminderOccurrences.size() == 2);
+    }
+
+    @Test
+    @Transactional
+    public void findAllBySnoozed() {
+        List<ReminderOccurrence> reminderOccurrences = reminderOccurrenceRepository.findAllBySnoozed(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
+        assertTrue(reminderOccurrences.size() == 1);
     }
 }

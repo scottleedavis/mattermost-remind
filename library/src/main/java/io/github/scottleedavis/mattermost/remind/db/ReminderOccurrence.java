@@ -15,8 +15,8 @@ public class ReminderOccurrence {
     @JoinColumn(name = "reminder_id", nullable = false)
     private Reminder reminder;
     private LocalDateTime occurrence;
+    private LocalDateTime snoozed;
     private String repeat;
-    private boolean snoozed;
 
     public Long getId() {
         return id;
@@ -50,11 +50,11 @@ public class ReminderOccurrence {
         this.repeat = repeat;
     }
 
-    public boolean isSnoozed() {
+    public LocalDateTime getSnoozed() {
         return snoozed;
     }
 
-    public void setSnoozed(boolean snoozed) {
+    public void setSnoozed(LocalDateTime snoozed) {
         this.snoozed = snoozed;
     }
 }

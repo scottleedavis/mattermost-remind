@@ -1,5 +1,6 @@
 package io.github.scottleedavis.mattermost.remind.io;
 
+import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.messages.Attachment;
 import io.github.scottleedavis.mattermost.remind.messages.Response;
 import io.github.scottleedavis.mattermost.remind.reminders.Options;
@@ -25,15 +26,15 @@ public class Webhook {
     @Autowired
     private Options options;
 
-    public void invoke(String target, String message, Long id) throws Exception {
+    public void invoke(ReminderOccurrence reminderOccurrence) throws Exception {
 
         Response response = new Response();
-        response.setChannel(target);
+        response.setChannel(reminderOccurrence.getReminder().getTarget());
         response.setUsername("mattermost-remind");
         response.setResponseType(Response.ResponseType.EPHEMERAL);
         Attachment attachment = new Attachment();
-        attachment.setActions(options.finishedActions(id));
-        attachment.setText("You asked me to remind you \"" + message + "\".");
+        attachment.setActions(options.finishedActions(reminderOccurrence.getId(),reminderOccurrence.getRepeat() != null ));
+        attachment.setText("You asked me to remind you \"" + reminderOccurrence.getReminder().getMessage() + "\".");
         response.setAttachments(Arrays.asList(attachment));
 
         RestTemplate restTemplate = new RestTemplate();

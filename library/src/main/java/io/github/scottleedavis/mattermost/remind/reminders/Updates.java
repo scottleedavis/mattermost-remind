@@ -1,6 +1,7 @@
 package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
+import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.db.ReminderService;
 import io.github.scottleedavis.mattermost.remind.messages.Interaction;
 import io.github.scottleedavis.mattermost.remind.messages.Update;
@@ -24,7 +25,7 @@ public class Updates {
     private ReminderService reminderService;
 
     public UpdateResponse delete(Interaction interaction) throws Exception {
-        Reminder reminder = reminderService.findByInteraction(interaction);
+        Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
         update.setMessage("Ok! I’ve deleted the reminder “" + reminder.getMessage() + "”.");
@@ -34,14 +35,14 @@ public class Updates {
     }
 
     public UpdateResponse view(Interaction interaction) throws Exception {
-        Reminder reminder = reminderService.findByInteraction(interaction);
+        Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         updateResponse.setEphemeralText(options.listReminders(reminder.getUserName()));
         return updateResponse;
     }
 
     public UpdateResponse complete(Interaction interaction) throws Exception {
-        Reminder reminder = reminderService.findByInteraction(interaction);
+        Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
         update.setMessage("Ok! I’ve marked the reminder  “" + reminder.getMessage() + "” as complete.");
@@ -51,7 +52,8 @@ public class Updates {
     }
 
     public UpdateResponse snooze(Interaction interaction) throws Exception {
-        Reminder reminder = reminderService.findByInteraction(interaction);
+        ReminderOccurrence reminderOccurrence = reminderService.findByInteraction(interaction);
+        Reminder reminder = reminderOccurrence.getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
         switch (interaction.getContext().getArgument()) {
@@ -71,19 +73,19 @@ public class Updates {
         updateResponse.setUpdate(update);
         switch (interaction.getContext().getArgument()) {
             case ArgumentType.TWENTY_MINUTES:
-                reminderService.snooze(reminder, LocalDateTime.now().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
+                reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
                 break;
             case ArgumentType.ONE_HOUR:
-                reminderService.snooze(reminder, LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS));
+                reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS));
                 break;
             case ArgumentType.THREE_HOURS:
-                reminderService.snooze(reminder, LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS));
+                reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS));
                 break;
             case ArgumentType.TOMORROW_AT_9AM:
-                reminderService.snooze(reminder, LocalDate.now().plusDays(1).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
+                reminderService.snooze(reminderOccurrence, LocalDate.now().plusDays(1).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
                 break;
             case ArgumentType.NEXT_WEEK:
-                reminderService.snooze(reminder, LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
+                reminderService.snooze(reminderOccurrence, LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
                 break;
             default:
                 update.setMessage("Whoops!   Something went wrong.");

@@ -36,4 +36,13 @@ public class OptionsTests {
         String response = options.listReminders("FOO");
         assertEquals(response, "I cannot find any reminders for you. Type `/remind` to set one.");
     }
+
+    @Test
+    public void finishedActions() {
+        List<Action> actions = options.finishedActions(1L, false);
+        assertTrue(actions.size() == 7);
+
+        actions = options.finishedActions(1L, true);
+        assertTrue(actions.size() == 5);
+    }
 }

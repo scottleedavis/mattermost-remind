@@ -1,7 +1,6 @@
 package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
-import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.db.ReminderService;
 import io.github.scottleedavis.mattermost.remind.io.Webhook;
 import io.github.scottleedavis.mattermost.remind.messages.Attachment;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class Scheduler {
@@ -83,17 +81,28 @@ public class Scheduler {
     @Scheduled(fixedRate = 1000)
     public void runSchedule() {
 
-        List<ReminderOccurrence> reminderOccurrences = reminderService.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        reminderOccurrences.forEach(occurrence -> {
-            logger.info("Sending reminder {} to {} ", occurrence.getId(), occurrence.getReminder().getTarget());
+        LocalDateTime ldt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+
+        reminderService.findByOccurrence(ldt).forEach(reminderOccurrence -> {
+            logger.info("Sending reminder {} to {} ", reminderOccurrence.getId(), reminderOccurrence.getReminder().getTarget());
             try {
-                webhook.invoke(occurrence.getReminder().getTarget(), occurrence.getReminder().getMessage(), occurrence.getReminder().getId());
-                if (occurrence.getRepeat() != null)
-                    reminderService.reschedule(occurrence);
+                webhook.invoke(reminderOccurrence);
+                if (reminderOccurrence.getRepeat() != null)
+                    reminderService.reschedule(reminderOccurrence);
             } catch (Exception e) {
                 logger.error("Not able to send reminder {}", e);
             }
         });
+
+        reminderService.findBySnoozed(ldt).forEach(reminderOccurrence -> {
+            logger.info("Sending snoozed reminder {} to {} ", reminderOccurrence.getId(), reminderOccurrence.getReminder().getTarget());
+            try {
+                webhook.invoke(reminderOccurrence);
+            } catch (Exception e) {
+                logger.error("Not able to send snoozed reminder {}", e);
+            }
+        });
+
     }
 
 }

@@ -2,6 +2,7 @@ package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
+import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrenceRepository;
 import io.github.scottleedavis.mattermost.remind.db.ReminderRepository;
 import io.github.scottleedavis.mattermost.remind.messages.Context;
 import io.github.scottleedavis.mattermost.remind.messages.Interaction;
@@ -33,7 +34,12 @@ public class UpdatesTests {
     @Resource
     private ReminderRepository reminderRepository;
 
+    @Resource
+    private ReminderOccurrenceRepository reminderOccurrenceRepository;
+
     private Reminder reminder;
+
+    private ReminderOccurrence reminderOccurrence;
 
     @Before
     public void setUp() {
@@ -50,6 +56,7 @@ public class UpdatesTests {
         list.add(reminderOccurrence);
         reminder.setOccurrences(list);
         reminderRepository.save(reminder);
+        this.reminderOccurrence = reminderOccurrenceRepository.findAllByReminder(this.reminder).get(0);
     }
 
     @Test
@@ -57,7 +64,7 @@ public class UpdatesTests {
         Interaction interaction = new Interaction();
         Context context = new Context();
         context.setAction("delete");
-        context.setId(this.reminder.getId());
+        context.setId(this.reminderOccurrence.getId());
         interaction.setContext(context);
         interaction.setUserId("FOO");
         interaction.setContext(context);
@@ -72,7 +79,7 @@ public class UpdatesTests {
         Interaction interaction = new Interaction();
         Context context = new Context();
         context.setAction("view");
-        context.setId(this.reminder.getId());
+        context.setId(this.reminderOccurrence.getId());
         interaction.setContext(context);
         interaction.setUserId("FOO");
         interaction.setContext(context);
@@ -86,7 +93,7 @@ public class UpdatesTests {
         Interaction interaction = new Interaction();
         Context context = new Context();
         context.setAction("view");
-        context.setId(this.reminder.getId());
+        context.setId(this.reminderOccurrence.getId());
         interaction.setContext(context);
         interaction.setUserId("FOO");
         interaction.setContext(context);
@@ -102,7 +109,7 @@ public class UpdatesTests {
         Interaction interaction = new Interaction();
         Context context = new Context();
         context.setAction("snooze");
-        context.setId(this.reminder.getId());
+        context.setId(this.reminderOccurrence.getId());
         interaction.setContext(context);
         interaction.setUserId("FOO");
         UpdateResponse updateResponse;

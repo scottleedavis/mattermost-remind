@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface ReminderOccurrenceRepository extends JpaRepository<ReminderOccurrence, Long> {
     List<ReminderOccurrence> findAllByOccurrence(LocalDateTime localDateTime);
+
+    List<ReminderOccurrence> findAllByReminder(Reminder reminder);
+
+    List<ReminderOccurrence> findAllBySnoozed(LocalDateTime localDateTime);
 }

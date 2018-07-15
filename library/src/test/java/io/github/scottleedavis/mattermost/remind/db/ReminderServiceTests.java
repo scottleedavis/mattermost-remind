@@ -47,6 +47,7 @@ public class ReminderServiceTests {
         reminderOccurrence.setReminder(reminder);
         ReminderOccurrence reminderOccurrence2 = new ReminderOccurrence();
         reminderOccurrence2.setOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        reminderOccurrence2.setSnoozed(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         reminderOccurrence2.setReminder(reminder);
         List<ReminderOccurrence> list = new ArrayList<>();
         list.add(reminderOccurrence);
@@ -66,6 +67,13 @@ public class ReminderServiceTests {
 
         List<ReminderOccurrence> reminderOccurrences = reminderService.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         assertTrue(reminderOccurrences.size() == 2);
+    }
+
+    @Test
+    public void findBySnoozed() {
+
+        List<ReminderOccurrence> reminderOccurrences = reminderService.findBySnoozed(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        assertTrue(reminderOccurrences.size() == 1);
     }
 
     @Test
@@ -120,13 +128,16 @@ public class ReminderServiceTests {
     public void snooze() {
 
         LocalDateTime testTime = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        reminderService.snooze(reminder, testTime);
+        reminderService.snooze(reminder.getOccurrences().get(1), testTime);
 
-        List<ReminderOccurrence> reminderOccurrence = reminderOccurrenceRepository.findAllByOccurrence(testTime);
+        List<ReminderOccurrence> reminderOccurrence = reminderOccurrenceRepository.findAllBySnoozed(testTime);
 
         assertTrue(reminderOccurrence.size() == 1);
 
-        assertEquals(reminderOccurrence.get(0).getOccurrence(), testTime);
+        assertEquals(reminderOccurrence.get(0).getSnoozed(), testTime);
+
+        assertEquals(reminder.getOccurrences().get(1).getId(), reminderOccurrence.get(0).getId());
+
 
     }
 

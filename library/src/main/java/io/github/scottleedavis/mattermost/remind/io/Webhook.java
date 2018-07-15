@@ -26,7 +26,7 @@ public class Webhook {
     @Autowired
     private Options options;
 
-    public void invoke(ReminderOccurrence reminderOccurrence) throws Exception {
+    public ResponseEntity<String> invoke(ReminderOccurrence reminderOccurrence) throws Exception {
 
         Response response = new Response();
         response.setChannel(reminderOccurrence.getReminder().getTarget());
@@ -43,6 +43,7 @@ public class Webhook {
         HttpEntity entity = new HttpEntity(response, headers);
         ResponseEntity<String> out = restTemplate.exchange(webhookUrl, HttpMethod.POST, entity, String.class);
         logger.info(out.toString());
+        return out;
 
     }
 

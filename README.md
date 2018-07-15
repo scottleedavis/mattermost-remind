@@ -18,25 +18,25 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind @jessica about the interview in three hours`
 * **/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)] (every) [day|date]**  
   * `/remind @lima Lunch time! at noon`
-  * `/remind #test-team New tests at two`
+  * `/remind ~test-team New tests at two`
   * `/remind me Pickup kids at 4:30pm`
   * `/remind me to attend the team meeting at 11:00 every Tuesday`
   * `/remind me to drink water at 3pm every day`
 * **/remind [who] [what] (on) [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)] (at) [time]**
   * `/remind me Go to movies on Friday`
-  * `/remind #management Send annual salary review report on December 15`
+  * `/remind ~management Send annual salary review report on December 15`
   * `/remind me Mow the lawn on 7th`
   * `/remind me Pick up kids on tuesday at 7:30am`
-  * `/remind #Off-Topic "meet us downtown!" on 7/13 at noon`
-  * `/remind #design Join the meeting Monday`
+  * `/remind ~Off-Topic "meet us downtown!" on 7/13 at noon`
+  * `/remind ~design Join the meeting Monday`
   * `/remind me Smile tomorrow`
   * `/remind me to update the team meeting agenda on Mondays`
   * `/remind @sam to book meeting room tomorrow at 4pm`
 * **/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]**
   * `/remind me to schedule annual reviews every January 25`
-  * `/remind #design Design critique meeting every Thursday at 12:30`
+  * `/remind ~design Design critique meeting every Thursday at 12:30`
   * `/remind me Physiotherapy after work every other Wednesday`
-  * `/remind #team-alpha to update the project status every Monday at 9am`
+  * `/remind ~team-alpha to update the project status every Monday at 9am`
   * `/remind me to do things every monday and wednesday at noon`
   * `/remind me to exercise every other day`
   * `/remind me Remember the children's birthdays every 1/30 and 9/30 at noon`

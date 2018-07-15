@@ -73,9 +73,9 @@ public class ParserTests {
         assertEquals(parsedRequest.getTarget(), "@anybody");
         assertEquals(parsedRequest.getWhen(), "at noon");
 
-        parsedRequest = parser.extract("#Off-Topic FooBar at noon");
+        parsedRequest = parser.extract("~Off-Topic FooBar at noon");
         assertEquals(parsedRequest.getMessage(), "FooBar");
-        assertEquals(parsedRequest.getTarget(), "#Off-Topic");
+        assertEquals(parsedRequest.getTarget(), "~Off-Topic");
         assertEquals(parsedRequest.getWhen(), "at noon");
 
         parsedRequest = parser.extract("me SuperFoo in 1 second");
@@ -118,9 +118,9 @@ public class ParserTests {
         assertEquals(parsedRequest.getTarget(), "me");
         assertEquals(parsedRequest.getWhen(), "at 4:30am every day");
 
-        parsedRequest = parser.extract("#design Join the meeting Monday");
+        parsedRequest = parser.extract("~design Join the meeting Monday");
         assertEquals(parsedRequest.getMessage(), "Join the meeting");
-        assertEquals(parsedRequest.getTarget(), "#design");
+        assertEquals(parsedRequest.getTarget(), "~design");
         assertEquals(parsedRequest.getWhen(), "Monday");
 
         parsedRequest = parser.extract("me Smile tomorrow");

@@ -67,7 +67,7 @@ public class Parser {
             return parts[0];
         else if (parts[0].charAt(0) == '@')
             return parts[0];
-        else if (parts[0].charAt(0) == '#')
+        else if (parts[0].charAt(0) == '~')
             return parts[0];
 
         throw new ParserException("Unrecognized target");

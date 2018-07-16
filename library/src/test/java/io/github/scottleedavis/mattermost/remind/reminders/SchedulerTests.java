@@ -64,6 +64,10 @@ public class SchedulerTests {
         response = scheduler.setReminder(userName, payload, userId, channelName);
         assertEquals(response.getText(), ":thumbsup: I will remind you \"test this service\" at 11AM every other day");
 
+        payload = "@bob test this service every other day at 11:00am";
+        response = scheduler.setReminder(userName, payload, userId, channelName);
+        assertEquals(response.getText(), "Sorry, you can't recurring reminders for other users.");
+
     }
 
     @Test

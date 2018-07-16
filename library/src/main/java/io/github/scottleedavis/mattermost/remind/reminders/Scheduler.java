@@ -57,15 +57,21 @@ public class Scheduler {
                     response.setText(version);
                     break;
                 default:
-                    Reminder reminder = reminderService.schedule(userName, parsedRequest);
-                    String responseText = formatter.reminderResponse(parsedRequest);
-                    if (channelName.contains(userId)) {
-                        Attachment attachment = new Attachment();
-                        attachment.setActions(options.setActions(reminder.getId()));
-                        attachment.setText(responseText);
-                        response.setAttachments(Arrays.asList(attachment));
+                    if (parsedRequest.getTarget().charAt(0) == '@' &&
+                            !(parsedRequest.getTarget().equalsIgnoreCase("@" + userName)) &&
+                            (parsedRequest.getWhen().contains("every"))) {
+                        response.setText(options.noUserRepeatText);
                     } else {
-                        response.setText(responseText);
+                        Reminder reminder = reminderService.schedule(userName, parsedRequest);
+                        String responseText = formatter.reminderResponse(parsedRequest);
+                        if (channelName.contains(userId)) {
+                            Attachment attachment = new Attachment();
+                            attachment.setActions(options.setActions(reminder.getId()));
+                            attachment.setText(responseText);
+                            response.setAttachments(Arrays.asList(attachment));
+                        } else {
+                            response.setText(responseText);
+                        }
                     }
             }
 

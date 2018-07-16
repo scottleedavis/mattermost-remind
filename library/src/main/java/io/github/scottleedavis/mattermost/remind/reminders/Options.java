@@ -28,6 +28,8 @@ public class Options {
             "Perhaps try the words in a different order? This usually works: " +
             "`/remind [@someone or ~channel] [what] [when]`.\n";
 
+    public static String noUserRepeatText = "Sorry, you can't recurring reminders for other users.";
+
     private String appUrl;
 
     @Autowired

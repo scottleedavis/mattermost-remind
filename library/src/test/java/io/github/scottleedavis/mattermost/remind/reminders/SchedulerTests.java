@@ -44,7 +44,7 @@ public class SchedulerTests {
 
         String userName = "me";
         String userId = "@scottd";
-        String channelName = "#Off-Topic";
+        String channelName = "~off-topic";
         String payload;
         Response response;
 
@@ -71,6 +71,14 @@ public class SchedulerTests {
         payload = "@scottd test this service every other day at 11:00am";
         response = scheduler.setReminder(userName, payload, userId, channelName);
         assertEquals(response.getText(), ":thumbsup: I will remind you \"test this service\" at 11AM every other day");
+
+        payload = "@scottd test this service every other day at 11:00am";
+        response = scheduler.setReminder(userName, payload, userId, channelName);
+        assertEquals(response.getText(), ":thumbsup: I will remind you \"test this service\" at 11AM every other day");
+
+        payload = "~off-topic test this service at 2pm";
+        response = scheduler.setReminder(userName, payload, userId, channelName);
+        assertEquals(response.getText(), ":thumbsup: I will remind ~off-topic \"test this service\" 2PM today");
 
     }
 

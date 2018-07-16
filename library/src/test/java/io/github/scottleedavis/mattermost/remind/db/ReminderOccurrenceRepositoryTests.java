@@ -30,7 +30,6 @@ public class ReminderOccurrenceRepositoryTests {
     @Before
     public void setUp() {
         reminderRepository.deleteAll();
-        ;
 
         Reminder reminder = new Reminder();
         reminder.setMessage("foo to the bar");

@@ -49,7 +49,17 @@ public class WebhookTests {
         reminderRepository.save(reminder);
 
         ResponseEntity<String> responseEntity = webhook.invoke(reminderOccurrence);
-
         assertNotNull(responseEntity);
+
+        reminder.setTarget("~town-square");
+        reminderRepository.save(reminder);
+        responseEntity = webhook.invoke(reminderOccurrence);
+        assertNotNull(responseEntity);
+
+        reminderOccurrence.setRepeat("every day");
+        reminderOccurrenceRepository.save(reminderOccurrence);
+        responseEntity = webhook.invoke(reminderOccurrence);
+        assertNotNull(responseEntity);
+
     }
 }

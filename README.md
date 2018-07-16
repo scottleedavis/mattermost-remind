@@ -41,6 +41,9 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   * `/remind me to exercise every other day`
   * `/remind me Remember the children's birthdays every 1/30 and 9/30 at noon`
   * `/remind me Drink water Everyday`
+* **/remind [@someone or #channel] [what] [when]**
+  * `/remind me on June 1st to wish Linda happy birthday`
+  * `/remind @peter tomorrow "Please review the office seating plan"`
   
 ### notes
 * You can’t set recurring reminders for other members.

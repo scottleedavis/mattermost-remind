@@ -59,10 +59,14 @@ public class Scheduler {
                 default:
                     if (parsedRequest.getTarget().charAt(0) == '@' &&
                             !(parsedRequest.getTarget().equalsIgnoreCase("@" + userName)) &&
-                            (parsedRequest.getWhen().contains("every"))) {
+                            (parsedRequest.getWhen().contains("every")) &&
+                            !(userId.equalsIgnoreCase(parsedRequest.getTarget()))) {
                         response.setText(options.noUserRepeatText);
                     } else {
                         Reminder reminder = reminderService.schedule(userName, parsedRequest);
+                        if (userId.equalsIgnoreCase(parsedRequest.getTarget())) {
+                            parsedRequest.setTarget("me");
+                        }
                         String responseText = formatter.reminderResponse(parsedRequest);
                         if (channelName.contains(userId)) {
                             Attachment attachment = new Attachment();
@@ -73,6 +77,7 @@ public class Scheduler {
                             response.setText(responseText);
                         }
                     }
+                    break;
             }
 
         } catch (Exception e) {

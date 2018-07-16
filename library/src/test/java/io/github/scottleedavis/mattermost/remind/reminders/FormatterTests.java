@@ -85,6 +85,36 @@ public class FormatterTests {
     @Test
     public void daySuffix() {
         assertEquals(formatter.daySuffix(1), "1st");
+        assertEquals(formatter.daySuffix(2), "2nd");
+        assertEquals(formatter.daySuffix(3), "3rd");
+        assertEquals(formatter.daySuffix(4), "4th");
+        assertEquals(formatter.daySuffix(5), "5th");
+        assertEquals(formatter.daySuffix(6), "6th");
+        assertEquals(formatter.daySuffix(7), "7th");
+        assertEquals(formatter.daySuffix(8), "8th");
+        assertEquals(formatter.daySuffix(9), "9th");
+        assertEquals(formatter.daySuffix(10), "10th");
+        assertEquals(formatter.daySuffix(11), "11th");
+        assertEquals(formatter.daySuffix(12), "12th");
+        assertEquals(formatter.daySuffix(13), "13th");
+        assertEquals(formatter.daySuffix(14), "14th");
+        assertEquals(formatter.daySuffix(15), "15th");
+        assertEquals(formatter.daySuffix(16), "16th");
+        assertEquals(formatter.daySuffix(17), "17th");
+        assertEquals(formatter.daySuffix(18), "18th");
+        assertEquals(formatter.daySuffix(19), "19th");
+        assertEquals(formatter.daySuffix(20), "20th");
+        assertEquals(formatter.daySuffix(21), "21st");
+        assertEquals(formatter.daySuffix(22), "22nd");
+        assertEquals(formatter.daySuffix(23), "23rd");
+        assertEquals(formatter.daySuffix(24), "24th");
+        assertEquals(formatter.daySuffix(25), "25th");
+        assertEquals(formatter.daySuffix(26), "26th");
+        assertEquals(formatter.daySuffix(27), "27th");
+        assertEquals(formatter.daySuffix(28), "28th");
+        assertEquals(formatter.daySuffix(29), "29th");
+        assertEquals(formatter.daySuffix(30), "30th");
+        assertEquals(formatter.daySuffix(31), "31st");
     }
 
     @Test

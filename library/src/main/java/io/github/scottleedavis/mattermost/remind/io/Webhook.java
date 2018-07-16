@@ -29,11 +29,15 @@ public class Webhook {
     public ResponseEntity<String> invoke(ReminderOccurrence reminderOccurrence) throws Exception {
 
         Response response = new Response();
-        response.setChannel(reminderOccurrence.getReminder().getTarget());
+        boolean isChannel = reminderOccurrence.getReminder().getTarget().charAt(0) == '~';
+        response.setChannel(isChannel ?
+                reminderOccurrence.getReminder().getTarget().substring(1) :
+                reminderOccurrence.getReminder().getTarget());
         response.setUsername("mattermost-remind");
         response.setResponseType(Response.ResponseType.EPHEMERAL);
         Attachment attachment = new Attachment();
-        attachment.setActions(options.finishedActions(reminderOccurrence.getId(), reminderOccurrence.getRepeat() != null));
+        attachment.setActions(options.finishedActions(reminderOccurrence.getId(),
+                reminderOccurrence.getRepeat() != null, isChannel));
         attachment.setText("You asked me to remind you \"" + reminderOccurrence.getReminder().getMessage() + "\".");
         response.setAttachments(Arrays.asList(attachment));
 

@@ -39,10 +39,17 @@ public class OptionsTests {
 
     @Test
     public void finishedActions() {
-        List<Action> actions = options.finishedActions(1L, false);
+        List<Action> actions = options.finishedActions(1L, false, false);
         assertTrue(actions.size() == 7);
 
-        actions = options.finishedActions(1L, true);
+        actions = options.finishedActions(1L, true, true);
         assertTrue(actions.size() == 5);
+
+        actions = options.finishedActions(1L, true, false);
+        assertTrue(actions.size() == 5);
+
+        actions = options.finishedActions(1L, false, true);
+        assertTrue(actions.size() == 2);
+
     }
 }

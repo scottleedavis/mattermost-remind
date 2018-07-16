@@ -44,7 +44,7 @@ public class Options {
         return Arrays.asList(delete(id), view(id));
     }
 
-    public List<Action> finishedActions(Long id, boolean isRepeated) {
+    public List<Action> finishedActions(Long id, boolean isRepeated, boolean isChannel) {
         if (isRepeated)
             return Arrays.asList(
                     snooze(id, ArgumentType.TWENTY_MINUTES),
@@ -52,6 +52,11 @@ public class Options {
                     snooze(id, ArgumentType.THREE_HOURS),
                     snooze(id, ArgumentType.TOMORROW_AT_9AM),
                     snooze(id, ArgumentType.NEXT_WEEK));
+
+        if (isChannel)
+            return Arrays.asList(complete(id),
+                    delete(id));
+
         return Arrays.asList(complete(id),
                 delete(id),
                 snooze(id, ArgumentType.TWENTY_MINUTES),

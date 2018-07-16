@@ -285,7 +285,7 @@ public class Occurrence {
             case "FRIDAY":
             case "SATURDAY":
             case "SUNDAY":
-                return Arrays.asList(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(dateUnit))).atTime(LocalTime.parse(timeUnit))); //.atTime(9, 0));
+                return Arrays.asList(LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.valueOf(dateUnit))).atTime(LocalTime.parse(timeUnit)));
             case "MONDAYS":
             case "TUESDAYS":
             case "WEDNESDAYS":

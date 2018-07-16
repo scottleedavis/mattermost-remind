@@ -173,7 +173,6 @@ public class ParserTests {
     @Test
     public void outlierForms() throws Exception {
 
-        ///remind
         ParsedRequest parsedRequest = parser.extract("@sam to book meeting room tomorrow at 4pm");
         assertEquals(parsedRequest.getMessage(), "to book meeting room");
         assertEquals(parsedRequest.getTarget(), "@sam");
@@ -218,6 +217,26 @@ public class ParserTests {
         assertEquals(parsedRequest.getMessage(), "to book meeting room");
         assertEquals(parsedRequest.getTarget(), "@sam");
         assertEquals(parsedRequest.getWhen(), "sunday at 4pm");
+
+    }
+
+    @Test
+    public void alternateOrdering() throws Exception {
+
+        ParsedRequest parsedRequest = parser.extract("me on June 1st to wish Linda happy birthday");
+        assertEquals(parsedRequest.getMessage(), "to wish Linda happy birthday");
+        assertEquals(parsedRequest.getTarget(), "me");
+        assertEquals(parsedRequest.getWhen(), "on June 1 2018");
+
+        parsedRequest = parser.extract("@peter tomorrow \"Please review the office seating plan\"");
+        assertEquals(parsedRequest.getMessage(), "Please review the office seating plan");
+        assertEquals(parsedRequest.getTarget(), "@peter");
+        assertEquals(parsedRequest.getWhen(), "Tomorrow");
+
+        parsedRequest = parser.extract("@peter friday Do a McScraggins");
+        assertEquals(parsedRequest.getMessage(), "Do a McScraggins");
+        assertEquals(parsedRequest.getTarget(), "@peter");
+        assertEquals(parsedRequest.getWhen(), "Friday");
 
     }
 

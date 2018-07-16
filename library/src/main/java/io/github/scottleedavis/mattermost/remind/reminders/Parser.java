@@ -180,7 +180,12 @@ public class Parser {
 
         String[] textSplit = text.split(" ");
 
-        // dates <month> <day>
+        if (textSplit.length == 1) {
+            whenPattern.raw = textSplit[0];
+            whenPattern.normalized = formatter.capitalize(formatter.normalizeDate(textSplit[0]));
+            return whenPattern;
+        }
+
         String lastWord = textSplit[textSplit.length - 2] + " " + textSplit[textSplit.length - 1];
         try {
 
@@ -212,12 +217,42 @@ public class Parser {
                     break;
             }
 
-            try {
 
+            try {
+                // last word(s) are date/time
                 whenPattern.raw = lastWord;
                 whenPattern.normalized = formatter.capitalize(formatter.normalizeDate(lastWord));
                 return whenPattern;
             } catch (Exception er) {
+                String firstWord;
+                switch (textSplit[0]) {
+                    case "at":
+                        firstWord = textSplit[1];
+                        whenPattern.raw = textSplit[0] + " " + firstWord;
+                        whenPattern.normalized = textSplit[0] + " " + formatter.capitalize(formatter.normalizeDate(firstWord));
+                        return whenPattern;
+                    case "in":
+                    case "on":
+                        firstWord = textSplit[1] + " " + textSplit[2];
+                        whenPattern.raw = textSplit[0] + " " + firstWord;
+                        whenPattern.normalized = textSplit[0] + " " + formatter.capitalize(formatter.normalizeDate(firstWord));
+                        return whenPattern;
+                    case "tomorrow":
+                    case "monday":
+                    case "tuesday":
+                    case "wednesday":
+                    case "thursday":
+                    case "friday":
+                    case "saturday":
+                    case "sunday":
+                        firstWord = textSplit[0];
+                        whenPattern.raw = firstWord;
+                        whenPattern.normalized = formatter.capitalize(formatter.normalizeDate(firstWord));
+                        return whenPattern;
+                    default:
+                        break;
+                }
+
                 throw new ParserException("No when found", er);
             }
         }

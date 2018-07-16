@@ -76,9 +76,9 @@ public class SchedulerTests {
         response = scheduler.setReminder(userName, payload, userId, channelName);
         assertEquals(response.getText(), ":thumbsup: I will remind you \"test this service\" at 11AM every other day");
 
-        payload = "~off-topic test this service at 2pm";
+        payload = "~off-topic test this service every other day at 11:00am";
         response = scheduler.setReminder(userName, payload, userId, channelName);
-        assertEquals(response.getText(), ":thumbsup: I will remind ~off-topic \"test this service\" 2PM today");
+        assertEquals(response.getText(), ":thumbsup: I will remind ~off-topic \"test this service\" at 11AM every other day");
 
     }
 

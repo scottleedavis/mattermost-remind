@@ -98,7 +98,7 @@ _Requires slash command and webhook integrations_
   * Title & "Autocomplete Description": `Set a reminder`
   * Leave "Description" blank
   * Response Username: `mattermost-remind`
-  * Autocomplete hint: `[@someone or #channel] [what] [when]`
+  * Autocomplete hint: `[@someone or ~channel] [what] [when]`
   * Request URL: `<path_to_mattermost-remind>/remind`
   * set mattermost system icon
   * put token in [application.properties](application/src/main/resources/application.properties) `slashCommandToken=<YOUR_TOKEN>`

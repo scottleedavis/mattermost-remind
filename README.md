@@ -2,7 +2,7 @@
 
 A /remind slash command for [Mattermost](https://mattermost.com/) built with [Spring Boot](https://spring.io/projects/spring-boot)
 
-`/remind [@someone or #channel] [what] [when]`
+`/remind [@someone or ~channel] [what] [when]`
 
 ![set_reminder](set_reminder.png)
 ![reminded](reminded.png)

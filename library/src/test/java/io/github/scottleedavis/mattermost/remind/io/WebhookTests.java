@@ -27,10 +27,10 @@ public class WebhookTests {
     private Webhook webhook;
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     @Resource
-    ReminderOccurrenceRepository reminderOccurrenceRepository;
+    private ReminderOccurrenceRepository reminderOccurrenceRepository;
 
 
     @Test

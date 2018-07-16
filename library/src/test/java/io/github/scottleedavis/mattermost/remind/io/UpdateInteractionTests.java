@@ -32,12 +32,10 @@ public class UpdateInteractionTests {
     private UpdateInteraction updateInteraction;
 
     @Resource
-    ReminderRepository reminderRepository;
+    private ReminderRepository reminderRepository;
 
     @Resource
-    ReminderOccurrenceRepository reminderOccurrenceRepository;
-
-    private Interaction interaction;
+    private ReminderOccurrenceRepository reminderOccurrenceRepository;
 
     private ReminderOccurrence reminderOccurrence;
 
@@ -68,7 +66,6 @@ public class UpdateInteractionTests {
         context.setAction("delete");
         interaction.setContext(context);
         interaction.setUserId("TEST");
-        this.interaction = interaction;
 
         UpdateResponse updateResponse = updateInteraction.delete(interaction);
 
@@ -84,7 +81,6 @@ public class UpdateInteractionTests {
         context.setAction("view");
         interaction.setContext(context);
         interaction.setUserId("TEST");
-        this.interaction = interaction;
 
         UpdateResponse updateResponse = updateInteraction.view(interaction);
 
@@ -100,7 +96,6 @@ public class UpdateInteractionTests {
         context.setAction("complete");
         interaction.setContext(context);
         interaction.setUserId("TEST");
-        this.interaction = interaction;
 
         UpdateResponse updateResponse = updateInteraction.complete(interaction);
 
@@ -117,7 +112,6 @@ public class UpdateInteractionTests {
         context.setArgument("20 minutes");
         interaction.setContext(context);
         interaction.setUserId("TEST");
-        this.interaction = interaction;
 
         UpdateResponse updateResponse = updateInteraction.snooze(interaction);
 

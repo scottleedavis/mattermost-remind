@@ -42,6 +42,16 @@ public class Updates {
         return updateResponse;
     }
 
+    public UpdateResponse deleteCompleted(Interaction interaction) throws Exception {
+        Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
+        UpdateResponse updateResponse = new UpdateResponse();
+        Update update = new Update();
+        update.setMessage("Ok! I’ve deleted all completed reminders.");
+        updateResponse.setUpdate(update);
+        reminderService.deleteCompleted(reminder.getUserName());
+        return updateResponse;
+    }
+
     public UpdateResponse view(Interaction interaction) throws Exception {
         Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();

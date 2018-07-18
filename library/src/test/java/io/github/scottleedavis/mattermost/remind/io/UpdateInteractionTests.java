@@ -72,6 +72,11 @@ public class UpdateInteractionTests {
     }
 
     @Test
+    public void deleteCompleted() throws Exception {
+        assertTrue(false);
+    }
+
+    @Test
     @Transactional
     public void view() throws Exception {
         Interaction interaction = new Interaction();

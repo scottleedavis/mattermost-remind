@@ -19,6 +19,11 @@ public class UpdateInteraction {
         return updates.delete(interaction);
     }
 
+    @RequestMapping(value = "/delete/completed", produces = "application/json")
+    public UpdateResponse deleteCompleted(@RequestBody Interaction interaction) throws Exception {
+        return updates.deleteCompleted(interaction);
+    }
+
     @RequestMapping(value = "/view", produces = "application/json")
     public UpdateResponse view(@RequestBody Interaction interaction) throws Exception {
         return updates.view(interaction);

@@ -112,6 +112,11 @@ public class ReminderServiceTests {
     }
 
     @Test
+    public void deleteCompleted() {
+        assertTrue(false);
+    }
+
+    @Test
     public void complete() {
 
         reminderService.complete(reminder);
@@ -120,7 +125,7 @@ public class ReminderServiceTests {
 
         assertNotNull(reminder1);
 
-        assertTrue(reminder1.isComplete());
+        assertNotNull(reminder1.getCompleted());
     }
 
     @Test

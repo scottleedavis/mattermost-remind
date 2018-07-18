@@ -103,6 +103,21 @@ public class Formatter {
 
     }
 
+    public String completedReminder(List<ReminderOccurrence> occurrences) {
+
+        LocalDateTime ldt = occurrences.get(0).getReminder().getCompleted();
+        String timeChunk = "(completed at ";
+        timeChunk += militaryToTwelveHour(ldt.getHour()) + ":"
+                + String.format("%02d", ldt.getMinute())
+                + amPm(ldt) + " ";
+
+        timeChunk += capitalize(ldt.getDayOfWeek().toString()) + ", "
+                + capitalize(ldt.getMonth().toString()) + " "
+                + daySuffix(ldt.getDayOfMonth()) + ")";
+
+        return "* \"" + occurrences.get(0).getReminder().getMessage() + "\"" + " " + timeChunk + "\n";
+    }
+
     public String upcomingReminder(List<ReminderOccurrence> occurrences) {
 
         String timeChunk;
@@ -112,7 +127,7 @@ public class Formatter {
 
             timeChunk = "(snoozed until " +
                     militaryToTwelveHour(snoozed.getHour()) + ":" +
-                    String.format("%02d", snoozed.getMinute()) + amPm(snoozed) +
+                    String.format("%02d", snoozed.getMinute()) + amPm(snoozed) + " " +
                     capitalize(snoozed.getDayOfWeek().toString()) + ", " +
                     capitalize(snoozed.getMonth().toString()) + " " +
                     daySuffix(snoozed.getDayOfMonth()) + " )";

@@ -66,8 +66,14 @@ public class ReminderService {
         reminderRepository.delete(reminder);
     }
 
+    public void deleteCompleted(String userName) {
+        reminderRepository.findByUserName(userName).stream()
+                                        .filter(r -> r.getCompleted() != null).collect(Collectors.toList())
+                                        .forEach(r -> reminderRepository.delete(r));
+    }
+
     public void complete(Reminder reminder) {
-        reminder.setComplete(true);
+        reminder.setCompleted(LocalDateTime.now());
         reminderRepository.save(reminder);
     }
 

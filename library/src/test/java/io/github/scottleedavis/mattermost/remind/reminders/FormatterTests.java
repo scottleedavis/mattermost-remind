@@ -22,6 +22,11 @@ public class FormatterTests {
     private Formatter formatter;
 
     @Test
+    public void completedReminder() {
+        assertTrue(false);
+    }
+
+    @Test
     public void upcomingReminder() {
 
         ReminderOccurrence reminderOccurrence = new ReminderOccurrence();

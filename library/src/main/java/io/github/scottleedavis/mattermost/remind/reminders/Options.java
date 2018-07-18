@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +36,8 @@ public class Options {
             "`/remind [@someone or ~channel] [what] [when]`.\n";
 
     public static String noUserRepeatText = "Sorry, you can't recurring reminders for other users.";
+
+    public static String noReminderList = "I cannot find any reminders for you. Type `/remind` to set one.";
 
     private String appUrl;
 
@@ -92,6 +95,20 @@ public class Options {
                 delete(id));
     }
 
+    public String listComplete(String userName) {
+        List<Reminder> reminders = reminderService.findByUsername(userName);
+
+        if (reminders.size() > 0) {
+            List<String> complete = reminders.stream().filter(r -> r.getCompleted() != null)
+                    .map(r -> formatter.completedReminder(r.getOccurrences())).collect(Collectors.toList());
+            if (complete.size() > 0)
+                return "*Complete*:\n" +
+                        complete.stream().reduce("", String::concat) + "\n";
+        }
+
+        return noReminderList;
+    }
+
     public String listReminders(String userName) {
 
         List<Reminder> reminders = reminderService.findByUsername(userName);
@@ -99,7 +116,8 @@ public class Options {
         if (reminders.size() > 0) {
             String reminderOutput = "";
             List<String> upcoming = reminders.stream().filter(r ->
-                    !r.isComplete() && r.getOccurrences().get(0).getRepeat() == null &&
+                    (r.getCompleted() == null) &&
+                            r.getOccurrences().get(0).getRepeat() == null &&
                             (r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now()) ||
                                     (r.getOccurrences().get(0).getSnoozed() != null &&
                                             r.getOccurrences().get(0).getSnoozed().isAfter(LocalDateTime.now())))
@@ -107,6 +125,7 @@ public class Options {
             if (upcoming.size() > 0)
                 reminderOutput += "*Upcoming*:\n" +
                         upcoming.stream().reduce("", String::concat) + "\n";
+
             List<String> recurring = reminders.stream().filter(r ->
                     r.getOccurrences().get(0).getRepeat() != null &&
                             r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now())
@@ -114,48 +133,20 @@ public class Options {
             if (recurring.size() > 0)
                 reminderOutput += "*Recurring*:\n" +
                         recurring.stream().reduce("", String::concat) + "\n";
+
             List<String> pastIncomplete = reminders.stream().filter(r ->
-                    !r.isComplete() && r.getOccurrences().get(0).getRepeat() == null &&
-                            r.getOccurrences().get(0).getOccurrence().isBefore(LocalDateTime.now())
-            ).map(r -> "\"" + r.getMessage() + "\"").collect(Collectors.toList());
+                    (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
+                            r.getOccurrences().get(0).getOccurrence().isBefore(LocalDateTime.now()) &&
+                                    r.getOccurrences().get(0).getSnoozed() == null
+            ).map(r -> "* \"" + r.getMessage() + "\"\n").collect(Collectors.toList());
             if (pastIncomplete.size() > 0)
                 reminderOutput += "*Past and incomplete*:\n" +
                         pastIncomplete.stream().reduce("", String::concat) + "\n";
+
             return reminderOutput + "*Note*:  To interact with these reminders use `/remind list` in your personal user channel";
         }
 
-        return "I cannot find any reminders for you. Type `/remind` to set one.";
-    }
-
-    public String listComplete(String userName) {
-        List<Reminder> reminders = reminderService.findByUsername(userName);
-
-        //TODO  - likely have a 'delete all completed' button
-        //TODO format the completed as follows
-        /*
-        *Completed*: Delete all completed reminders
-        • “https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging”  (completed at 2:22PM Sunday, June 24th) Delete
-        • “https://springframework.guru/configuring-spring-boot-for-microsoft-sql-server/”  (completed at 2:38PM Sunday, June 24th) Delete
-        • “lalala”  (completed at 2:50PM Sunday, June 24th) Delete
-        • “lalala”  (completed at 2:54PM Sunday, June 24th) Delete
-        • “foo”  (completed at 4:22PM Sunday, June 24th) Delete
-        • “do the chicken dance”  (completed at 9PM Sunday, June 24th) Delete
-        • “foo”  (completed at 9PM Sunday, June 24th) Delete
-        • “foo”  (completed at 7:10PM Monday, June 25th) Delete
-        • “foo”  (completed at 7:10PM Monday, June 25th) Delete
-        • “aloha”  (completed at 7:10PM Monday, June 25th) Delete
-         */
-        if (reminders.size() > 0) {
-            String reminderOutput = "";
-            List<String> complete = reminders.stream().filter(r -> r.isComplete())
-                    .map(r -> "\"" + r.getMessage() + "\"").collect(Collectors.toList());
-            if (complete.size() > 0)
-                reminderOutput += "*Complete*:\n" +
-                        complete.stream().reduce("", String::concat) + "\n";
-            return reminderOutput;
-        }
-
-        return "I cannot find any reminders for you. Type `/remind` to set one.";
+        return noReminderList;
     }
 
     public List<Attachment> listRemindersAttachments(String userName) {
@@ -163,7 +154,7 @@ public class Options {
         List<Reminder> reminders = reminderService.findByUsername(userName);
 
         List<Attachment> upcoming = reminders.stream().filter(r ->
-                !r.isComplete() && r.getOccurrences().get(0).getRepeat() == null &&
+                (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
                         (r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now()) ||
                                 (r.getOccurrences().get(0).getSnoozed() != null &&
                                         r.getOccurrences().get(0).getSnoozed().isAfter(LocalDateTime.now())))
@@ -185,8 +176,9 @@ public class Options {
         }).collect(Collectors.toList());
 
         List<Attachment> pastIncomplete = reminders.stream().filter(r ->
-                !r.isComplete() && r.getOccurrences().get(0).getRepeat() == null &&
-                        r.getOccurrences().get(0).getOccurrence().isBefore(LocalDateTime.now())
+                (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
+                        r.getOccurrences().get(0).getOccurrence().isBefore(LocalDateTime.now()) &&
+                                r.getOccurrences().get(0).getSnoozed() == null
         ).map(r -> {
             Attachment attachment = new Attachment();
             attachment.setActions(listActions(r.getOccurrences().get(0).getId(), false, true));
@@ -194,17 +186,33 @@ public class Options {
             return attachment;
         }).collect(Collectors.toList());
 
-        Attachment viewCompleted = new Attachment();
-        if (reminders.size() > 0) {
+        List<Attachment> completed = new ArrayList<>();
+        if (reminders.stream().filter(r -> r.getCompleted() != null).collect(Collectors.toList()).size() > 0) {
+            Attachment viewCompleted = new Attachment();
             ReminderOccurrence reminderOccurrence = reminders.get(0).getOccurrences().get(0);
-            viewCompleted.setActions(Arrays.asList(viewCompleted(reminderOccurrence.getId()), close()));
+            viewCompleted.setActions(Arrays.asList(
+                    viewCompleted(reminderOccurrence.getId()),
+                    deleteAllCompleted(reminderOccurrence.getId()),
+                    close()));
+            completed.add(viewCompleted);
+        }
+
+        List<Attachment> noList = new ArrayList<>();
+        if( upcoming.size() == 0 &&
+                recurring.size() == 0 &&
+                pastIncomplete.size() == 0 &&
+                completed.size() == 0 ) {
+            Attachment noListReminders = new Attachment();
+            noListReminders.setText(noReminderList);
+            noList.add(noListReminders);
         }
 
         return Stream.of(
                 upcoming,
                 recurring,
                 pastIncomplete,
-                Arrays.asList(viewCompleted)
+                completed,
+                noList
         ).flatMap(Collection::stream).collect(Collectors.toList());
 
     }
@@ -219,6 +227,19 @@ public class Options {
         Action action = new Action();
         action.setIntegration(integration);
         action.setName("Delete");
+        return action;
+    }
+
+    private Action deleteAllCompleted(Long id) {
+        Context context = new Context();
+        context.setAction("deleteCompleted");
+        context.setId(id);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "delete/completed");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Delete all completed");
         return action;
     }
 

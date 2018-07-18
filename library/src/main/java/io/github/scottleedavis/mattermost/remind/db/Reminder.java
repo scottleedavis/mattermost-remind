@@ -1,6 +1,7 @@
 package io.github.scottleedavis.mattermost.remind.db;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Reminder {
     private String message;
     @OneToMany(mappedBy = "reminder", cascade = CascadeType.ALL)
     private List<ReminderOccurrence> occurrences;
-    private boolean complete = false;
+    private LocalDateTime completed;
 
     public Long getId() {
         return id;
@@ -63,11 +64,11 @@ public class Reminder {
         this.occurrences = occurrences;
     }
 
-    public boolean isComplete() {
-        return complete;
+    public LocalDateTime getCompleted() {
+        return completed;
     }
 
-    public void setComplete(boolean complete) {
-        this.complete = complete;
+    public void setCompleted(LocalDateTime completed) {
+        this.completed = completed;
     }
 }

@@ -73,7 +73,16 @@ public class UpdateInteractionTests {
 
     @Test
     public void deleteCompleted() throws Exception {
-        assertTrue(false);
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setId(reminderOccurrence.getId());
+        context.setAction("deleteCompleted");
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.deleteCompleted(interaction);
+
+        assertEquals(updateResponse.getUpdate().getMessage(), "Ok! I’ve deleted all completed reminders.");
     }
 
     @Test
@@ -95,9 +104,16 @@ public class UpdateInteractionTests {
     @Test
     @Transactional
     public void viewComplete() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setId(reminderOccurrence.getId());
+        context.setAction("viewComplete");
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
 
-        assertFalse(true);
+        UpdateResponse updateResponse = updateInteraction.viewComplete(interaction);
 
+        assertEquals(updateResponse.getEphemeralText(), "I cannot find any reminders for you. Type `/remind` to set one.");
     }
 
 
@@ -134,7 +150,19 @@ public class UpdateInteractionTests {
 
     @Test
     public void close() throws Exception {
-        assertTrue(false);
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setId(reminderOccurrence.getId());
+        context.setAction("close");
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.close();
+
+        assertNotNull(updateResponse.getUpdate());
+
+        assertEquals(updateResponse.getUpdate().getMessage(), "");
+
     }
 
 }

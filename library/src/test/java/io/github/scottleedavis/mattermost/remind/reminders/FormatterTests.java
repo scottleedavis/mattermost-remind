@@ -1,6 +1,8 @@
 package io.github.scottleedavis.mattermost.remind.reminders;
 
+import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
+import io.github.scottleedavis.mattermost.remind.db.ReminderRepository;
 import io.github.scottleedavis.mattermost.remind.messages.ParsedRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -29,8 +32,15 @@ public class FormatterTests {
     @Test
     public void upcomingReminder() {
 
+        Reminder reminder = new Reminder();
+        reminder.setTarget("foo");
+        reminder.setMessage("baz");
+        reminder.setUserName("bar");
         ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
         reminderOccurrence.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
+        reminderOccurrence.setReminder(reminder);
+        reminder.setOccurrences(Arrays.asList(reminderOccurrence));
+
         String output = formatter.upcomingReminder(Arrays.asList(reminderOccurrence));
 
         assertNotNull(output);

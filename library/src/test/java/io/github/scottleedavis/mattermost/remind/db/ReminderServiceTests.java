@@ -18,6 +18,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -63,6 +64,7 @@ public class ReminderServiceTests {
     }
 
     @Test
+    @Transactional
     public void findByOccurrence() {
 
         List<ReminderOccurrence> reminderOccurrences = reminderService.findByOccurrence(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
@@ -113,7 +115,16 @@ public class ReminderServiceTests {
 
     @Test
     public void deleteCompleted() {
-        assertTrue(false);
+        LocalDateTime testTime = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        reminder.setCompleted(testTime);
+        reminderRepository.save(reminder);
+
+        reminderService.deleteCompleted(reminder.getUserName());
+
+        List<Reminder> reminders = reminderRepository.findByUserName(reminder.getUserName()).stream()
+                                    .filter(r -> r.getCompleted() != null).collect(Collectors.toList());
+
+        assertTrue( reminders.size() == 0 );
     }
 
     @Test
@@ -148,7 +159,17 @@ public class ReminderServiceTests {
 
     @Test
     public void clearSnooze() {
-        assertTrue(false);
+        LocalDateTime testTime = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        reminder.getOccurrences().get(0).setSnoozed(testTime);
+        reminderOccurrenceRepository.save(reminder.getOccurrences().get(0));
+
+        reminderService.clearSnooze(reminder.getOccurrences().get(0));
+
+        ReminderOccurrence reminderOccurrence = reminderOccurrenceRepository.findById(reminder.getOccurrences().get(0).getId()).orElse(null);
+
+        assertNotNull(reminderOccurrence);
+
+        assertTrue( reminderOccurrence.getSnoozed() == null );
     }
 
     @Test

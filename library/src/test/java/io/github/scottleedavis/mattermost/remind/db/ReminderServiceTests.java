@@ -142,6 +142,11 @@ public class ReminderServiceTests {
     }
 
     @Test
+    public void clearSnooze() {
+        assertTrue(false);
+    }
+
+    @Test
     @Transactional
     public void reschedule() throws Exception {
 

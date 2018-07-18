@@ -35,6 +35,14 @@ public class OptionsTests {
     public void listReminders() {
         String response = options.listReminders("FOO");
         assertEquals(response, "I cannot find any reminders for you. Type `/remind` to set one.");
+
+        //TODO add some reminders and make sure they display
+        assertTrue(false);
+    }
+
+    @Test
+    public void listComplete() {
+        assertTrue(false);
     }
 
     @Test

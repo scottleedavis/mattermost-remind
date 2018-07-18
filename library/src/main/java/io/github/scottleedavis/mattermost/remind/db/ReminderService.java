@@ -76,6 +76,11 @@ public class ReminderService {
         reminderOccurrenceRepository.save(reminderOccurrence);
     }
 
+    public void clearSnooze(ReminderOccurrence reminderOccurrence) {
+        reminderOccurrence.setSnoozed(null);
+        reminderOccurrenceRepository.save(reminderOccurrence);
+    }
+
     public void reschedule(ReminderOccurrence reminderOccurrence) throws Exception {
 
         List<LocalDateTime> occurrences = occurrence.calculate(reminderOccurrence.getRepeat());

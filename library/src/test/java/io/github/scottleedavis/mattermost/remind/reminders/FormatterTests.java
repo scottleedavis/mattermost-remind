@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -23,8 +24,6 @@ public class FormatterTests {
     @Test
     public void upcomingReminder() {
 
-        //TODO test this better
-
         ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
         reminderOccurrence.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
         String output = formatter.upcomingReminder(Arrays.asList(reminderOccurrence));
@@ -32,6 +31,9 @@ public class FormatterTests {
         assertNotNull(output);
 
         assertEquals(output, "10:11AM Saturday, August 4th\n");
+
+
+        assertTrue(false);
 
     }
 
@@ -141,5 +143,20 @@ public class FormatterTests {
         assertTrue(formatter.wordToNumber("first") == 1);
         assertTrue(formatter.wordToNumber("third") == 3);
         assertTrue(formatter.wordToNumber("fourteenth") == 14);
+    }
+
+    @Test
+    public void amPm() {
+        assertEquals(formatter.amPm(LocalDate.now().atTime(9, 0)), "AM");
+        assertEquals(formatter.amPm(LocalDate.now().atTime(14, 0)), "PM");
+    }
+
+    @Test
+    public void militaryToTwelveHour() {
+        assertTrue(formatter.militaryToTwelveHour(0) == 12);
+        assertTrue(formatter.militaryToTwelveHour(3) == 3);
+        assertTrue(formatter.militaryToTwelveHour(12) == 12);
+        assertTrue(formatter.militaryToTwelveHour(17) == 5);
+
     }
 }

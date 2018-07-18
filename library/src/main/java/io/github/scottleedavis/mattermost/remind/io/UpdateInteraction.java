@@ -24,6 +24,11 @@ public class UpdateInteraction {
         return updates.view(interaction);
     }
 
+    @RequestMapping(value = "/view/complete", produces = "application/json")
+    public UpdateResponse viewComplete(@RequestBody Interaction interaction) throws Exception {
+        return updates.viewComplete(interaction);
+    }
+
     @RequestMapping(value = "/complete", produces = "application/json")
     public UpdateResponse complete(@RequestBody Interaction interaction) throws Exception {
         return updates.complete(interaction);
@@ -32,5 +37,10 @@ public class UpdateInteraction {
     @RequestMapping(value = "/snooze", produces = "application/json")
     public UpdateResponse snooze(@RequestBody Interaction interaction) throws Exception {
         return updates.snooze(interaction);
+    }
+
+    @RequestMapping(value = "/close", produces = "application/json")
+    public UpdateResponse close() {
+        return updates.close();
     }
 }

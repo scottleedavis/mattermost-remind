@@ -51,11 +51,10 @@ public class Scheduler {
                     response.setText(Options.helpMessage);
                     break;
                 case "list":
-                    if (channelName.contains(userId)) {
+                    if (channelName.contains(userId))
                         response.setAttachments(options.listRemindersAttachments(userName));
-                    } else {
+                    else
                         response.setText(options.listReminders(userName));
-                    }
                     break;
                 case "version":
                     response.setText(version);
@@ -74,7 +73,7 @@ public class Scheduler {
                         String responseText = formatter.reminderResponse(parsedRequest);
                         if (channelName.contains(userId)) {
                             Attachment attachment = new Attachment();
-                            attachment.setActions(options.setActions(reminder.getId()));
+                            attachment.setActions(options.setActions(reminder.getOccurrences().get(0).getId()));
                             attachment.setText(responseText);
                             response.setAttachments(Arrays.asList(attachment));
                         } else {
@@ -113,6 +112,7 @@ public class Scheduler {
             logger.info("Sending snoozed reminder {} to {} ", reminderOccurrence.getId(), reminderOccurrence.getReminder().getTarget());
             try {
                 webhook.invoke(reminderOccurrence);
+                reminderService.clearSnooze(reminderOccurrence);
             } catch (Exception e) {
                 logger.error("Not able to send snoozed reminder {}", e);
             }

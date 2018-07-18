@@ -21,8 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -60,6 +59,11 @@ public class UpdatesTests {
     }
 
     @Test
+    public void close() throws Exception {
+        assertTrue(false);
+    }
+
+    @Test
     public void delete() throws Exception {
         Interaction interaction = new Interaction();
         Context context = new Context();
@@ -86,6 +90,12 @@ public class UpdatesTests {
         UpdateResponse updateResponse = updates.view(interaction);
         assertNotNull(updateResponse.getEphemeralText());
 
+    }
+
+    @Test
+    @Transactional
+    public void viewComplete() throws Exception {
+        assertTrue(false);
     }
 
     @Test

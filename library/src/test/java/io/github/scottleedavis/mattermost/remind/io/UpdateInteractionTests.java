@@ -1,5 +1,6 @@
 package io.github.scottleedavis.mattermost.remind.io;
 
+import static org.junit.Assert.*;
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrenceRepository;
@@ -89,6 +90,15 @@ public class UpdateInteractionTests {
     }
 
     @Test
+    @Transactional
+    public void viewComplete() throws Exception {
+
+        assertFalse(true);
+
+    }
+
+
+    @Test
     public void complete() throws Exception {
         Interaction interaction = new Interaction();
         Context context = new Context();
@@ -117,6 +127,11 @@ public class UpdateInteractionTests {
 
         assertEquals(updateResponse.getUpdate().getMessage(), "Ok! I’ll remind you “foo to the bar” in 20 minutes");
 
+    }
+
+    @Test
+    public void close() throws Exception {
+        assertTrue(false);
     }
 
 }

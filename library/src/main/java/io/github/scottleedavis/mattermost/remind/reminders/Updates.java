@@ -24,6 +24,14 @@ public class Updates {
     @Autowired
     private ReminderService reminderService;
 
+    public UpdateResponse close() {
+        UpdateResponse updateResponse = new UpdateResponse();
+        Update update = new Update();
+        update.setMessage("");
+        updateResponse.setUpdate(update);
+        return updateResponse;
+    }
+
     public UpdateResponse delete(Interaction interaction) throws Exception {
         Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
@@ -38,6 +46,13 @@ public class Updates {
         Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         updateResponse.setEphemeralText(options.listReminders(reminder.getUserName()));
+        return updateResponse;
+    }
+
+    public UpdateResponse viewComplete(Interaction interaction) throws Exception {
+        Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
+        UpdateResponse updateResponse = new UpdateResponse();
+        updateResponse.setEphemeralText(options.listComplete(reminder.getUserName()));
         return updateResponse;
     }
 

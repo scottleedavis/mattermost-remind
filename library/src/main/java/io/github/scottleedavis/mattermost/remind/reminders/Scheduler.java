@@ -51,7 +51,11 @@ public class Scheduler {
                     response.setText(Options.helpMessage);
                     break;
                 case "list":
-                    response.setText(options.listReminders(userName));
+                    if (channelName.contains(userId)) {
+                        response.setAttachments(options.listRemindersAttachments(userName));
+                    } else {
+                        response.setText(options.listReminders(userName));
+                    }
                     break;
                 case "version":
                     response.setText(version);

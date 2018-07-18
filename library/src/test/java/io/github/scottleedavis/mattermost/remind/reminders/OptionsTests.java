@@ -38,6 +38,11 @@ public class OptionsTests {
     }
 
     @Test
+    public void listRemindersAttachments() {
+        assertTrue(false);
+    }
+
+    @Test
     public void finishedActions() {
         List<Action> actions = options.finishedActions(1L, false, false);
         assertTrue(actions.size() == 7);
@@ -51,5 +56,10 @@ public class OptionsTests {
         actions = options.finishedActions(1L, false, true);
         assertTrue(actions.size() == 2);
 
+    }
+
+    @Test
+    public void listActions() {
+        assertTrue(false);
     }
 }

@@ -56,6 +56,10 @@ public class SchedulerTests {
         response = scheduler.setReminder(userName, payload, userId, channelName);
         assertEquals(response.getText(), "I cannot find any reminders for you. Type `/remind` to set one.");
 
+        payload = "list";
+        response = scheduler.setReminder(userName, payload, userId, userId+channelName);
+        assertNotNull(response.getAttachments());
+
         payload = "version";
         response = scheduler.setReminder(userName, payload, userId, channelName);
         assertNotNull(response.getText());

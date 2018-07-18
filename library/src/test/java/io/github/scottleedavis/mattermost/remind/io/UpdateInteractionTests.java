@@ -1,6 +1,5 @@
 package io.github.scottleedavis.mattermost.remind.io;
 
-import static org.junit.Assert.*;
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrenceRepository;
@@ -22,8 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

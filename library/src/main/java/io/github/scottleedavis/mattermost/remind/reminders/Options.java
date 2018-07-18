@@ -148,7 +148,7 @@ public class Options {
         if (reminders.size() > 0) {
             String reminderOutput = "";
             List<String> complete = reminders.stream().filter(r -> r.isComplete())
-                                        .map(r -> "\"" + r.getMessage() + "\"").collect(Collectors.toList());
+                    .map(r -> "\"" + r.getMessage() + "\"").collect(Collectors.toList());
             if (complete.size() > 0)
                 reminderOutput += "*Complete*:\n" +
                         complete.stream().reduce("", String::concat) + "\n";
@@ -195,7 +195,7 @@ public class Options {
         }).collect(Collectors.toList());
 
         Attachment viewCompleted = new Attachment();
-        if( reminders.size() > 0) {
+        if (reminders.size() > 0) {
             ReminderOccurrence reminderOccurrence = reminders.get(0).getOccurrences().get(0);
             viewCompleted.setActions(Arrays.asList(viewCompleted(reminderOccurrence.getId()), close()));
         }
@@ -236,7 +236,7 @@ public class Options {
         context.setId(id);
         Integration integration = new Integration();
         integration.setContext(context);
-        integration.setUrl(appUrl + (completed ? "view/complete" :"view") );
+        integration.setUrl(appUrl + (completed ? "view/complete" : "view"));
         Action action = new Action();
         action.setIntegration(integration);
         action.setName(completed ? "View Completed Reminders" : "View Reminders");

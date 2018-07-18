@@ -68,8 +68,8 @@ public class ReminderService {
 
     public void deleteCompleted(String userName) {
         reminderRepository.findByUserName(userName).stream()
-                                        .filter(r -> r.getCompleted() != null).collect(Collectors.toList())
-                                        .forEach(r -> reminderRepository.delete(r));
+                .filter(r -> r.getCompleted() != null).collect(Collectors.toList())
+                .forEach(r -> reminderRepository.delete(r));
     }
 
     public void complete(Reminder reminder) {

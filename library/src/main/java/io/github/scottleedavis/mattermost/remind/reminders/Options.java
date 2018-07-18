@@ -137,7 +137,7 @@ public class Options {
             List<String> pastIncomplete = reminders.stream().filter(r ->
                     (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
                             r.getOccurrences().get(0).getOccurrence().isBefore(LocalDateTime.now()) &&
-                                    r.getOccurrences().get(0).getSnoozed() == null
+                            r.getOccurrences().get(0).getSnoozed() == null
             ).map(r -> "* \"" + r.getMessage() + "\"\n").collect(Collectors.toList());
             if (pastIncomplete.size() > 0)
                 reminderOutput += "*Past and incomplete*:\n" +
@@ -178,7 +178,7 @@ public class Options {
         List<Attachment> pastIncomplete = reminders.stream().filter(r ->
                 (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
                         r.getOccurrences().get(0).getOccurrence().isBefore(LocalDateTime.now()) &&
-                                r.getOccurrences().get(0).getSnoozed() == null
+                        r.getOccurrences().get(0).getSnoozed() == null
         ).map(r -> {
             Attachment attachment = new Attachment();
             attachment.setActions(listActions(r.getOccurrences().get(0).getId(), false, true));
@@ -198,10 +198,10 @@ public class Options {
         }
 
         List<Attachment> noList = new ArrayList<>();
-        if( upcoming.size() == 0 &&
+        if (upcoming.size() == 0 &&
                 recurring.size() == 0 &&
                 pastIncomplete.size() == 0 &&
-                completed.size() == 0 ) {
+                completed.size() == 0) {
             Attachment noListReminders = new Attachment();
             noListReminders.setText(noReminderList);
             noList.add(noListReminders);

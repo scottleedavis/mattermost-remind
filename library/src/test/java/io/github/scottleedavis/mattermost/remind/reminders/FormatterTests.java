@@ -1,5 +1,6 @@
 package io.github.scottleedavis.mattermost.remind.reminders;
 
+import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.messages.ParsedRequest;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -21,17 +23,43 @@ public class FormatterTests {
     private Formatter formatter;
 
     @Test
-    public void upcomingReminder() {
-
-        //TODO test this better
-
+    public void completedReminder() {
+        Reminder reminder = new Reminder();
+        reminder.setTarget("foo");
+        reminder.setMessage("baz");
+        reminder.setUserName("bar");
+        reminder.setCompleted(LocalDateTime.parse("2019-08-04T10:11:30"));
         ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
         reminderOccurrence.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
-        String output = formatter.upcomingReminder(Arrays.asList(reminderOccurrence));
+        reminderOccurrence.setReminder(reminder);
 
-        assertNotNull(output);
+        assertEquals(formatter.completedReminder(Arrays.asList(reminderOccurrence)),
+                "* \"baz\" (completed at 10:11AM Sunday, August 4th)\n");
+    }
 
-        assertEquals(output, "10:11AM Saturday, August 4th\n");
+    @Test
+    public void upcomingReminder() {
+
+        Reminder reminder = new Reminder();
+        reminder.setTarget("foo");
+        reminder.setMessage("baz");
+        reminder.setUserName("bar");
+        ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
+        reminderOccurrence.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
+        reminderOccurrence.setReminder(reminder);
+        reminder.setOccurrences(Arrays.asList(reminderOccurrence));
+
+        assertEquals(formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+                "\"baz\" 10:11AM Saturday, August 4th");
+
+        reminderOccurrence.setRepeat("every day");
+        assertEquals(formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+                "\"baz\" 10:11AM Every Day");
+
+        reminderOccurrence.setRepeat(null);
+        reminderOccurrence.setSnoozed(LocalDateTime.parse("2018-08-04T10:11:30"));
+        assertEquals(formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+                "\"baz\" (snoozed until 10:11AM Saturday, August 4th)");
 
     }
 
@@ -141,5 +169,20 @@ public class FormatterTests {
         assertTrue(formatter.wordToNumber("first") == 1);
         assertTrue(formatter.wordToNumber("third") == 3);
         assertTrue(formatter.wordToNumber("fourteenth") == 14);
+    }
+
+    @Test
+    public void amPm() {
+        assertEquals(formatter.amPm(LocalDate.now().atTime(9, 0)), "AM");
+        assertEquals(formatter.amPm(LocalDate.now().atTime(14, 0)), "PM");
+    }
+
+    @Test
+    public void militaryToTwelveHour() {
+        assertTrue(formatter.militaryToTwelveHour(0) == 12);
+        assertTrue(formatter.militaryToTwelveHour(3) == 3);
+        assertTrue(formatter.militaryToTwelveHour(12) == 12);
+        assertTrue(formatter.militaryToTwelveHour(17) == 5);
+
     }
 }

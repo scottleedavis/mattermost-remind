@@ -60,6 +60,13 @@ public class UpdatesTests {
     }
 
     @Test
+    public void close() throws Exception {
+
+        assertNotNull(updates.close().getUpdate().getMessage());
+
+    }
+
+    @Test
     public void delete() throws Exception {
         Interaction interaction = new Interaction();
         Context context = new Context();
@@ -74,11 +81,41 @@ public class UpdatesTests {
     }
 
     @Test
+    public void deleteCompleted() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("deleteCompleted");
+        context.setId(this.reminderOccurrence.getId());
+        interaction.setContext(context);
+        interaction.setUserId("FOO");
+        interaction.setContext(context);
+        UpdateResponse updateResponse = updates.deleteCompleted(interaction);
+        assertEquals(updateResponse.getUpdate().getMessage(), "Ok! I’ve deleted all completed reminders.");
+
+    }
+
+    @Test
     @Transactional
     public void view() throws Exception {
         Interaction interaction = new Interaction();
         Context context = new Context();
         context.setAction("view");
+        context.setId(this.reminderOccurrence.getId());
+        interaction.setContext(context);
+        interaction.setUserId("FOO");
+        interaction.setContext(context);
+        UpdateResponse updateResponse = updates.view(interaction);
+        assertNotNull(updateResponse.getEphemeralText());
+
+    }
+
+    @Test
+    @Transactional
+    public void viewComplete() throws Exception {
+
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("viewComplete");
         context.setId(this.reminderOccurrence.getId());
         interaction.setContext(context);
         interaction.setUserId("FOO");

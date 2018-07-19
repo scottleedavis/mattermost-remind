@@ -21,8 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -73,6 +72,20 @@ public class UpdateInteractionTests {
     }
 
     @Test
+    public void deleteCompleted() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setId(reminderOccurrence.getId());
+        context.setAction("deleteCompleted");
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.deleteCompleted(interaction);
+
+        assertEquals(updateResponse.getUpdate().getMessage(), "Ok! I’ve deleted all completed reminders.");
+    }
+
+    @Test
     @Transactional
     public void view() throws Exception {
         Interaction interaction = new Interaction();
@@ -87,6 +100,22 @@ public class UpdateInteractionTests {
         assertTrue(updateResponse.getEphemeralText().startsWith("*Upcoming*:\n"));
 
     }
+
+    @Test
+    @Transactional
+    public void viewComplete() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setId(reminderOccurrence.getId());
+        context.setAction("viewComplete");
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.viewComplete(interaction);
+
+        assertEquals(updateResponse.getEphemeralText(), "I cannot find any reminders for you. Type `/remind` to set one.");
+    }
+
 
     @Test
     public void complete() throws Exception {
@@ -116,6 +145,23 @@ public class UpdateInteractionTests {
         UpdateResponse updateResponse = updateInteraction.snooze(interaction);
 
         assertEquals(updateResponse.getUpdate().getMessage(), "Ok! I’ll remind you “foo to the bar” in 20 minutes");
+
+    }
+
+    @Test
+    public void close() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setId(reminderOccurrence.getId());
+        context.setAction("close");
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.close();
+
+        assertNotNull(updateResponse.getUpdate());
+
+        assertEquals(updateResponse.getUpdate().getMessage(), "");
 
     }
 

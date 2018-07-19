@@ -103,19 +103,53 @@ public class Formatter {
 
     }
 
+    public String completedReminder(List<ReminderOccurrence> occurrences) {
+
+        LocalDateTime ldt = occurrences.get(0).getReminder().getCompleted();
+        String timeChunk = "(completed at ";
+        timeChunk += militaryToTwelveHour(ldt.getHour()) + ":"
+                + String.format("%02d", ldt.getMinute())
+                + amPm(ldt) + " ";
+
+        timeChunk += capitalize(ldt.getDayOfWeek().toString()) + ", "
+                + capitalize(ldt.getMonth().toString()) + " "
+                + daySuffix(ldt.getDayOfMonth()) + ")";
+
+        return "* \"" + occurrences.get(0).getReminder().getMessage() + "\"" + " " + timeChunk + "\n";
+    }
+
     public String upcomingReminder(List<ReminderOccurrence> occurrences) {
-        if (occurrences.size() > 1)
-            return "NOT YET IMPLMENTED (occurences > 1";
-        else {
-            ReminderOccurrence reminderOccurrence = occurrences.get(0);
-            LocalDateTime ldt = reminderOccurrence.getOccurrence();
-            return ldt.getHour() + ":"
-                    + ldt.getMinute()
-                    + amPm(ldt) + " "
-                    + capitalize(ldt.getDayOfWeek().toString()) + ", "
-                    + capitalize(ldt.getMonth().toString()) + " "
-                    + daySuffix(ldt.getDayOfMonth()) + "\n";
+
+        String timeChunk;
+        if (occurrences.stream().anyMatch(o -> o.getSnoozed() != null)) {
+            LocalDateTime snoozed = occurrences.stream().filter(o -> o.getSnoozed() != null)
+                    .map(o -> o.getSnoozed()).findFirst().orElse(null);
+
+            timeChunk = "(snoozed until " +
+                    militaryToTwelveHour(snoozed.getHour()) + ":" +
+                    String.format("%02d", snoozed.getMinute()) + amPm(snoozed) + " " +
+                    capitalize(snoozed.getDayOfWeek().toString()) + ", " +
+                    capitalize(snoozed.getMonth().toString()) + " " +
+                    daySuffix(snoozed.getDayOfMonth()) + ")";
+        } else {
+
+            LocalDateTime ldt = occurrences.get(0).getOccurrence();
+            timeChunk = militaryToTwelveHour(ldt.getHour()) + ":"
+                    + String.format("%02d", ldt.getMinute())
+                    + amPm(ldt) + " ";
+            if (occurrences.get(0).getRepeat() == null) {
+                timeChunk += capitalize(ldt.getDayOfWeek().toString()) + ", "
+                        + capitalize(ldt.getMonth().toString()) + " "
+                        + daySuffix(ldt.getDayOfMonth());
+            } else {
+                String when = occurrences.get(0).getRepeat().split(" at ")[0];
+                String[] whenChunks = when.split(" ");
+                timeChunk += Arrays.stream(whenChunks).map(c -> capitalize(c)).collect(Collectors.joining(" "));
+            }
+
         }
+
+        return "\"" + occurrences.get(0).getReminder().getMessage() + "\"" + " " + timeChunk;
     }
 
     public String reminderResponse(ParsedRequest parsedRequest) throws Exception {
@@ -226,6 +260,14 @@ public class Formatter {
 
     public String amPm(LocalDateTime ldt) {
         return (ldt.getHour() >= 12) ? "PM" : "AM";
+    }
+
+    public Integer militaryToTwelveHour(Integer hour) {
+        if (hour == 0)
+            return 12;
+        if (hour > 12)
+            return hour - 12;
+        return hour;
     }
 
     public String normalizeTime(String text) throws Exception {

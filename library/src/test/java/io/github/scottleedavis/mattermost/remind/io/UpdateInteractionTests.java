@@ -40,7 +40,8 @@ public class UpdateInteractionTests {
 
     @Before
     public void setUp() {
-        reminderRepository.deleteAll();;
+        reminderRepository.deleteAll();
+        ;
         Reminder reminder = new Reminder();
         reminder.setMessage("foo to the bar");
         reminder.setTarget("@foo");

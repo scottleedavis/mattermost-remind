@@ -19,6 +19,17 @@ TABLESPACE pg_default;
 ALTER TABLE public.reminders
     OWNER to postgres;
 
+-- SEQUENCE: public.reminders_reminder_id_seq
+
+-- DROP SEQUENCE public.reminders_reminder_id_seq;
+
+CREATE SEQUENCE public.reminders_reminder_id_seq;
+
+ALTER SEQUENCE public.reminders_reminder_id_seq
+    OWNER TO postgres;
+
+
+    
 
 -- Table: public.occurrences
 
@@ -53,4 +64,15 @@ CREATE INDEX fki_reminder_id
     ON public.occurrences USING btree
     (reminder_id)
     TABLESPACE pg_default;
+
+
+-- SEQUENCE: public.occurrences_occurrence_id_seq
+
+-- DROP SEQUENCE public.occurrences_occurrence_id_seq;
+
+CREATE SEQUENCE public.occurrences_occurrence_id_seq;
+
+ALTER SEQUENCE public.occurrences_occurrence_id_seq
+    OWNER TO postgres;
+
 

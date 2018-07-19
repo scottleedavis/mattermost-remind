@@ -130,7 +130,7 @@ public class Formatter {
                     String.format("%02d", snoozed.getMinute()) + amPm(snoozed) + " " +
                     capitalize(snoozed.getDayOfWeek().toString()) + ", " +
                     capitalize(snoozed.getMonth().toString()) + " " +
-                    daySuffix(snoozed.getDayOfMonth()) + " )";
+                    daySuffix(snoozed.getDayOfMonth()) + ")";
         } else {
 
             LocalDateTime ldt = occurrences.get(0).getOccurrence();

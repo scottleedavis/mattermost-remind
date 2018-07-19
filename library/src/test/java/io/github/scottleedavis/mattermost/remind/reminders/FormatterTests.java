@@ -2,7 +2,6 @@ package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
-import io.github.scottleedavis.mattermost.remind.db.ReminderRepository;
 import io.github.scottleedavis.mattermost.remind.messages.ParsedRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -26,7 +24,17 @@ public class FormatterTests {
 
     @Test
     public void completedReminder() {
-        assertTrue(false);
+        Reminder reminder = new Reminder();
+        reminder.setTarget("foo");
+        reminder.setMessage("baz");
+        reminder.setUserName("bar");
+        reminder.setCompleted(LocalDateTime.parse("2019-08-04T10:11:30"));
+        ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
+        reminderOccurrence.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
+        reminderOccurrence.setReminder(reminder);
+
+        assertEquals(formatter.completedReminder(Arrays.asList(reminderOccurrence)),
+                "* \"baz\" (completed at 10:11AM Sunday, August 4th)\n");
     }
 
     @Test
@@ -41,14 +49,17 @@ public class FormatterTests {
         reminderOccurrence.setReminder(reminder);
         reminder.setOccurrences(Arrays.asList(reminderOccurrence));
 
-        String output = formatter.upcomingReminder(Arrays.asList(reminderOccurrence));
+        assertEquals( formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+                "\"baz\" 10:11AM Saturday, August 4th");
 
-        assertNotNull(output);
+        reminderOccurrence.setRepeat("every day");
+        assertEquals( formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+                "\"baz\" 10:11AM Every Day");
 
-        assertEquals(output, "10:11AM Saturday, August 4th\n");
-
-
-        assertTrue(false);
+        reminderOccurrence.setRepeat(null);
+        reminderOccurrence.setSnoozed(LocalDateTime.parse("2018-08-04T10:11:30"));
+        assertEquals( formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+                "\"baz\" (snoozed until 10:11AM Saturday, August 4th)" );
 
     }
 

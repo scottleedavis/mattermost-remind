@@ -122,9 +122,9 @@ public class ReminderServiceTests {
         reminderService.deleteCompleted(reminder.getUserName());
 
         List<Reminder> reminders = reminderRepository.findByUserName(reminder.getUserName()).stream()
-                                    .filter(r -> r.getCompleted() != null).collect(Collectors.toList());
+                .filter(r -> r.getCompleted() != null).collect(Collectors.toList());
 
-        assertTrue( reminders.size() == 0 );
+        assertTrue(reminders.size() == 0);
     }
 
     @Test
@@ -169,7 +169,7 @@ public class ReminderServiceTests {
 
         assertNotNull(reminderOccurrence);
 
-        assertTrue( reminderOccurrence.getSnoozed() == null );
+        assertTrue(reminderOccurrence.getSnoozed() == null);
     }
 
     @Test

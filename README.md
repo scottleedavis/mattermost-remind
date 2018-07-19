@@ -83,6 +83,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
   ```
 * [PostgreSQL](https://www.postgresql.org/) can be used by changing [application.properties](application/src/main/resources/application.properties) and creating a reminders table (_[reminders.example.postgresql.sql](scripts/reminders.example.postgresql.sql)_)
   ```$xslt
+    spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
     spring.datasource.url=jdbc:postgresql://YOUR_DATABASE_SERVER:5432/YOUR_DATABASE_NAME 
     spring.datasource.username=YOUR_DATABASE_USER 
     spring.datasource.password=postgres@YOUR_DATABASE_PASSWORD   

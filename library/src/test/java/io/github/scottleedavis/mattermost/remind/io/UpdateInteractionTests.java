@@ -40,6 +40,7 @@ public class UpdateInteractionTests {
 
     @Before
     public void setUp() {
+        reminderRepository.deleteAll();;
         Reminder reminder = new Reminder();
         reminder.setMessage("foo to the bar");
         reminder.setTarget("@foo");
@@ -97,7 +98,10 @@ public class UpdateInteractionTests {
 
         UpdateResponse updateResponse = updateInteraction.view(interaction);
 
-        assertTrue(updateResponse.getEphemeralText().startsWith("*Upcoming*:\n"));
+        assertTrue(updateResponse.getEphemeralText().startsWith("*Past and incomplete*:\n" +
+                "* \"foo to the bar\"\n" +
+                "\n" +
+                "*Note*:  To interact with these reminders use `/remind list` in your personal user channel"));
 
     }
 

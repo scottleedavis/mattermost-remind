@@ -28,7 +28,12 @@ public class ReminderRepositoryTests {
 
     @Before
     public void setUp() {
+        reminderRepository.deleteAll();
+    }
 
+    @Test
+    public void clean() {
+        reminderRepository.deleteAll();
     }
 
     @Test

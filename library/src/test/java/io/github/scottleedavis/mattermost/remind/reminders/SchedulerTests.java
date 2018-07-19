@@ -6,6 +6,7 @@ import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrenceRepository
 import io.github.scottleedavis.mattermost.remind.db.ReminderRepository;
 import io.github.scottleedavis.mattermost.remind.io.Webhook;
 import io.github.scottleedavis.mattermost.remind.messages.Response;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -38,6 +39,16 @@ public class SchedulerTests {
 
     @Resource
     private ReminderOccurrenceRepository reminderOccurrenceRepository;
+
+    @Before
+    public void setUp() {
+        reminderRepository.deleteAll();
+    }
+
+    @Test
+    public void deleteAll() {
+        reminderRepository.deleteAll();
+    }
 
     @Test
     public void setReminder() {

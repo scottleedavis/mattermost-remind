@@ -9,7 +9,7 @@ public class ReminderOccurrence {
 
     @Id
     @Column(name = "occurrence_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "reminder_id", nullable = false)

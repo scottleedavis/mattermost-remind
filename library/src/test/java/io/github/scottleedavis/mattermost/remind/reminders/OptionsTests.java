@@ -2,7 +2,6 @@ package io.github.scottleedavis.mattermost.remind.reminders;
 
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
-import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrenceRepository;
 import io.github.scottleedavis.mattermost.remind.db.ReminderRepository;
 import io.github.scottleedavis.mattermost.remind.messages.Action;
 import org.junit.Before;
@@ -61,7 +60,7 @@ public class OptionsTests {
         reminder.setOccurrences(reminderOccurrences);
         reminderRepository.save(reminder);
 
-        assertEquals(options.listComplete("FOO"),"*Complete*:\n" +
+        assertEquals(options.listComplete("FOO"), "*Complete*:\n" +
                 "* \"baz\" (completed at 10:11AM Sunday, August 4th)\n" +
                 "\n");
 
@@ -79,7 +78,7 @@ public class OptionsTests {
         reminder2.setOccurrences(reminderOccurrences2);
         reminderRepository.save(reminder2);
 
-        assertEquals(options.listComplete("FOO"),"*Complete*:\n" +
+        assertEquals(options.listComplete("FOO"), "*Complete*:\n" +
                 "* \"baz\" (completed at 10:11AM Sunday, August 4th)\n" +
                 "* \"baz 2\" (completed at 10:11AM Thursday, January 4th)\n" +
                 "\n");
@@ -178,7 +177,7 @@ public class OptionsTests {
     @Transactional
     public void listRemindersAttachments() {
 
-        assertTrue(options.listRemindersAttachments("FOO").size() == 1 );
+        assertTrue(options.listRemindersAttachments("FOO").size() == 1);
 
         Reminder reminder = new Reminder();
         reminder.setTarget("foo");
@@ -221,7 +220,7 @@ public class OptionsTests {
         reminder3.setOccurrences(reminderOccurrences3);
         reminderRepository.save(reminder3);
 
-        assertTrue(options.listRemindersAttachments("FOO").size() == 3 );
+        assertTrue(options.listRemindersAttachments("FOO").size() == 3);
 
 
     }

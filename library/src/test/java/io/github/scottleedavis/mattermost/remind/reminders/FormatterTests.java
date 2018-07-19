@@ -49,17 +49,17 @@ public class FormatterTests {
         reminderOccurrence.setReminder(reminder);
         reminder.setOccurrences(Arrays.asList(reminderOccurrence));
 
-        assertEquals( formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+        assertEquals(formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
                 "\"baz\" 10:11AM Saturday, August 4th");
 
         reminderOccurrence.setRepeat("every day");
-        assertEquals( formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+        assertEquals(formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
                 "\"baz\" 10:11AM Every Day");
 
         reminderOccurrence.setRepeat(null);
         reminderOccurrence.setSnoozed(LocalDateTime.parse("2018-08-04T10:11:30"));
-        assertEquals( formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
-                "\"baz\" (snoozed until 10:11AM Saturday, August 4th)" );
+        assertEquals(formatter.upcomingReminder(Arrays.asList(reminderOccurrence)),
+                "\"baz\" (snoozed until 10:11AM Saturday, August 4th)");
 
     }
 

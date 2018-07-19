@@ -56,7 +56,7 @@ A /remind slash command for [Mattermost](https://mattermost.com/) built with [Sp
 ### releases
 
 * Tracked in [Github projects](https://github.com/scottleedavis/mattermost-remind/projects)
-* Next release targeted: [Release 0.0.2](https://github.com/scottleedavis/mattermost-remind/projects/1)
+* Next release targeted: [Release 0.0.3](https://github.com/scottleedavis/mattermost-remind/projects/2)
 * Want to contribute?  Identify an [issue](https://github.com/scottleedavis/mattermost-remind/issues), [fork](https://help.github.com/articles/fork-a-repo/) this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 
 ### bugs & issues

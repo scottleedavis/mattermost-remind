@@ -28,7 +28,6 @@ CREATE SEQUENCE public.reminders_reminder_id_seq;
 ALTER SEQUENCE public.reminders_reminder_id_seq
     OWNER TO postgres;
 
-
     
 
 -- Table: public.occurrences
@@ -74,5 +73,4 @@ CREATE SEQUENCE public.occurrences_occurrence_id_seq;
 
 ALTER SEQUENCE public.occurrences_occurrence_id_seq
     OWNER TO postgres;
-
 

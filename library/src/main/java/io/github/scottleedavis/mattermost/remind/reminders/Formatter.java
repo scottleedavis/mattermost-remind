@@ -5,6 +5,7 @@ import io.github.scottleedavis.mattermost.remind.exceptions.FormatterException;
 import io.github.scottleedavis.mattermost.remind.messages.ParsedRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Component
+@Transactional
 public class Formatter {
 
     @Autowired

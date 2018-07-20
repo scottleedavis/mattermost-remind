@@ -8,6 +8,7 @@ import io.github.scottleedavis.mattermost.remind.messages.Update;
 import io.github.scottleedavis.mattermost.remind.messages.UpdateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 
 @Service
+@Transactional
 public class Updates {
 
     @Autowired

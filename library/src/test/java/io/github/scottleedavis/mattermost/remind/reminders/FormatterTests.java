@@ -157,6 +157,7 @@ public class FormatterTests {
     @Test
     public void normalizeDate() throws Exception {
         assertEquals(formatter.normalizeDate("day"), "DAY");
+        assertEquals(formatter.normalizeDate("today"), "TODAY");
         assertEquals(formatter.normalizeDate("everyday"), "EVERYDAY");
         assertEquals(formatter.normalizeDate("tomorrow"), "TOMORROW");
         assertEquals(formatter.normalizeDate("wednES"), "WEDNESDAY");

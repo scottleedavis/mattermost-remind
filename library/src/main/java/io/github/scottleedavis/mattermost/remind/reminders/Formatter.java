@@ -366,6 +366,8 @@ public class Formatter {
 
         if (text.equalsIgnoreCase("day"))
             return text.toUpperCase();
+        else if (text.equalsIgnoreCase("today"))
+            return text.toUpperCase();
         else if (text.equalsIgnoreCase("everyday"))
             return text.toUpperCase();
         else if (text.equalsIgnoreCase("tomorrow"))

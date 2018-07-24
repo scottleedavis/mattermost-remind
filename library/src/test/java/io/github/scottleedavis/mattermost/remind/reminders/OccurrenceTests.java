@@ -400,7 +400,9 @@ public class OccurrenceTests {
         testDate = occurrence.calculate(when).get(0);
         checkDate = LocalDateTime.parse("July 20 " + LocalDateTime.now().getYear() + " 11:00", new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
-        assertEquals(testDate, checkDate);
+        checkDate2 = LocalDateTime.parse("July 20 " + LocalDateTime.now().plusYears(1).getYear() + " 11:00", new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMMM d yyyy HH:mm").toFormatter());
+        assertTrue(testDate.equals(checkDate) || testDate.equals(checkDate2));
 
         when = "every Monday at 7:32am";
         testDate = occurrence.calculate(when).get(0);
@@ -480,6 +482,7 @@ public class OccurrenceTests {
         String when;
         LocalDateTime testDate;
         LocalDateTime checkDate;
+        LocalDateTime checkDate2;
 
         when = "monday";
         testDate = occurrence.calculate(when).get(0);
@@ -510,6 +513,12 @@ public class OccurrenceTests {
         checkDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).atTime(16, 20);
         assertEquals(testDate, checkDate);
 
+
+        when = "today at 3pm";
+        testDate = occurrence.calculate(when).get(0);
+        checkDate = LocalDate.now().plusDays(1).atTime(15, 0);
+        checkDate2 = LocalDate.now().atTime(15, 0);
+        assertTrue(testDate.equals(checkDate) || testDate.equals(checkDate2));
 
         when = "tomorrow";
         testDate = occurrence.calculate(when).get(0);

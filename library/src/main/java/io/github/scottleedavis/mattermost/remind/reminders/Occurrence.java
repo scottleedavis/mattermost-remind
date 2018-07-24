@@ -131,7 +131,7 @@ public class Occurrence {
         if (dateTimeSplit.length == 2)
             recurrentDates = every("every " + formatter.normalizeDate(dateTimeSplit[1]));
 
-        switch (chronoUnit) {
+        switch (dateTimeSplit[0]) {
             case "noon":
                 if (recurrentDates.size() > 0) {
                     return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(12, 0), now, true)).collect(Collectors.toList());
@@ -144,124 +144,17 @@ public class Occurrence {
                 }
                 closest = LocalDate.now().atTime(0, 0);
                 return Arrays.asList(chooseClosest(closest, now, true));
-            case "one":
-            case "two":
-            case "three":
-            case "four":
-            case "five":
-            case "six":
-            case "seven":
-            case "eight":
-            case "nine":
-            case "ten":
-            case "eleven":
-            case "twelve":
-                if (recurrentDates.size() > 0) {
-                    Integer builtHour = formatter.wordToNumber(chronoUnit);
-                    return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(builtHour, 0), now, false)).collect(Collectors.toList());
-                }
-                closest = LocalDate.now().atTime(formatter.wordToNumber(chronoUnit), 0);
-                return Arrays.asList(chooseClosest(closest, now, false));
-            case "0":
-            case "1":
-            case "2":
-            case "3":
-            case "4":
-            case "5":
-            case "6":
-            case "7":
-            case "8":
-            case "9":
-            case "10":
-            case "11":
-            case "12":
-            case "13":
-            case "14":
-            case "15":
-            case "16":
-            case "17":
-            case "18":
-            case "19":
-            case "20":
-            case "21":
-            case "22":
-            case "23":
-                if (recurrentDates.size() > 0) {
-                    return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(Integer.parseInt(chronoUnit), 0), now, false)).collect(Collectors.toList());
-                }
-                closest = LocalDate.now().atTime(Integer.parseInt(chronoUnit), 0);
-                return Arrays.asList(chooseClosest(closest, now, false));
-            default:
-                break;
         }
 
-        if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)",  // 12:30PM, 12:30 pm
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
-            int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ') ? 3 : 2;
-            String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
-            time = Arrays.stream(chronoUnit.substring(0, chronoUnit.length() - amPmOffset).split(":"))
-                    .mapToInt(Integer::parseInt).toArray();
-
-            time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
-            if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
-            }
-            closest = LocalDate.now().atTime(time[0], time[1]);
-            return Arrays.asList(chooseClosest(closest, now, true));
-
-        } else if (Pattern.compile("(1[012]|[0-9]):[0-5][0-9]", // 12:30
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
-            time = Arrays.stream(chronoUnit.split(":")).mapToInt(Integer::parseInt).toArray();
-            time[0] = time[0] % 24;
-            if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
-            }
-            closest = LocalDate.now().atTime(time[0], time[1]);
-            return Arrays.asList(chooseClosest(closest, now, true));
-
-        } else if (Pattern.compile("(1[012]|[1-9])[0-5][0-9](\\s)?(?i)(am|pm)", // 1230pm, 1230 pm
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
-            int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ') ? 3 : 2;
-            String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
-            String subChronoUnit = chronoUnit.substring(0, chronoUnit.length() - amPmOffset);
-            subChronoUnit = String.format("%4s", subChronoUnit).replace(' ', '0');
-            String[] parts = {subChronoUnit.substring(0, 2), subChronoUnit.substring(2)};
-            time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
-
-            time[0] = amPm.equalsIgnoreCase("pm") ? (time[0] < 12 ? ((time[0] + 12) % 24) : time[0]) : time[0] % 12;
-            if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
-            }
-            closest = LocalDate.now().atTime(time[0], time[1]);
-            return Arrays.asList(chooseClosest(closest, now, true));
-
-        } else if (Pattern.compile("(1[012]|[1-9])(\\s)?(?i)(am|pm)",  // 5PM, 7 am
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
-            int amPmOffset = (chronoUnit.charAt(chronoUnit.length() - 3) == ' ') ? 3 : 2;
-            String amPm = chronoUnit.substring(chronoUnit.length() - amPmOffset).trim();
-            String subChronoUnit = chronoUnit.substring(0, chronoUnit.length() - amPmOffset);
-            int time_check = Integer.parseInt(subChronoUnit);
-            final int time_solo = amPm.equalsIgnoreCase("pm") ? (time_check < 12 ? ((time_check + 12) % 24) : time_check) : time_check % 12;
-            if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time_solo, 0), now, true)).collect(Collectors.toList());
-            }
-            closest = LocalDate.now().atTime(time_solo, 0);
-            return Arrays.asList(chooseClosest(closest, now, true));
-
-        } else if (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
-                Pattern.CASE_INSENSITIVE).matcher(chronoUnit).find()) {
-            String[] parts = {chronoUnit.substring(0, 2), chronoUnit.substring(2)};
-            time = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
-            time[0] = time[0] % 24;
-            if (recurrentDates.size() > 0) {
-                return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, true)).collect(Collectors.toList());
-            }
-            closest = LocalDate.now().atTime(time[0], time[1]);
-            return Arrays.asList(chooseClosest(closest, now, true));
-
+        time = Arrays.stream(chronoUnit.split(":")).mapToInt(Integer::parseInt).toArray();
+        final boolean dayInterval = isDayInterval(dateTimeSplit[0]);
+        time[0] = time[0] % 24;
+        if (recurrentDates.size() > 0) {
+            return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, dayInterval)).collect(Collectors.toList());
         }
+        closest = LocalDate.now().atTime(time[0], time[1]);
+        return Arrays.asList(chooseClosest(closest, now, dayInterval));
 
-        throw new OccurrenceException("time mark not recognized");
     }
 
     private List<LocalDateTime> on(String when) throws Exception {
@@ -368,6 +261,8 @@ public class Occurrence {
         String timeUnit = formatter.normalizeTime(time);
 
         switch (dateUnit) {
+            case "TODAY":
+                return at("at " + time);
             case "TOMORROW":
                 return on("on " + LocalDate.now().plusDays(1).getDayOfWeek().toString() + " at " + timeUnit);
             case "EVERYDAY":
@@ -410,6 +305,20 @@ public class Occurrence {
                 return closest;
         }
 
+    }
+
+    private boolean isDayInterval(String dateTime) {
+
+        if (Pattern.compile("(am|pm)",  // 12:30PM, 12:30 pm
+                Pattern.CASE_INSENSITIVE).matcher(dateTime).find())
+            return true;
+
+        if (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
+                Pattern.CASE_INSENSITIVE).matcher(dateTime).find()) {
+            return true;
+        }
+
+        return false;
     }
 
 }

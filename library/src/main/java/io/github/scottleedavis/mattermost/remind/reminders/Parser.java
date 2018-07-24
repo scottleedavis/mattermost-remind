@@ -122,6 +122,12 @@ public class Parser {
             whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
             return whenPattern;
         }
+        subStringA = text.indexOf(" today ");
+        subStringB = text.indexOf(" at ");
+        if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {
+            whenPattern.raw = whenPattern.normalized = text.substring(subStringA).trim();
+            return whenPattern;
+        }
         subStringA = text.indexOf(" tomorrow ");
         subStringB = text.indexOf(" at ");
         if ((subStringA > -1 && subStringB >= -1) && (subStringB > subStringA)) {

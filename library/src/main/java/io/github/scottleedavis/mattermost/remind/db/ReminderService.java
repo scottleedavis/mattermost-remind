@@ -41,7 +41,7 @@ public class ReminderService {
 
     public ReminderOccurrence findByInteraction(Interaction interaction) throws Exception {
         return reminderOccurrenceRepository.findById(interaction.getContext().getId())
-                .orElseThrow(() -> new ReminderServiceException("No occurrence found with that id."));
+                .orElseThrow(() -> new ReminderServiceException("No occurrence found with that id. "+ Long.toString(interaction.getContext().getId()));
 
     }
 

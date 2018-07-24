@@ -61,5 +61,15 @@ public class WebhookTests {
         responseEntity = webhook.invoke(reminderOccurrence);
         assertNotNull(responseEntity);
 
+        reminder.setTarget("@bob");
+        reminderRepository.save(reminder);
+        responseEntity = webhook.invoke(reminderOccurrence);
+        assertNotNull(responseEntity);
+
+        reminderOccurrence.setRepeat("tomorrow");
+        reminderOccurrenceRepository.save(reminderOccurrence);
+        responseEntity = webhook.invoke(reminderOccurrence);
+        assertNotNull(responseEntity);
+
     }
 }

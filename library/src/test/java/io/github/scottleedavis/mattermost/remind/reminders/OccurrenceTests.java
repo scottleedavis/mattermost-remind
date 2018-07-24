@@ -116,7 +116,7 @@ public class OccurrenceTests {
         when = "at 9:12";
         testDate = occurrence.calculate(when).get(0);
         checkDate = LocalDate.now().atTime(9, 12).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusDays(1).equals(testDate));
+        assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate));
 
         when = "at 17:15";
         testDate = occurrence.calculate(when).get(0);

@@ -13,10 +13,11 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
 * `/remind help`
 * `/remind list`
 * `/remind version`
-* `/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]`
-* `/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)] (every) [day|date]`
-* `/remind [who] [what] (on) [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)] (at) [time]`
-* `/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]`
+* `/remind [who] [what] [when]`
+  * `/remind [who] [what] in [# (seconds|minutes|hours|days|weeks|months|years)]`
+  * `/remind [who] [what] at [(noon|midnight|one..twelve|00:00am/pm|0000)] (every) [day|date]`
+  * `/remind [who] [what] (on) [(Monday-Sunday|Month&Day|MM/DD/YYYY|MM/DD)] (at) [time]`
+  * `/remind [who] [what] every (other) [Monday-Sunday|Month&Day|MM/DD] (at) [time]`
 * `/remind [who] [when] [what]`
 
 ### releases

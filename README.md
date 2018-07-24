@@ -37,8 +37,17 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
 * Run: [Docker](https://www.docker.com/) (Optional)
 * Use: [Mattermost](https://mattermost.com/) 
 
-##### Datasource
-* Default database is [h2](http://www.h2database.com/html/main.html) (an auto-generated in-memory database)
+##### Datasources
+* [h2](http://www.h2database.com/html/main.html) is the default database
+* [PostgreSQL](https://www.postgresql.org/) can be used by changing [application.properties](application/src/main/resources/application.properties) and creating a reminders table (_[reminders.example.postgresql.sql](scripts/reminders.example.postgresql.sql)_)
+  ```$xslt
+    spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+    spring.datasource.url=jdbc:postgresql://YOUR_DATABASE_SERVER:5432/YOUR_DATABASE_NAME 
+    spring.datasource.username=YOUR_DATABASE_USER 
+    spring.datasource.password=postgres@YOUR_DATABASE_PASSWORD  
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+  ```
 * [SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx) can be used by changing [application.properties](application/src/main/resources/application.properties) and creating a reminders table  (_[reminders.example.sqlserver.sql](scripts/reminders.example.sqlserver.sql)_)
   ```$xslt
     spring.datasource.url=jdbc:sqlserver://YOUR_DATABASE_SERVER;databaseName=YOUR_DATABASE_NAME
@@ -47,13 +56,15 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
     spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
     spring.jpa.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
   ```
-* [PostgreSQL](https://www.postgresql.org/) can be used by changing [application.properties](application/src/main/resources/application.properties) and creating a reminders table (_[reminders.example.postgresql.sql](scripts/reminders.example.postgresql.sql)_)
+* [MySQL](https://www.mysql.com/) can be used by changing [application.properties](application/src/main/resources/application.properties) and creating a reminders table  (_[reminders.example.mysql.sql](scripts/reminders.example.mysql.sql)_)
   ```$xslt
-    spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
-    spring.datasource.url=jdbc:postgresql://YOUR_DATABASE_SERVER:5432/YOUR_DATABASE_NAME 
-    spring.datasource.username=YOUR_DATABASE_USER 
-    spring.datasource.password=postgres@YOUR_DATABASE_PASSWORD   
-  ```
+    spring.datasource.url=jdbc:mysql://YOUR_DATABASE_SERVER/YOUR_DATABASE_NAME
+    spring.datasource.username=YOUR_DATABASE_USER
+    spring.datasource.password=YOUR_DATABASE_PASSWORD
+    spring.datasource.driverClassName=com.mysql.jdbc.Driver
+    spring.jpa.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+  ```  
+  
 ##### Mattermost Integration
 _Requires slash command and webhook integrations_
 * Ensure Custom Integrations (in System Console) has the following enabled

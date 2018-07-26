@@ -20,11 +20,16 @@ public class Webhook {
 
     private static Logger logger = LoggerFactory.getLogger(Webhook.class);
 
-    @Value("${remind.webhookUrl}")
     private String webhookUrl;
 
     @Autowired
     private Options options;
+
+    @Autowired
+    public Webhook(@Value("${remind.webhookUrl}") String webhookUrl) {
+        this.webhookUrl = webhookUrl;
+        logger.info("remind.webhookUrl = {}",this.webhookUrl);
+    }
 
     public ResponseEntity<String> invoke(ReminderOccurrence reminderOccurrence) throws Exception {
 

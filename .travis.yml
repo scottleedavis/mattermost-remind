@@ -4,6 +4,10 @@ jdk: oraclejdk8
 before_install:
   - chmod +x mvnw
 
+env:
+  - REMIND_SLASH_TOKEN="7q61n4m5mfbebpme4ga5nu1gdh"
+  - REMIND_WEBHOOK_URL="http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqyc"
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 

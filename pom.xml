@@ -13,13 +13,13 @@
         <module>application</module>
     </modules>
 
-    <build>
-        <extensions>
-            <extension>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-extension</artifactId>
-                <version>1.4.3</version>
-            </extension>
-        </extensions>
-    </build>
+    <!--<build>-->
+        <!--<extensions>-->
+            <!--<extension>-->
+                <!--<groupId>com.spotify</groupId>-->
+                <!--<artifactId>dockerfile-maven-extension</artifactId>-->
+                <!--<version>1.4.3</version>-->
+            <!--</extension>-->
+        <!--</extensions>-->
+    <!--</build>-->
 </project>

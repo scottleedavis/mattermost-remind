@@ -72,6 +72,7 @@ public class OccurrenceTests {
         String when;
         LocalDateTime testDate;
         LocalDateTime checkDate;
+        LocalDateTime checkDate2;
 
         when = "at noon";
         testDate = occurrence.calculate(when).get(0);
@@ -116,7 +117,12 @@ public class OccurrenceTests {
         when = "at 9:12";
         testDate = occurrence.calculate(when).get(0);
         checkDate = LocalDate.now().atTime(9, 12).truncatedTo(ChronoUnit.SECONDS);
-        assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate));
+        checkDate2 = LocalDate.now().atTime(21, 12).truncatedTo(ChronoUnit.SECONDS);
+        System.out.println("=====================D");
+        System.out.println(testDate);
+        System.out.println(checkDate);
+        assertTrue(checkDate.equals(testDate) || checkDate.plusHours(12).equals(testDate) ||
+                    checkDate2.equals(testDate) || checkDate2.plusHours(12).equals(testDate));
 
         when = "at 17:15";
         testDate = occurrence.calculate(when).get(0);

@@ -147,7 +147,7 @@ public class Occurrence {
         }
 
         time = Arrays.stream(chronoUnit.split(":")).mapToInt(Integer::parseInt).toArray();
-        final boolean dayInterval = isDayInterval(dateTimeSplit[0]);
+        final boolean dayInterval = isDayInterval(dateTimeSplit[0], time);
         time[0] = time[0] % 24;
         if (recurrentDates.size() > 0) {
             return recurrentDates.stream().map(ldt_rd -> chooseClosest(ldt_rd.toLocalDate().atTime(time[0], time[1]), now, dayInterval)).collect(Collectors.toList());
@@ -307,18 +307,15 @@ public class Occurrence {
 
     }
 
-    private boolean isDayInterval(String dateTime) {
+    private boolean isDayInterval(String dateTime, int[] time) {
 
-        if (Pattern.compile("(am|pm)",  // 12:30PM, 12:30 pm
-                Pattern.CASE_INSENSITIVE).matcher(dateTime).find())
-            return true;
-
-        if (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
-                Pattern.CASE_INSENSITIVE).matcher(dateTime).find()) {
-            return true;
-        }
-
-        return false;
+        return ((Pattern.compile("(am|pm)",  // 12:30PM, 12:30 pm
+                Pattern.CASE_INSENSITIVE).matcher(dateTime).find()) ||
+                (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
+                        Pattern.CASE_INSENSITIVE).matcher(dateTime).find()) ||
+                (Pattern.compile("(1[012]|[1-9]):[0-5][0-9]", // 14:30
+                        Pattern.CASE_INSENSITIVE).matcher(dateTime).find() &&
+                        time[0] > 12));
     }
 
 }

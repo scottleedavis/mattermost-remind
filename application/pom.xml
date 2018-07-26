@@ -107,17 +107,25 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.3</version>
-                <configuration>
-                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>com.spotify</groupId>-->
+                <!--<artifactId>dockerfile-maven-plugin</artifactId>-->
+                <!--<version>1.4.3</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>default</id>-->
+                        <!--<goals>-->
+                            <!--<goal>build</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<repository>${docker.image.prefix}/${project.artifactId}</repository>-->
+                            <!--<buildArgs>-->
+                                <!--<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>-->
+                            <!--</buildArgs>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
         <resources>
             <resource>

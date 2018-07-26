@@ -309,22 +309,13 @@ public class Occurrence {
 
     private boolean isDayInterval(String dateTime, int[] time) {
 
-        if (Pattern.compile("(am|pm)",  // 12:30PM, 12:30 pm
-                Pattern.CASE_INSENSITIVE).matcher(dateTime).find())
-            return true;
-
-        if (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
-                Pattern.CASE_INSENSITIVE).matcher(dateTime).find()) {
-            return true;
-        }
-
-        if (Pattern.compile("(1[012]|[1-9]):[0-5][0-9]", // 14:30
-                Pattern.CASE_INSENSITIVE).matcher(dateTime).find() &&
-                time[0] > 12) {
-            return true;
-        }
-
-        return false;
+        return ((Pattern.compile("(am|pm)",  // 12:30PM, 12:30 pm
+                Pattern.CASE_INSENSITIVE).matcher(dateTime).find()) ||
+                (Pattern.compile("(1[012]|[1-9])[0-5][0-9]",  // 1200
+                        Pattern.CASE_INSENSITIVE).matcher(dateTime).find()) ||
+                (Pattern.compile("(1[012]|[1-9]):[0-5][0-9]", // 14:30
+                        Pattern.CASE_INSENSITIVE).matcher(dateTime).find() &&
+                        time[0] > 12));
     }
 
 }

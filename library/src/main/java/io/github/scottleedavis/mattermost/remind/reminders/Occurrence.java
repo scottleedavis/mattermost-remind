@@ -129,7 +129,7 @@ public class Occurrence {
         String[] dateTimeSplit = Arrays.asList(timeChunks).stream().skip(1).collect(Collectors.joining(" ")).split(" every ");
         final String chronoUnit = formatter.normalizeTime(dateTimeSplit[0]);
         if (dateTimeSplit.length == 2)
-            recurrentDates = every("every " + formatter.normalizeDate(dateTimeSplit[1]));
+            recurrentDates = every("every " + dateTimeSplit[1]);
 
         switch (dateTimeSplit[0]) {
             case "noon":

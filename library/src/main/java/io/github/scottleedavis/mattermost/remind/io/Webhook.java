@@ -1,6 +1,7 @@
 package io.github.scottleedavis.mattermost.remind.io;
 
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
+import io.github.scottleedavis.mattermost.remind.exceptions.WebhookException;
 import io.github.scottleedavis.mattermost.remind.messages.Attachment;
 import io.github.scottleedavis.mattermost.remind.messages.Response;
 import io.github.scottleedavis.mattermost.remind.reminders.Options;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -53,9 +55,15 @@ public class Webhook {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(response, headers);
-        ResponseEntity<String> out = restTemplate.exchange(webhookUrl, HttpMethod.POST, entity, String.class);
-        logger.info(out.toString());
-        return out;
+        try {
+            ResponseEntity<String> out = restTemplate.exchange(webhookUrl, HttpMethod.POST, entity, String.class);
+            logger.info(out.toString());
+            return out;
+        } catch (HttpClientErrorException e) {
+            throw new WebhookException("Unable to send reminder occurrence (id " +
+                    reminderOccurrence.getId() + "), target = " + reminderOccurrence.getReminder().getTarget() + ", " +
+                    "userName = " + reminderOccurrence.getReminder().getUserName(), e);
+        }
 
     }
 

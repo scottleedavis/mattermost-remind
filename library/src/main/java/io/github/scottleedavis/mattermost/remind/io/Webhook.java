@@ -28,7 +28,7 @@ public class Webhook {
     @Autowired
     public Webhook(@Value("${remind.webhookUrl}") String webhookUrl) {
         this.webhookUrl = webhookUrl;
-        logger.info("remind.webhookUrl = {}",this.webhookUrl);
+        logger.info("remind.webhookUrl = {}", this.webhookUrl);
     }
 
     public ResponseEntity<String> invoke(ReminderOccurrence reminderOccurrence) throws Exception {

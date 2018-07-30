@@ -164,19 +164,53 @@ public class Formatter {
         String month;
         String day;
         String year;
+        String other;
         switch (occurrence.classify(parsedRequest.getWhen())) {
-            case AT: //TODO handle multiple values (e.g. 4pm and 2:32 am)
-                ldt = occurrence.calculate(parsedRequest.getWhen()).get(0);
+            case AT:
+                ldts = occurrence.calculate(parsedRequest.getWhen());
+                ldt = ldts.get(0);
                 LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
                 time = Integer.toString(timeRaw);
                 if (ldt.getMinute() > 0)
                     time += ":" + String.format("%02d", ldt.getMinute());
-                day = (ldt.getDayOfMonth() == now.getDayOfMonth()) ? "today" : "tomorrow";
-                when = time + amPm(ldt) + " " + day;
+                if (when.contains("every")) {
+                    other = parsedRequest.getWhen().contains("other") ? " other" : "";
+                    if (parsedRequest.getWhen().contains(" day")) {
+                        day = "every" + other + " day";
+                    } else if (Pattern.compile("((mon|tues|wed(nes)?|thur(s)?|fri|sat(ur)?|sun)(day)?)",
+                            Pattern.CASE_INSENSITIVE).matcher(parsedRequest.getWhen()).find()) {
+                        String chronoUnit = Arrays.asList((parsedRequest.getWhen().split(" every ")[1]).split(" ")).stream().collect(Collectors.joining(" "));
+                        chronoUnit = chronoUnit.contains("other") ? chronoUnit.split("other")[1].trim() : chronoUnit;
+                        String[] dateTimeSplit = chronoUnit.split(" at ");
+                        String[] days = Arrays.stream(dateTimeSplit[0].split("and|,")).map(dt -> capitalize(dt.trim())).toArray(String[]::new);
+                        Arrays.sort(days);
+
+                        String daysStr = days[0];
+                        if (days.length > 1) {
+                            String[] subDays = Arrays.copyOfRange(days, 0, days.length - 1);
+                            daysStr = String.join(", ", subDays) + " and " + days[days.length - 1];
+                        }
+                        day = "every " + daysStr;
+                    } else {
+                        String[] dates = ldts.stream().map(date -> {
+                            return capitalize(date.getMonth().toString()) + " " + daySuffix(date.getDayOfMonth());
+                        }).toArray(String[]::new);
+
+                        String datesStr = dates[0];
+                        if (dates.length > 1) {
+                            String[] subDays = Arrays.copyOfRange(dates, 0, dates.length - 1);
+                            datesStr = String.join(", ", subDays) + " and " + dates[dates.length - 1];
+                        }
+                        day = "every " + datesStr;
+                    }
+                } else {
+                    day = (ldt.getDayOfMonth() == now.getDayOfMonth()) ? "today" : "tomorrow";
+                }
+                when = "at " + time + amPm(ldt) + " " + day;
                 break;
-            case ON:  //TODO handle multiple values  (e.g. 12/18 and 4-01)
+            case ON:
                 ldt = occurrence.calculate(parsedRequest.getWhen()).get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
@@ -194,7 +228,7 @@ public class Formatter {
                 break;
             case EVERY:
                 ldts = occurrence.calculate(parsedRequest.getWhen());
-                String other = parsedRequest.getWhen().contains("other") ? " other" : "";
+                other = parsedRequest.getWhen().contains("other") ? " other" : "";
                 ldt = ldts.get(0);
                 timeRaw = ldt.getHour() % 12;
                 timeRaw = timeRaw == 0 ? 12 : timeRaw;
@@ -234,8 +268,7 @@ public class Formatter {
                 }
 
                 break;
-            case IN: // TODO handle multiple values
-                // TODO  normalize the name (e.g. no s, sec... just seconds) e.g. 2 sec => 2 seconds
+            case IN:
                 break;
             default:
                 break;

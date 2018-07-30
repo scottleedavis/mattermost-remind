@@ -80,6 +80,32 @@ public class FormatterTests {
         assertNotNull(output);
         assertTrue(output.contains("scottd") && output.contains("FooBar") && output.contains("10:11AM"));
 
+        parsedRequest.setWhen("at 10:55am every thursday");
+        output = formatter.reminderResponse(parsedRequest);
+        assertNotNull(output);
+        assertEquals(output, ":thumbsup: I will remind scottd \"FooBar\" at 10:55AM every Thursday");
+
+        parsedRequest.setWhen("at 10:55am every thursday and friday");
+        output = formatter.reminderResponse(parsedRequest);
+        assertNotNull(output);
+        assertEquals(output, ":thumbsup: I will remind scottd \"FooBar\" at 10:55AM every Friday and Thursday");
+
+
+        parsedRequest.setWhen("at 10:55am every day");
+        output = formatter.reminderResponse(parsedRequest);
+        assertNotNull(output);
+        assertEquals(output, ":thumbsup: I will remind scottd \"FooBar\" at 10:55AM every day");
+
+        parsedRequest.setWhen("at 10:55am every 12/18");
+        output = formatter.reminderResponse(parsedRequest);
+        assertNotNull(output);
+        assertEquals(output, ":thumbsup: I will remind scottd \"FooBar\" at 10:55AM every December 18th");
+
+        parsedRequest.setWhen("at 10:55am every 12/18 and 5/1");
+        output = formatter.reminderResponse(parsedRequest);
+        assertNotNull(output);
+        assertEquals(output, ":thumbsup: I will remind scottd \"FooBar\" at 10:55AM every December 18th and May 1st");
+
         parsedRequest.setWhen("every August 4th at 10:11am");
         output = formatter.reminderResponse(parsedRequest);
         assertNotNull(output);
@@ -89,11 +115,6 @@ public class FormatterTests {
         output = formatter.reminderResponse(parsedRequest);
         assertNotNull(output);
         assertEquals(output, ":thumbsup: I will remind scottd \"FooBar\" in 20 seconds");
-
-//        parsedRequest.setWhen("in 2 secs");
-//        output = formatter.reminderResponse(parsedRequest);
-//        assertNotNull(output);
-//        assertEquals(output, ":thumbsup: I will remind scottd \"FooBar\" in 2 seconds");
 
         parsedRequest.setMessage("to FooBar");
         parsedRequest.setWhen("in 20 seconds");

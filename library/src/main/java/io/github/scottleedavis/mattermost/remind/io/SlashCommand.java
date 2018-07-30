@@ -30,7 +30,7 @@ public class SlashCommand {
     @Autowired
     public SlashCommand(@Value("${remind.SlashCommandToken}") String slashCommandToken) {
         this.slashCommandToken = slashCommandToken;
-        logger.info("remind.SlashCommandToken = {}",slashCommandToken);
+        logger.info("remind.SlashCommandToken = {}", slashCommandToken);
     }
 
     @RequestMapping(value = "/remind", produces = "application/json")

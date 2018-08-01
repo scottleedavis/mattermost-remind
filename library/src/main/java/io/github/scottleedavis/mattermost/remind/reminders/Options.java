@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 @Component(value = "remind")
 public class Options {
 
-    public static Integer remindListMaxLength = 2;//8;
+    public static Integer remindListMaxLength = 5;
 
     public static String helpMessage = ":wave: Need some help with `/remind`?\n" +
             "Use `/remind` to set a reminder for yourself, someone else, or for a channel. Some examples include:\n" +
@@ -97,12 +97,30 @@ public class Options {
                 delete(id));
     }
 
+    public List<Action> listActions(Long id, String userName, boolean isRepeated, boolean isPastIncomplete) {
+
+        if (isRepeated)
+            return Arrays.asList(delete(id, userName));
+
+        if (isPastIncomplete)
+            return Arrays.asList(
+                    complete(id, userName),
+                    delete(id, userName),
+                    snooze(id, userName, ArgumentType.TWENTY_MINUTES),
+                    snooze(id, userName, ArgumentType.ONE_HOUR),
+                    snooze(id, userName, ArgumentType.TOMORROW_AT_9AM));
+
+        return Arrays.asList(
+                complete(id, userName),
+                delete(id, userName));
+    }
+
     public List<Action> pagedActions(String userName, Integer firstIndex, Integer lastIndex, Integer size) {
         if (firstIndex > 0 && lastIndex < size - 1)
-            return Arrays.asList(previous(userName, firstIndex, lastIndex), next(userName, firstIndex, lastIndex));
+            return Arrays.asList(previous(userName, firstIndex, lastIndex), next(userName, firstIndex, lastIndex), close());
         if (firstIndex > 0 && lastIndex == size - 1)
-            return Arrays.asList(previous(userName, firstIndex, lastIndex));
-        return Arrays.asList(next(userName, firstIndex, lastIndex));
+            return Arrays.asList(previous(userName, firstIndex, lastIndex), close());
+        return Arrays.asList(next(userName, firstIndex, lastIndex), close());
     }
 
     public String listComplete(String userName) {
@@ -164,7 +182,9 @@ public class Options {
         List<Reminder> reminders = reminderService.findByUsername(userName);
         List<Reminder> remindersFiltered = reminders;
 
-        //TODO test and fix this the paging mechanism here!!!!
+        if( firstIndex > 0 )
+            firstIndex += 1;
+
         Integer lastIndex = firstIndex + remindListMaxLength-1;
         if (reminders.size() > (lastIndex)) {
             remindersFiltered = reminders.subList(firstIndex, lastIndex+1);
@@ -180,7 +200,7 @@ public class Options {
                                         r.getOccurrences().get(0).getSnoozed().isAfter(LocalDateTime.now())))
         ).map(r -> {
             Attachment attachment = new Attachment();
-            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), false, false));
+            attachment.setActions(listActions(r.getOccurrences().get(0).getId(),r.getUserName(), false, false));
             attachment.setText("**Upcoming** " + formatter.upcomingReminder(r.getOccurrences()));
             return attachment;
         }).collect(Collectors.toList());
@@ -190,7 +210,7 @@ public class Options {
                         r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now())
         ).map(r -> {
             Attachment attachment = new Attachment();
-            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), true, false));
+            attachment.setActions(listActions(r.getOccurrences().get(0).getId(),r.getUserName(), true, false));
             attachment.setText("**Recurring** " + formatter.upcomingReminder(r.getOccurrences()));
             return attachment;
         }).collect(Collectors.toList());
@@ -201,7 +221,7 @@ public class Options {
                         r.getOccurrences().get(0).getSnoozed() == null
         ).map(r -> {
             Attachment attachment = new Attachment();
-            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), false, true));
+            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), r.getUserName(), false, true));
             attachment.setText("**Past and incomplete** \"" + r.getMessage() + "\"");
             return attachment;
         }).collect(Collectors.toList());
@@ -220,7 +240,7 @@ public class Options {
             ReminderOccurrence reminderOccurrence = reminders.get(0).getOccurrences().get(0);
             viewCompleted.setActions(Arrays.asList(
                     viewCompleted(reminderOccurrence.getId()),
-                    deleteAllCompleted(reminderOccurrence.getId()),
+                    deleteAllCompleted(reminderOccurrence.getId(), reminderOccurrence.getReminder().getUserName()),
                     close()));
             completed.add(viewCompleted);
         }
@@ -259,10 +279,38 @@ public class Options {
         return action;
     }
 
+    private Action delete(Long id, String userName) {
+        Context context = new Context();
+        context.setAction("delete");
+        context.setId(id);
+        context.setUserName(userName);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "delete");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Delete");
+        return action;
+    }
+
     private Action deleteAllCompleted(Long id) {
         Context context = new Context();
         context.setAction("deleteCompleted");
         context.setId(id);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "delete/completed");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Delete all completed");
+        return action;
+    }
+
+    private Action deleteAllCompleted(Long id, String userName) {
+        Context context = new Context();
+        context.setAction("deleteCompleted");
+        context.setId(id);
+        context.setUserName(userName);
         Integration integration = new Integration();
         integration.setContext(context);
         integration.setUrl(appUrl + "delete/completed");
@@ -306,11 +354,40 @@ public class Options {
         return action;
     }
 
+    private Action complete(Long id, String userName) {
+        Context context = new Context();
+        context.setAction("complete");
+        context.setUserName(userName);
+        context.setId(id);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "complete");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Mark as Complete");
+        return action;
+    }
+
     private Action snooze(Long id, String argument) {
         Context context = new Context();
         context.setAction("snooze");
         context.setArgument(argument);
         context.setId(id);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "snooze");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Snooze " + argument);
+        return action;
+    }
+
+    private Action snooze(Long id, String userName, String argument) {
+        Context context = new Context();
+        context.setAction("snooze");
+        context.setArgument(argument);
+        context.setId(id);
+        context.setUserName(userName);
         Integration integration = new Integration();
         integration.setContext(context);
         integration.setUrl(appUrl + "snooze");
@@ -343,7 +420,7 @@ public class Options {
         integration.setUrl(appUrl + "previous");
         Action action = new Action();
         action.setIntegration(integration);
-        action.setName("Previous " + (lastIndex - firstIndex) + " reminders");
+        action.setName("Previous " + (lastIndex - firstIndex + 1) + " reminders");
         return action;
     }
 
@@ -358,7 +435,7 @@ public class Options {
         integration.setUrl(appUrl + "next");
         Action action = new Action();
         action.setIntegration(integration);
-        action.setName("Next " + (lastIndex - firstIndex) + " reminders");
+        action.setName("Next " + (lastIndex - firstIndex + 1) + " reminders");
         return action;
     }
 }

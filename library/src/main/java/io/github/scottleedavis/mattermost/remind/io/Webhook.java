@@ -75,13 +75,19 @@ public class Webhook {
         response.setChannel("@" + interaction.getContext().getUserName());
         response.setUsername("mattermost-remind");
 
-        Integer firstIndex = interaction.getContext().getAction().equals("next") ?
-                interaction.getContext().getLastIndex() :
-                (interaction.getContext().getFirstIndex() - Options.remindListMaxLength);
-        firstIndex = firstIndex < 0 ? 0 : firstIndex;
-        response.setAttachments(
-                options.listRemindersAttachments(interaction.getContext().getUserName(), firstIndex)
-        );
+        if( interaction.getContext().getLastIndex() != null ) {
+            Integer firstIndex = interaction.getContext().getAction().equals("next") ?
+                    interaction.getContext().getLastIndex() :
+                    (interaction.getContext().getFirstIndex() - Options.remindListMaxLength);
+            firstIndex = firstIndex < 0 ? 0 : firstIndex;
+            response.setAttachments(
+                    options.listRemindersAttachments(interaction.getContext().getUserName(), firstIndex)
+            );
+        } else {
+            response.setAttachments(
+                    options.listRemindersAttachments(interaction.getContext().getUserName(), 0)
+            );
+        }
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();

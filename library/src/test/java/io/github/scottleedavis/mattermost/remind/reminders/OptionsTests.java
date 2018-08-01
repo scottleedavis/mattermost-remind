@@ -177,7 +177,7 @@ public class OptionsTests {
     @Transactional
     public void listRemindersAttachments() {
 
-        assertTrue(options.listRemindersAttachments("FOO").size() == 1);
+        assertTrue(options.listRemindersAttachments("FOO", 0).size() == 1);
 
         Reminder reminder = new Reminder();
         reminder.setTarget("foo");
@@ -220,9 +220,10 @@ public class OptionsTests {
         reminder3.setOccurrences(reminderOccurrences3);
         reminderRepository.save(reminder3);
 
-        assertTrue(options.listRemindersAttachments("FOO").size() == 3);
+        assertTrue(options.listRemindersAttachments("FOO", 0).size() == 3);
 
-
+        // TODO TEST OUT ALL NEW OPTIONS
+        assertFalse(true);
     }
 
     @Test
@@ -254,5 +255,10 @@ public class OptionsTests {
 
         actions = options.listActions(1L, false, true);
         assertTrue(actions.size() == 5);
+    }
+
+    @Test
+    public void pagedActions() {
+        assertTrue(false);
     }
 }

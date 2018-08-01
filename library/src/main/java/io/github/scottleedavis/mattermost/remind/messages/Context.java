@@ -9,6 +9,9 @@ public class Context {
     private Long id;
     private String action;
     private String argument;
+    private String userName;
+    private Integer firstIndex;
+    private Integer lastIndex;
 
     public Long getId() {
         return id;
@@ -32,5 +35,29 @@ public class Context {
 
     public void setArgument(String argument) {
         this.argument = argument;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Integer getFirstIndex() {
+        return firstIndex;
+    }
+
+    public void setLastIndex(Integer lastIndex) {
+        this.lastIndex = lastIndex;
+    }
+
+    public Integer getLastIndex() {
+        return lastIndex;
+    }
+
+    public void setFirstIndex(Integer firstIndex) {
+        this.firstIndex = firstIndex;
     }
 }

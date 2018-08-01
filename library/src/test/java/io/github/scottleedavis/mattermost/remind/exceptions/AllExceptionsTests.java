@@ -42,6 +42,8 @@ public class AllExceptionsTests {
     }
 
     @Test
-    public void webhookException() { assertNotNull(new WebhookException("fooo", new Throwable())); }
+    public void webhookException() {
+        assertNotNull(new WebhookException("fooo", new Throwable()));
+    }
 
 }

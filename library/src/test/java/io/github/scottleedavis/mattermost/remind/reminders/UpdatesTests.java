@@ -21,8 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -176,5 +175,15 @@ public class UpdatesTests {
         updateResponse = updates.snooze(interaction);
         assertEquals(updateResponse.getUpdate().getMessage(), "Ok! I’ll remind you “updates test” Next week");
 
+    }
+
+    @Test
+    public void previous() {
+        assertTrue(false);
+    }
+
+    @Test
+    public void next() {
+        assertTrue(false);
     }
 }

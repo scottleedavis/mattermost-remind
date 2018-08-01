@@ -3,6 +3,7 @@ package io.github.scottleedavis.mattermost.remind.io;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.exceptions.WebhookException;
 import io.github.scottleedavis.mattermost.remind.messages.Attachment;
+import io.github.scottleedavis.mattermost.remind.messages.Interaction;
 import io.github.scottleedavis.mattermost.remind.messages.Response;
 import io.github.scottleedavis.mattermost.remind.reminders.Options;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class Webhook {
         logger.info("remind.webhookUrl = {}", this.webhookUrl);
     }
 
-    public ResponseEntity<String> invoke(ReminderOccurrence reminderOccurrence) throws Exception {
+    public ResponseEntity<String> remind(ReminderOccurrence reminderOccurrence) throws Exception {
 
         boolean isOtherUser = !reminderOccurrence.getReminder().getTarget().contains(reminderOccurrence.getReminder().getUserName());
         boolean isChannel = reminderOccurrence.getReminder().getTarget().charAt(0) == '~';
@@ -63,6 +64,35 @@ public class Webhook {
             throw new WebhookException("Unable to send reminder occurrence (id " +
                     reminderOccurrence.getId() + "), target = " + reminderOccurrence.getReminder().getTarget() + ", " +
                     "userName = " + reminderOccurrence.getReminder().getUserName(), e);
+        }
+
+    }
+
+
+    public ResponseEntity<String> page(Interaction interaction) throws Exception {
+
+        Response response = new Response();
+        response.setChannel("@" + interaction.getContext().getUserName());
+        response.setUsername("mattermost-remind");
+
+        Integer firstIndex = interaction.getContext().getAction().equals("next") ?
+                interaction.getContext().getLastIndex() :
+                (interaction.getContext().getFirstIndex() - Options.remindListMaxLength);
+        firstIndex = firstIndex < 0 ? 0 : firstIndex;
+        response.setAttachments(
+                options.listRemindersAttachments(interaction.getContext().getUserName(), firstIndex)
+        );
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(response, headers);
+        try {
+            ResponseEntity<String> out = restTemplate.exchange(webhookUrl, HttpMethod.POST, entity, String.class);
+            logger.info(out.toString());
+            return out;
+        } catch (HttpClientErrorException e) {
+            throw new WebhookException("Unable to send page reminder", e);
         }
 
     }

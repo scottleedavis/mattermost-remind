@@ -21,6 +21,8 @@ import java.util.stream.Stream;
 @Component(value = "remind")
 public class Options {
 
+    public static Integer remindListMaxLength = 2;//8;
+
     public static String helpMessage = ":wave: Need some help with `/remind`?\n" +
             "Use `/remind` to set a reminder for yourself, someone else, or for a channel. Some examples include:\n" +
             "* `/remind me to drink water at 3pm every day`\n" +
@@ -95,6 +97,14 @@ public class Options {
                 delete(id));
     }
 
+    public List<Action> pagedActions(String userName, Integer firstIndex, Integer lastIndex, Integer size) {
+        if (firstIndex > 0 && lastIndex < size - 1)
+            return Arrays.asList(previous(userName, firstIndex, lastIndex), next(userName, firstIndex, lastIndex));
+        if (firstIndex > 0 && lastIndex == size - 1)
+            return Arrays.asList(previous(userName, firstIndex, lastIndex));
+        return Arrays.asList(next(userName, firstIndex, lastIndex));
+    }
+
     public String listComplete(String userName) {
         List<Reminder> reminders = reminderService.findByUsername(userName);
 
@@ -149,11 +159,21 @@ public class Options {
         return noReminderList;
     }
 
-    public List<Attachment> listRemindersAttachments(String userName) {
+    public List<Attachment> listRemindersAttachments(String userName, Integer firstIndex) {
 
         List<Reminder> reminders = reminderService.findByUsername(userName);
+        List<Reminder> remindersFiltered = reminders;
 
-        List<Attachment> upcoming = reminders.stream().filter(r ->
+        //TODO test and fix this the paging mechanism here!!!!
+        Integer lastIndex = firstIndex + remindListMaxLength-1;
+        if (reminders.size() > (lastIndex)) {
+            remindersFiltered = reminders.subList(firstIndex, lastIndex+1);
+        } else if (reminders.size() > 0) {
+            lastIndex = reminders.size() - 1;
+            remindersFiltered = reminders.subList(firstIndex, lastIndex+1);
+        }
+
+        List<Attachment> upcoming = remindersFiltered.stream().filter(r ->
                 (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
                         (r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now()) ||
                                 (r.getOccurrences().get(0).getSnoozed() != null &&
@@ -165,7 +185,7 @@ public class Options {
             return attachment;
         }).collect(Collectors.toList());
 
-        List<Attachment> recurring = reminders.stream().filter(r ->
+        List<Attachment> recurring = remindersFiltered.stream().filter(r ->
                 r.getOccurrences().get(0).getRepeat() != null &&
                         r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now())
         ).map(r -> {
@@ -175,7 +195,7 @@ public class Options {
             return attachment;
         }).collect(Collectors.toList());
 
-        List<Attachment> pastIncomplete = reminders.stream().filter(r ->
+        List<Attachment> pastIncomplete = remindersFiltered.stream().filter(r ->
                 (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
                         r.getOccurrences().get(0).getOccurrence().isBefore(LocalDateTime.now()) &&
                         r.getOccurrences().get(0).getSnoozed() == null
@@ -185,6 +205,14 @@ public class Options {
             attachment.setText("**Past and incomplete** \"" + r.getMessage() + "\"");
             return attachment;
         }).collect(Collectors.toList());
+
+        List<Attachment> pageList = new ArrayList<>();
+        if (reminders.size() > remindListMaxLength) {
+            Attachment paged = new Attachment();
+            paged.setActions(pagedActions(reminders.get(0).getUserName(), firstIndex, lastIndex, reminders.size()));
+            paged.setText("Reminders " + (firstIndex + 1) + " to " + (lastIndex + 1) + " (of " + reminders.size() + " total)");
+            pageList.add(paged);
+        }
 
         List<Attachment> completed = new ArrayList<>();
         if (reminders.stream().filter(r -> r.getCompleted() != null).collect(Collectors.toList()).size() > 0) {
@@ -212,7 +240,8 @@ public class Options {
                 recurring,
                 pastIncomplete,
                 completed,
-                noList
+                noList,
+                pageList
         ).flatMap(Collection::stream).collect(Collectors.toList());
 
     }
@@ -300,6 +329,36 @@ public class Options {
         Action action = new Action();
         action.setIntegration(integration);
         action.setName("Close list");
+        return action;
+    }
+
+    private Action previous(String userName, Integer firstIndex, Integer lastIndex) {
+        Context context = new Context();
+        context.setAction("previous");
+        context.setUserName(userName);
+        context.setFirstIndex(firstIndex);
+        context.setLastIndex(lastIndex);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "previous");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Previous " + (lastIndex - firstIndex) + " reminders");
+        return action;
+    }
+
+    private Action next(String userName, Integer firstIndex, Integer lastIndex) {
+        Context context = new Context();
+        context.setAction("next");
+        context.setUserName(userName);
+        context.setFirstIndex(firstIndex);
+        context.setLastIndex(lastIndex);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "next");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Next " + (lastIndex - firstIndex) + " reminders");
         return action;
     }
 }

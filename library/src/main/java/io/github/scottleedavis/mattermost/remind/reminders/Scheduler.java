@@ -54,7 +54,7 @@ public class Scheduler {
                     break;
                 case "list":
                     if (channelName.contains(userId))
-                        response.setAttachments(options.listRemindersAttachments(userName));
+                        response.setAttachments(options.listRemindersAttachments(userName, 0));
                     else
                         response.setText(options.listReminders(userName));
                     break;
@@ -102,7 +102,7 @@ public class Scheduler {
         reminderService.findByOccurrence(ldt).forEach(reminderOccurrence -> {
             logger.info("Sending reminder {} to {} ", reminderOccurrence.getId(), reminderOccurrence.getReminder().getTarget());
             try {
-                webhook.invoke(reminderOccurrence);
+                webhook.remind(reminderOccurrence);
                 if (reminderOccurrence.getRepeat() != null)
                     reminderService.reschedule(reminderOccurrence);
             } catch (Exception e) {
@@ -113,7 +113,7 @@ public class Scheduler {
         reminderService.findBySnoozed(ldt).forEach(reminderOccurrence -> {
             logger.info("Sending snoozed reminder {} to {} ", reminderOccurrence.getId(), reminderOccurrence.getReminder().getTarget());
             try {
-                webhook.invoke(reminderOccurrence);
+                webhook.remind(reminderOccurrence);
                 reminderService.clearSnooze(reminderOccurrence);
             } catch (Exception e) {
                 logger.error("Not able to send snoozed reminder {}", e);

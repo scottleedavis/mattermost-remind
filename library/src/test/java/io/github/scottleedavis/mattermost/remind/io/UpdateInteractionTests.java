@@ -170,4 +170,14 @@ public class UpdateInteractionTests {
 
     }
 
+    @Test
+    public void previous() throws Exception {
+        assertTrue(false);
+    }
+
+    @Test
+    public void next() throws Exception {
+        assertTrue(false);
+    }
+
 }

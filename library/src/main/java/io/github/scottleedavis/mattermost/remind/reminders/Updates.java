@@ -3,6 +3,7 @@ package io.github.scottleedavis.mattermost.remind.reminders;
 import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.db.ReminderService;
+import io.github.scottleedavis.mattermost.remind.io.Webhook;
 import io.github.scottleedavis.mattermost.remind.messages.Interaction;
 import io.github.scottleedavis.mattermost.remind.messages.Update;
 import io.github.scottleedavis.mattermost.remind.messages.UpdateResponse;
@@ -25,6 +26,9 @@ public class Updates {
 
     @Autowired
     private ReminderService reminderService;
+
+    @Autowired
+    private Webhook webhook;
 
     public UpdateResponse close() {
         UpdateResponse updateResponse = new UpdateResponse();
@@ -118,6 +122,23 @@ public class Updates {
                 update.setMessage("Whoops!   Something went wrong.");
                 break;
         }
+        return updateResponse;
+    }
+
+    public UpdateResponse previous(Interaction interaction) throws Exception {
+        return page(interaction);
+
+    }
+
+    public UpdateResponse next(Interaction interaction) throws Exception {
+        return page(interaction);
+    }
+
+    private UpdateResponse page(Interaction interaction) throws Exception {
+        webhook.page(interaction);
+        UpdateResponse updateResponse = new UpdateResponse();
+        Update update = new Update();
+        updateResponse.setUpdate(update);
         return updateResponse;
     }
 

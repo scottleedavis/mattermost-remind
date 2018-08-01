@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -48,28 +49,33 @@ public class WebhookTests {
         reminder.setOccurrences(list);
         reminderRepository.save(reminder);
 
-        ResponseEntity<String> responseEntity = webhook.invoke(reminderOccurrence);
+        ResponseEntity<String> responseEntity = webhook.remind(reminderOccurrence);
         assertNotNull(responseEntity);
 
         reminder.setTarget("~town-square");
         reminderRepository.save(reminder);
-        responseEntity = webhook.invoke(reminderOccurrence);
+        responseEntity = webhook.remind(reminderOccurrence);
         assertNotNull(responseEntity);
 
         reminderOccurrence.setRepeat("every day");
         reminderOccurrenceRepository.save(reminderOccurrence);
-        responseEntity = webhook.invoke(reminderOccurrence);
+        responseEntity = webhook.remind(reminderOccurrence);
         assertNotNull(responseEntity);
 
         reminder.setTarget("@bob");
         reminderRepository.save(reminder);
-        responseEntity = webhook.invoke(reminderOccurrence);
+        responseEntity = webhook.remind(reminderOccurrence);
         assertNotNull(responseEntity);
 
         reminderOccurrence.setRepeat("tomorrow");
         reminderOccurrenceRepository.save(reminderOccurrence);
-        responseEntity = webhook.invoke(reminderOccurrence);
+        responseEntity = webhook.remind(reminderOccurrence);
         assertNotNull(responseEntity);
 
+    }
+
+    @Test
+    public void page() throws Exception {
+        assertTrue(false);
     }
 }

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -79,7 +78,7 @@ public class WebhookTests {
     @Test
     public void page() throws Exception {
 
-        for(int i=1; i < 15; i++) {
+        for (int i = 1; i < 15; i++) {
             Reminder reminder = new Reminder();
             reminder.setMessage("page item " + i);
             reminder.setTarget("@foo");

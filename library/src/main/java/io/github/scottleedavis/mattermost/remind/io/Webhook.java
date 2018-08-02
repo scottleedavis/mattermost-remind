@@ -75,7 +75,7 @@ public class Webhook {
         response.setChannel("@" + interaction.getContext().getUserName());
         response.setUsername("mattermost-remind");
 
-        if( interaction.getContext().getLastIndex() != null ) {
+        if (interaction.getContext().getLastIndex() != null) {
             Integer firstIndex = interaction.getContext().getAction().equals("next") ?
                     interaction.getContext().getLastIndex() :
                     (interaction.getContext().getFirstIndex() - Options.remindListMaxLength);

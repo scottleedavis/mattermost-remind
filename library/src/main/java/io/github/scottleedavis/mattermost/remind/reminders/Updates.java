@@ -43,7 +43,7 @@ public class Updates {
         Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
-        if( interaction.getContext().getUserName() != null )
+        if (interaction.getContext().getUserName() != null)
             webhook.page(interaction);
         else
             update.setMessage("Ok! I’ve deleted the reminder “" + reminder.getMessage() + "”.");
@@ -56,7 +56,7 @@ public class Updates {
         Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
-        if( interaction.getContext().getUserName() != null )
+        if (interaction.getContext().getUserName() != null)
             webhook.page(interaction);
         else
             update.setMessage("Ok! I’ve deleted all completed reminders.");
@@ -83,7 +83,7 @@ public class Updates {
         Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
-        if( interaction.getContext().getUserName() != null )
+        if (interaction.getContext().getUserName() != null)
             webhook.page(interaction);
         else
             update.setMessage("Ok! I’ve marked the reminder  “" + reminder.getMessage() + "” as complete.");
@@ -97,7 +97,7 @@ public class Updates {
         Reminder reminder = reminderOccurrence.getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
         Update update = new Update();
-        if( interaction.getContext().getUserName() != null ) {
+        if (interaction.getContext().getUserName() != null) {
             switch (interaction.getContext().getArgument()) {
                 case ArgumentType.TWENTY_MINUTES:
                     reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
@@ -133,27 +133,27 @@ public class Updates {
                     update.setMessage("Whoops!   Something went wrong.");
                     break;
             }
-            updateResponse.setUpdate(update);
-            switch (interaction.getContext().getArgument()) {
-                case ArgumentType.TWENTY_MINUTES:
-                    reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
-                    break;
-                case ArgumentType.ONE_HOUR:
-                    reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS));
-                    break;
-                case ArgumentType.THREE_HOURS:
-                    reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS));
-                    break;
-                case ArgumentType.TOMORROW_AT_9AM:
-                    reminderService.snooze(reminderOccurrence, LocalDate.now().plusDays(1).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
-                    break;
-                case ArgumentType.NEXT_WEEK:
-                    reminderService.snooze(reminderOccurrence, LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
-                    break;
-                default:
-                    update.setMessage("Whoops!   Something went wrong.");
-                    break;
-            }
+        updateResponse.setUpdate(update);
+        switch (interaction.getContext().getArgument()) {
+            case ArgumentType.TWENTY_MINUTES:
+                reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusMinutes(20).truncatedTo(ChronoUnit.SECONDS));
+                break;
+            case ArgumentType.ONE_HOUR:
+                reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS));
+                break;
+            case ArgumentType.THREE_HOURS:
+                reminderService.snooze(reminderOccurrence, LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS));
+                break;
+            case ArgumentType.TOMORROW_AT_9AM:
+                reminderService.snooze(reminderOccurrence, LocalDate.now().plusDays(1).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
+                break;
+            case ArgumentType.NEXT_WEEK:
+                reminderService.snooze(reminderOccurrence, LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(9, 0).truncatedTo(ChronoUnit.SECONDS));
+                break;
+            default:
+                update.setMessage("Whoops!   Something went wrong.");
+                break;
+        }
         return updateResponse;
     }
 

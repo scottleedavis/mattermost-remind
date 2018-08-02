@@ -182,15 +182,15 @@ public class Options {
         List<Reminder> reminders = reminderService.findByUsername(userName);
         List<Reminder> remindersFiltered = reminders;
 
-        if( firstIndex > 0 )
+        if (firstIndex > 0)
             firstIndex += 1;
 
-        Integer lastIndex = firstIndex + remindListMaxLength-1;
+        Integer lastIndex = firstIndex + remindListMaxLength - 1;
         if (reminders.size() > (lastIndex)) {
-            remindersFiltered = reminders.subList(firstIndex, lastIndex+1);
+            remindersFiltered = reminders.subList(firstIndex, lastIndex + 1);
         } else if (reminders.size() > 0) {
             lastIndex = reminders.size() - 1;
-            remindersFiltered = reminders.subList(firstIndex, lastIndex+1);
+            remindersFiltered = reminders.subList(firstIndex, lastIndex + 1);
         }
 
         List<Attachment> upcoming = remindersFiltered.stream().filter(r ->
@@ -200,7 +200,7 @@ public class Options {
                                         r.getOccurrences().get(0).getSnoozed().isAfter(LocalDateTime.now())))
         ).map(r -> {
             Attachment attachment = new Attachment();
-            attachment.setActions(listActions(r.getOccurrences().get(0).getId(),r.getUserName(), false, false));
+            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), r.getUserName(), false, false));
             attachment.setText("**Upcoming** " + formatter.upcomingReminder(r.getOccurrences()));
             return attachment;
         }).collect(Collectors.toList());
@@ -210,7 +210,7 @@ public class Options {
                         r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now())
         ).map(r -> {
             Attachment attachment = new Attachment();
-            attachment.setActions(listActions(r.getOccurrences().get(0).getId(),r.getUserName(), true, false));
+            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), r.getUserName(), true, false));
             attachment.setText("**Recurring** " + formatter.upcomingReminder(r.getOccurrences()));
             return attachment;
         }).collect(Collectors.toList());

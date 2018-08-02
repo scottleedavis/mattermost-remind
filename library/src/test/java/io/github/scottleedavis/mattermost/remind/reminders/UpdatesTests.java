@@ -178,12 +178,42 @@ public class UpdatesTests {
     }
 
     @Test
-    public void previous() {
-        assertTrue(false);
+    public void previous() throws Exception {
+
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("previous");
+        context.setUserName("test");
+        context.setFirstIndex(0);
+        interaction.setContext(context);
+        interaction.setUserId("FOO");
+        UpdateResponse updateResponse;
+
+        updateResponse = updates.previous(interaction);
+        assertNotNull(updateResponse);
+
+        assertNull(updateResponse.getEphemeralText());
+
+        assertNull(updateResponse.getUpdate().getMessage());
+
     }
 
     @Test
-    public void next() {
-        assertTrue(false);
+    public void next() throws Exception {
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("next");
+        context.setUserName("test");
+        context.setFirstIndex(0);
+        interaction.setContext(context);
+        interaction.setUserId("FOO");
+        UpdateResponse updateResponse;
+
+        updateResponse = updates.next(interaction);
+        assertNotNull(updateResponse);
+
+        assertNull(updateResponse.getEphemeralText());
+
+        assertNull(updateResponse.getUpdate().getMessage());
     }
 }

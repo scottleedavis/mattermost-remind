@@ -4,9 +4,7 @@ import io.github.scottleedavis.mattermost.remind.db.Reminder;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrence;
 import io.github.scottleedavis.mattermost.remind.db.ReminderOccurrenceRepository;
 import io.github.scottleedavis.mattermost.remind.db.ReminderRepository;
-import io.github.scottleedavis.mattermost.remind.messages.Context;
-import io.github.scottleedavis.mattermost.remind.messages.Interaction;
-import io.github.scottleedavis.mattermost.remind.messages.UpdateResponse;
+import io.github.scottleedavis.mattermost.remind.messages.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +39,6 @@ public class UpdateInteractionTests {
     @Before
     public void setUp() {
         reminderRepository.deleteAll();
-        ;
         Reminder reminder = new Reminder();
         reminder.setMessage("foo to the bar");
         reminder.setTarget("@foo");
@@ -172,12 +169,42 @@ public class UpdateInteractionTests {
 
     @Test
     public void previous() throws Exception {
-        assertTrue(false);
+        Integer firstIndex = 5;
+        Integer lastIndex = 10;
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("previous");
+        context.setUserName("test");
+        context.setFirstIndex(firstIndex);
+        context.setLastIndex(lastIndex);
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.previous(interaction);
+
+        assertNotNull(updateResponse.getUpdate());
+
+        assertNull(updateResponse.getUpdate().getMessage());
     }
 
     @Test
     public void next() throws Exception {
-        assertTrue(false);
+        Integer firstIndex = 0;
+        Integer lastIndex = 5;
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("next");
+        context.setUserName("test");
+        context.setFirstIndex(firstIndex);
+        context.setLastIndex(lastIndex);
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.next(interaction);
+
+        assertNotNull(updateResponse.getUpdate());
+
+        assertNull(updateResponse.getUpdate().getMessage());
     }
 
 }

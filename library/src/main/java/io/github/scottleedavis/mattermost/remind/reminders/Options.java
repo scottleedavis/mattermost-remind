@@ -240,7 +240,7 @@ public class Options {
             ReminderOccurrence reminderOccurrence = reminders.get(0).getOccurrences().get(0);
             viewCompleted.setActions(Arrays.asList(
                     viewCompleted(reminderOccurrence.getId()),
-                    deleteAllCompleted(reminderOccurrence.getId(), reminderOccurrence.getReminder().getUserName()),
+                    deleteAllCompleted(reminderOccurrence.getId()),
                     close()));
             completed.add(viewCompleted);
         }
@@ -297,20 +297,6 @@ public class Options {
         Context context = new Context();
         context.setAction("deleteCompleted");
         context.setId(id);
-        Integration integration = new Integration();
-        integration.setContext(context);
-        integration.setUrl(appUrl + "delete/completed");
-        Action action = new Action();
-        action.setIntegration(integration);
-        action.setName("Delete all completed");
-        return action;
-    }
-
-    private Action deleteAllCompleted(Long id, String userName) {
-        Context context = new Context();
-        context.setAction("deleteCompleted");
-        context.setId(id);
-        context.setUserName(userName);
         Integration integration = new Integration();
         integration.setContext(context);
         integration.setUrl(appUrl + "delete/completed");

@@ -222,8 +222,8 @@ public class OptionsTests {
 
         assertTrue(options.listRemindersAttachments("FOO", 0).size() == 3);
 
-        // TODO TEST OUT ALL NEW OPTIONS
-        assertFalse(true);
+        // TODO TEST OUT ALL NEW OPTIONS WITH PAGING
+
     }
 
     @Test
@@ -259,6 +259,15 @@ public class OptionsTests {
 
     @Test
     public void pagedActions() {
-        assertTrue(false);
+
+        List<Action> actions = options.pagedActions("foo", 1, 10, 13);
+        assertTrue(actions.size() == 3);
+
+        actions = options.pagedActions("foo", 1, 10, 11);
+        assertTrue( actions.size() == 2);
+
+        actions = options.pagedActions("foo", 0, 5, 10);
+        assertTrue(actions.size() == 2);
+
     }
 }

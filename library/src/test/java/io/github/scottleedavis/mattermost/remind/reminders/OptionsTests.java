@@ -269,5 +269,8 @@ public class OptionsTests {
         actions = options.pagedActions("foo", 0, 5, 10);
         assertTrue(actions.size() == 2);
 
+        actions = options.pagedActions("foo", 0, 5, 6);
+        assertTrue(actions.size() == 1);
+
     }
 }

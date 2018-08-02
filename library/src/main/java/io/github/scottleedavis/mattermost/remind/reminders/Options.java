@@ -7,6 +7,8 @@ import io.github.scottleedavis.mattermost.remind.messages.Action;
 import io.github.scottleedavis.mattermost.remind.messages.Attachment;
 import io.github.scottleedavis.mattermost.remind.messages.Context;
 import io.github.scottleedavis.mattermost.remind.messages.Integration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,8 @@ import java.util.stream.Stream;
 
 @Component(value = "remind")
 public class Options {
+
+    private static Logger logger = LoggerFactory.getLogger(Options.class);
 
     public static Integer remindListMaxLength = 5;
 
@@ -120,6 +124,8 @@ public class Options {
             return Arrays.asList(previous(userName, firstIndex, lastIndex), next(userName, firstIndex, lastIndex), close());
         if (firstIndex > 0 && lastIndex == size - 1)
             return Arrays.asList(previous(userName, firstIndex, lastIndex), close());
+        if (firstIndex == 0 && lastIndex == size - 1 && size == remindListMaxLength)
+            return Arrays.asList(close());
         return Arrays.asList(next(userName, firstIndex, lastIndex), close());
     }
 
@@ -180,18 +186,21 @@ public class Options {
     public List<Attachment> listRemindersAttachments(String userName, Integer firstIndex) {
 
         List<Reminder> reminders = reminderService.findByUsername(userName);
-        List<Reminder> remindersFiltered = reminders;
+        List<Reminder> remindersNotComplete = reminders.stream().filter(r -> r.getCompleted() == null).collect(Collectors.toList());
+        List<Reminder> remindersFiltered = remindersNotComplete;
 
         if (firstIndex > 0)
             firstIndex += 1;
 
         Integer lastIndex = firstIndex + remindListMaxLength - 1;
-        if (reminders.size() > (lastIndex)) {
-            remindersFiltered = reminders.subList(firstIndex, lastIndex + 1);
-        } else if (reminders.size() > 0) {
-            lastIndex = reminders.size() - 1;
-            remindersFiltered = reminders.subList(firstIndex, lastIndex + 1);
+        if (remindersFiltered.size() > (lastIndex)) {
+            remindersFiltered = remindersFiltered.subList(firstIndex, lastIndex + 1);
+        } else if (remindersFiltered.size() > 0) {
+            lastIndex = remindersFiltered.size() - 1;
+            remindersFiltered = remindersFiltered.subList(firstIndex, lastIndex + 1);
         }
+
+        logger.info("firstIndex {}, lastIndex {}, size {}", firstIndex, lastIndex, remindersFiltered.size());
 
         List<Attachment> upcoming = remindersFiltered.stream().filter(r ->
                 (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
@@ -227,15 +236,15 @@ public class Options {
         }).collect(Collectors.toList());
 
         List<Attachment> pageList = new ArrayList<>();
-        if (reminders.size() > remindListMaxLength) {
+        if (remindersNotComplete.size() >= remindListMaxLength) {
             Attachment paged = new Attachment();
-            paged.setActions(pagedActions(reminders.get(0).getUserName(), firstIndex, lastIndex, reminders.size()));
-            paged.setText("Reminders " + (firstIndex + 1) + " to " + (lastIndex + 1) + " (of " + reminders.size() + " total)");
+            paged.setActions(pagedActions(remindersFiltered.get(0).getUserName(), firstIndex, lastIndex, remindersNotComplete.size()));
+            paged.setText("Reminders " + (firstIndex + 1) + " to " + (lastIndex + 1) + " (of " + remindersNotComplete.size() + " total)");
             pageList.add(paged);
         }
 
         List<Attachment> completed = new ArrayList<>();
-        if (reminders.stream().filter(r -> r.getCompleted() != null).collect(Collectors.toList()).size() > 0) {
+        if (remindersFiltered.size() > 0) {
             Attachment viewCompleted = new Attachment();
             ReminderOccurrence reminderOccurrence = reminders.get(0).getOccurrences().get(0);
             viewCompleted.setActions(Arrays.asList(

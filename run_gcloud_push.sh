@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-gcloud docker -- push scottleedavis/mattermost-remind-app
+gcloud docker -- push scottleedavis/mattermost-remind-app:latest

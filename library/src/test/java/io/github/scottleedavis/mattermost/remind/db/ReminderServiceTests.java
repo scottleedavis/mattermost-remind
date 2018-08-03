@@ -85,6 +85,12 @@ public class ReminderServiceTests {
     }
 
     @Test
+    public void findByTarget() {
+        List<Reminder> reminders = reminderService.findByTarget("@foo");
+        assertTrue(reminders.size() == 1);
+    }
+
+    @Test
     public void schedule() throws Exception {
         ParsedRequest parsedRequest = new ParsedRequest();
         parsedRequest.setWhen("on 12/18");

@@ -55,6 +55,22 @@ public class ReminderRepositoryTests {
 
     @Test
     @Transactional
+    public void findByTarget() {
+        Reminder reminder = new Reminder();
+        reminder.setMessage("foo to the bar");
+        reminder.setTarget("@foo");
+        reminder.setUserName("@foo");
+        reminderRepository.save(reminder);
+
+        List<Reminder> reminders = reminderRepository.findByTarget("@foo");
+
+        assertTrue(reminders.size() == 1);
+
+        assertTrue(reminders.get(0).getOccurrences().size() == 0);
+    }
+
+    @Test
+    @Transactional
     public void findByUserNameOccurrences() {
         Reminder reminder = new Reminder();
         reminder.setMessage("foo to the bar");

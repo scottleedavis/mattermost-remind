@@ -89,7 +89,7 @@ public class OptionsTests {
     @Transactional
     public void listReminders() {
 
-        assertEquals(options.listReminders("FOO"),
+        assertEquals(options.listReminders("FOO", null),
                 "I cannot find any reminders for you. Type `/remind` to set one.");
 
         Reminder reminder = new Reminder();
@@ -106,7 +106,7 @@ public class OptionsTests {
         reminder.setOccurrences(reminderOccurrences);
         reminderRepository.save(reminder);
 
-        assertEquals(options.listReminders("FOO"),
+        assertEquals(options.listReminders("FOO", null),
                 "*Note*:  To interact with these reminders use `/remind list` in your personal user channel");
 
         reminder.setCompleted(null);
@@ -117,7 +117,7 @@ public class OptionsTests {
         reminder.setOccurrences(reminderOccurrences);
         reminderRepository.save(reminder);
 
-        assertEquals(options.listReminders("FOO"),
+        assertEquals(options.listReminders("FOO", null),
                 "*Upcoming*:\n" +
                         "* \"baz\" 10:11AM Saturday, August 4th\n" +
                         "\n" +
@@ -137,7 +137,7 @@ public class OptionsTests {
         reminder2.setOccurrences(reminderOccurrences2);
         reminderRepository.save(reminder2);
 
-        assertEquals(options.listReminders("FOO"),
+        assertEquals(options.listReminders("FOO", null),
                 "*Upcoming*:\n" +
                         "* \"baz\" 10:11AM Saturday, August 4th\n" +
                         "\n" +
@@ -159,7 +159,7 @@ public class OptionsTests {
         reminder3.setOccurrences(reminderOccurrences3);
         reminderRepository.save(reminder3);
 
-        assertEquals(options.listReminders("FOO"),
+        assertEquals(options.listReminders("FOO", null),
                 "*Upcoming*:\n" +
                         "* \"baz\" 10:11AM Saturday, August 4th\n" +
                         "\n" +
@@ -171,6 +171,28 @@ public class OptionsTests {
                         "\n" +
                         "*Note*:  To interact with these reminders use `/remind list` in your personal user channel");
 
+        reminderRepository.deleteAll();
+
+        Reminder reminder4 = new Reminder();
+        reminder4.setTarget("~channel");
+        reminder4.setMessage("baz 3");
+        reminder4.setUserName("FOO");
+        ReminderOccurrence reminderOccurrence4 = new ReminderOccurrence();
+        reminderOccurrence4.setOccurrence(LocalDateTime.parse("2011-08-04T10:11:30"));
+        reminderOccurrence4.setReminder(reminder4);
+        reminder4.setOccurrences(Arrays.asList(reminderOccurrence4));
+        List<ReminderOccurrence> reminderOccurrences4 = new ArrayList<>();
+        reminderOccurrences4.add(reminderOccurrence4);
+        reminder4.setOccurrences(reminderOccurrences4);
+        reminderRepository.save(reminder4);
+
+        assertEquals(options.listReminders("FOO", "channel"), "*Past and incomplete*:\n" +
+                "* \"baz 3\"\n" +
+                "\n" +
+                "*Channel*:\n" +
+                "* \"baz 3\" 10:11AM Thursday, August 4th\n" +
+                "\n" +
+                "*Note*:  To interact with these reminders use `/remind list` in your personal user channel");
     }
 
     @Test

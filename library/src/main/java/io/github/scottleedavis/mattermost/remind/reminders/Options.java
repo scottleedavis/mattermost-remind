@@ -122,7 +122,8 @@ public class Options {
     public List<Action> pagedActions(String userName, Integer firstIndex, Integer lastIndex, Integer size) {
         if (firstIndex > 0 && lastIndex < size - 1)
             return Arrays.asList(previous(userName, firstIndex, lastIndex), next(userName, firstIndex, lastIndex), close());
-        if (firstIndex > 0 && lastIndex == size - 1)
+
+        if (firstIndex > 0 && firstIndex > remindListMaxLength-1 && lastIndex == size - 1)
             return Arrays.asList(previous(userName, firstIndex, lastIndex), close());
         if (firstIndex == 0 && lastIndex == size - 1 && size == remindListMaxLength)
             return Arrays.asList(close());
@@ -189,8 +190,8 @@ public class Options {
         List<Reminder> remindersNotComplete = reminders.stream().filter(r -> r.getCompleted() == null).collect(Collectors.toList());
         List<Reminder> remindersFiltered = remindersNotComplete;
 
-        if (firstIndex > 0)
-            firstIndex += 1;
+//        if (firstIndex > 0)
+//            firstIndex += 1;
 
         Integer lastIndex = firstIndex + remindListMaxLength - 1;
         if (remindersFiltered.size() > (lastIndex)) {
@@ -415,7 +416,14 @@ public class Options {
         integration.setUrl(appUrl + "previous");
         Action action = new Action();
         action.setIntegration(integration);
-        action.setName("Previous " + (lastIndex - firstIndex + 1) + " reminders");
+        Integer indexDifference = lastIndex - firstIndex;
+        if ( indexDifference < remindListMaxLength ) {
+            indexDifference -= remindListMaxLength;
+            if (indexDifference < 0)
+                indexDifference = remindListMaxLength;
+        } else
+            indexDifference += 1;
+        action.setName("Previous " + indexDifference + " reminders");
         return action;
     }
 

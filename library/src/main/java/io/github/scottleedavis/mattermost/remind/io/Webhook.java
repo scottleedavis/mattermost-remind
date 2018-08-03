@@ -77,7 +77,7 @@ public class Webhook {
 
         if (interaction.getContext().getLastIndex() != null) {
             Integer firstIndex = interaction.getContext().getAction().equals("next") ?
-                    interaction.getContext().getLastIndex() :
+                    interaction.getContext().getLastIndex() + 1 :
                     (interaction.getContext().getFirstIndex() - Options.remindListMaxLength);
             firstIndex = firstIndex < 0 ? 0 : firstIndex;
             response.setAttachments(

@@ -117,7 +117,7 @@ public class SchedulerTests {
 
         scheduler.runSchedule();
 
-        Mockito.verify(webhook, Mockito.times(2)).invoke(any());
+        Mockito.verify(webhook, Mockito.times(2)).remind(any());
 
 
     }

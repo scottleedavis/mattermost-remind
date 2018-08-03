@@ -7,6 +7,8 @@ import io.github.scottleedavis.mattermost.remind.messages.Action;
 import io.github.scottleedavis.mattermost.remind.messages.Attachment;
 import io.github.scottleedavis.mattermost.remind.messages.Context;
 import io.github.scottleedavis.mattermost.remind.messages.Integration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,10 @@ import java.util.stream.Stream;
 
 @Component(value = "remind")
 public class Options {
+
+    private static Logger logger = LoggerFactory.getLogger(Options.class);
+
+    public static Integer remindListMaxLength = 5;
 
     public static String helpMessage = ":wave: Need some help with `/remind`?\n" +
             "Use `/remind` to set a reminder for yourself, someone else, or for a channel. Some examples include:\n" +
@@ -95,6 +101,35 @@ public class Options {
                 delete(id));
     }
 
+    public List<Action> listActions(Long id, String userName, boolean isRepeated, boolean isPastIncomplete) {
+
+        if (isRepeated)
+            return Arrays.asList(delete(id, userName));
+
+        if (isPastIncomplete)
+            return Arrays.asList(
+                    complete(id, userName),
+                    delete(id, userName),
+                    snooze(id, userName, ArgumentType.TWENTY_MINUTES),
+                    snooze(id, userName, ArgumentType.ONE_HOUR),
+                    snooze(id, userName, ArgumentType.TOMORROW_AT_9AM));
+
+        return Arrays.asList(
+                complete(id, userName),
+                delete(id, userName));
+    }
+
+    public List<Action> pagedActions(String userName, Integer firstIndex, Integer lastIndex, Integer size) {
+        if (firstIndex > 0 && lastIndex < size - 1)
+            return Arrays.asList(previous(userName, firstIndex, lastIndex), next(userName, firstIndex, lastIndex), close());
+
+        if (firstIndex > 0 && firstIndex > remindListMaxLength - 1 && lastIndex == size - 1)
+            return Arrays.asList(previous(userName, firstIndex, lastIndex), close());
+        if (firstIndex.equals(0) && lastIndex.equals(size - 1) && size.equals(remindListMaxLength))
+            return Arrays.asList(close());
+        return Arrays.asList(next(userName, firstIndex, lastIndex), close());
+    }
+
     public String listComplete(String userName) {
         List<Reminder> reminders = reminderService.findByUsername(userName);
 
@@ -149,45 +184,68 @@ public class Options {
         return noReminderList;
     }
 
-    public List<Attachment> listRemindersAttachments(String userName) {
+    public List<Attachment> listRemindersAttachments(String userName, Integer firstIndex) {
 
         List<Reminder> reminders = reminderService.findByUsername(userName);
+        List<Reminder> remindersNotComplete = reminders.stream().filter(r -> r.getCompleted() == null).collect(Collectors.toList());
+        List<Reminder> remindersFiltered = remindersNotComplete;
 
-        List<Attachment> upcoming = reminders.stream().filter(r ->
+//        if (firstIndex > 0)
+//            firstIndex += 1;
+
+        Integer lastIndex = firstIndex + remindListMaxLength - 1;
+        if (remindersFiltered.size() > (lastIndex)) {
+            remindersFiltered = remindersFiltered.subList(firstIndex, lastIndex + 1);
+        } else if (remindersFiltered.size() > 0) {
+            lastIndex = remindersFiltered.size() - 1;
+            remindersFiltered = remindersFiltered.subList(firstIndex, lastIndex + 1);
+        }
+
+        logger.info("firstIndex {}, lastIndex {}, size {}", firstIndex, lastIndex, remindersFiltered.size());
+
+        List<Attachment> upcoming = remindersFiltered.stream().filter(r ->
                 (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
                         (r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now()) ||
                                 (r.getOccurrences().get(0).getSnoozed() != null &&
                                         r.getOccurrences().get(0).getSnoozed().isAfter(LocalDateTime.now())))
         ).map(r -> {
             Attachment attachment = new Attachment();
-            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), false, false));
+            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), r.getUserName(), false, false));
             attachment.setText("**Upcoming** " + formatter.upcomingReminder(r.getOccurrences()));
             return attachment;
         }).collect(Collectors.toList());
 
-        List<Attachment> recurring = reminders.stream().filter(r ->
+        List<Attachment> recurring = remindersFiltered.stream().filter(r ->
                 r.getOccurrences().get(0).getRepeat() != null &&
                         r.getOccurrences().get(0).getOccurrence().isAfter(LocalDateTime.now())
         ).map(r -> {
             Attachment attachment = new Attachment();
-            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), true, false));
+            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), r.getUserName(), true, false));
             attachment.setText("**Recurring** " + formatter.upcomingReminder(r.getOccurrences()));
             return attachment;
         }).collect(Collectors.toList());
 
-        List<Attachment> pastIncomplete = reminders.stream().filter(r ->
+        List<Attachment> pastIncomplete = remindersFiltered.stream().filter(r ->
                 (r.getCompleted() == null) && r.getOccurrences().get(0).getRepeat() == null &&
                         r.getOccurrences().get(0).getOccurrence().isBefore(LocalDateTime.now()) &&
                         r.getOccurrences().get(0).getSnoozed() == null
         ).map(r -> {
             Attachment attachment = new Attachment();
-            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), false, true));
+            attachment.setActions(listActions(r.getOccurrences().get(0).getId(), r.getUserName(), false, true));
             attachment.setText("**Past and incomplete** \"" + r.getMessage() + "\"");
             return attachment;
         }).collect(Collectors.toList());
 
+        List<Attachment> pageList = new ArrayList<>();
+        if (remindersNotComplete.size() >= remindListMaxLength) {
+            Attachment paged = new Attachment();
+            paged.setActions(pagedActions(remindersFiltered.get(0).getUserName(), firstIndex, lastIndex, remindersNotComplete.size()));
+            paged.setText("Reminders " + (firstIndex + 1) + " to " + (lastIndex + 1) + " (of " + remindersNotComplete.size() + " total)");
+            pageList.add(paged);
+        }
+
         List<Attachment> completed = new ArrayList<>();
-        if (reminders.stream().filter(r -> r.getCompleted() != null).collect(Collectors.toList()).size() > 0) {
+        if (remindersFiltered.size() > 0) {
             Attachment viewCompleted = new Attachment();
             ReminderOccurrence reminderOccurrence = reminders.get(0).getOccurrences().get(0);
             viewCompleted.setActions(Arrays.asList(
@@ -212,7 +270,8 @@ public class Options {
                 recurring,
                 pastIncomplete,
                 completed,
-                noList
+                noList,
+                pageList
         ).flatMap(Collection::stream).collect(Collectors.toList());
 
     }
@@ -221,6 +280,20 @@ public class Options {
         Context context = new Context();
         context.setAction("delete");
         context.setId(id);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "delete");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Delete");
+        return action;
+    }
+
+    private Action delete(Long id, String userName) {
+        Context context = new Context();
+        context.setAction("delete");
+        context.setId(id);
+        context.setUserName(userName);
         Integration integration = new Integration();
         integration.setContext(context);
         integration.setUrl(appUrl + "delete");
@@ -277,11 +350,40 @@ public class Options {
         return action;
     }
 
+    private Action complete(Long id, String userName) {
+        Context context = new Context();
+        context.setAction("complete");
+        context.setUserName(userName);
+        context.setId(id);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "complete");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Mark as Complete");
+        return action;
+    }
+
     private Action snooze(Long id, String argument) {
         Context context = new Context();
         context.setAction("snooze");
         context.setArgument(argument);
         context.setId(id);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "snooze");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Snooze " + argument);
+        return action;
+    }
+
+    private Action snooze(Long id, String userName, String argument) {
+        Context context = new Context();
+        context.setAction("snooze");
+        context.setArgument(argument);
+        context.setId(id);
+        context.setUserName(userName);
         Integration integration = new Integration();
         integration.setContext(context);
         integration.setUrl(appUrl + "snooze");
@@ -300,6 +402,43 @@ public class Options {
         Action action = new Action();
         action.setIntegration(integration);
         action.setName("Close list");
+        return action;
+    }
+
+    private Action previous(String userName, Integer firstIndex, Integer lastIndex) {
+        Context context = new Context();
+        context.setAction("previous");
+        context.setUserName(userName);
+        context.setFirstIndex(firstIndex);
+        context.setLastIndex(lastIndex);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "previous");
+        Action action = new Action();
+        action.setIntegration(integration);
+        Integer indexDifference = lastIndex - firstIndex;
+        if (indexDifference < remindListMaxLength) {
+            indexDifference -= remindListMaxLength;
+            if (indexDifference < 0)
+                indexDifference = remindListMaxLength;
+        } else
+            indexDifference += 1;
+        action.setName("Previous " + indexDifference + " reminders");
+        return action;
+    }
+
+    private Action next(String userName, Integer firstIndex, Integer lastIndex) {
+        Context context = new Context();
+        context.setAction("next");
+        context.setUserName(userName);
+        context.setFirstIndex(firstIndex);
+        context.setLastIndex(lastIndex);
+        Integration integration = new Integration();
+        integration.setContext(context);
+        integration.setUrl(appUrl + "next");
+        Action action = new Action();
+        action.setIntegration(integration);
+        action.setName("Next " + (lastIndex - firstIndex + 1) + " reminders");
         return action;
     }
 }

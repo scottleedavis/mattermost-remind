@@ -41,7 +41,6 @@ public class UpdateInteractionTests {
     @Before
     public void setUp() {
         reminderRepository.deleteAll();
-        ;
         Reminder reminder = new Reminder();
         reminder.setMessage("foo to the bar");
         reminder.setTarget("@foo");
@@ -168,6 +167,46 @@ public class UpdateInteractionTests {
 
         assertEquals(updateResponse.getUpdate().getMessage(), "");
 
+    }
+
+    @Test
+    public void previous() throws Exception {
+        Integer firstIndex = 5;
+        Integer lastIndex = 10;
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("previous");
+        context.setUserName("test");
+        context.setFirstIndex(firstIndex);
+        context.setLastIndex(lastIndex);
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.previous(interaction);
+
+        assertNotNull(updateResponse.getUpdate());
+
+        assertNull(updateResponse.getUpdate().getMessage());
+    }
+
+    @Test
+    public void next() throws Exception {
+        Integer firstIndex = 0;
+        Integer lastIndex = 5;
+        Interaction interaction = new Interaction();
+        Context context = new Context();
+        context.setAction("next");
+        context.setUserName("test");
+        context.setFirstIndex(firstIndex);
+        context.setLastIndex(lastIndex);
+        interaction.setContext(context);
+        interaction.setUserId("TEST");
+
+        UpdateResponse updateResponse = updateInteraction.next(interaction);
+
+        assertNotNull(updateResponse.getUpdate());
+
+        assertNull(updateResponse.getUpdate().getMessage());
     }
 
 }

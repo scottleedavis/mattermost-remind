@@ -48,4 +48,14 @@ public class UpdateInteraction {
     public UpdateResponse close() {
         return updates.close();
     }
+
+    @RequestMapping(value = "/previous", produces = "application/json")
+    public UpdateResponse previous(@RequestBody Interaction interaction) throws Exception {
+        return updates.previous(interaction);
+    }
+
+    @RequestMapping(value = "/next", produces = "application/json")
+    public UpdateResponse next(@RequestBody Interaction interaction) throws Exception {
+        return updates.next(interaction);
+    }
 }

@@ -144,7 +144,7 @@ public class Options {
         return noReminderList;
     }
 
-    public String listReminders(String userName) {
+    public String listReminders(String userName, String channelName) {
 
         List<Reminder> reminders = reminderService.findByUsername(userName);
 
@@ -178,6 +178,15 @@ public class Options {
                 reminderOutput += "*Past and incomplete*:\n" +
                         pastIncomplete.stream().reduce("", String::concat) + "\n";
 
+            if (channelName != null) {
+                List<String> channelReminders = reminderService.findByTarget("~" + channelName).stream().filter(r ->
+                        (r.getCompleted() == null)
+                ).map(r -> "* " + formatter.upcomingReminder(r.getOccurrences()) + "\n").collect(Collectors.toList());
+                if (channelReminders.size() > 0)
+                    reminderOutput += "*Channel*:\n" +
+                            channelReminders.stream().reduce("", String::concat) + "\n";
+            }
+
             return reminderOutput + "*Note*:  To interact with these reminders use `/remind list` in your personal user channel";
         }
 
@@ -189,9 +198,6 @@ public class Options {
         List<Reminder> reminders = reminderService.findByUsername(userName);
         List<Reminder> remindersNotComplete = reminders.stream().filter(r -> r.getCompleted() == null).collect(Collectors.toList());
         List<Reminder> remindersFiltered = remindersNotComplete;
-
-//        if (firstIndex > 0)
-//            firstIndex += 1;
 
         Integer lastIndex = firstIndex + remindListMaxLength - 1;
         if (remindersFiltered.size() > (lastIndex)) {

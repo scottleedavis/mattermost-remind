@@ -68,7 +68,7 @@ public class Updates {
     public UpdateResponse view(Interaction interaction) throws Exception {
         Reminder reminder = reminderService.findByInteraction(interaction).getReminder();
         UpdateResponse updateResponse = new UpdateResponse();
-        updateResponse.setEphemeralText(options.listReminders(reminder.getUserName()));
+        updateResponse.setEphemeralText(options.listReminders(reminder.getUserName(), null));
         return updateResponse;
     }
 

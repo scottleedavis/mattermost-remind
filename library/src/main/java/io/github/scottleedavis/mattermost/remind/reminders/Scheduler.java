@@ -56,7 +56,7 @@ public class Scheduler {
                     if (channelName.contains(userId))
                         response.setAttachments(options.listRemindersAttachments(userName, 0));
                     else
-                        response.setText(options.listReminders(userName));
+                        response.setText(options.listReminders(userName, channelName));
                     break;
                 case "version":
                     response.setText(version);

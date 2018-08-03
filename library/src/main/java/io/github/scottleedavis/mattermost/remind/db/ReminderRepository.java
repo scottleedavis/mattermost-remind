@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     List<Reminder> findByUserName(String userName);
+
+    List<Reminder> findByTarget(String target);
 }

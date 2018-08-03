@@ -45,6 +45,10 @@ public class ReminderService {
 
     }
 
+    public List<Reminder> findByTarget(String target) {
+        return reminderRepository.findByTarget(target);
+    }
+
     public Reminder schedule(String userName, ParsedRequest parsedRequest) throws Exception {
         Reminder reminder = new Reminder();
         reminder.setTarget(parsedRequest.getTarget().equals("me") ? "@" + userName : parsedRequest.getTarget());

@@ -270,7 +270,7 @@ public class OptionsTests {
         assertTrue(actions.size() == 2);
 
         actions = options.pagedActions("foo", 0, 5, 6);
-        assertTrue(actions.size() == 1);
+        assertTrue(actions.size() == 2);
 
     }
 }

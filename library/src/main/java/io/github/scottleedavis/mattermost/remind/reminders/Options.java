@@ -123,9 +123,9 @@ public class Options {
         if (firstIndex > 0 && lastIndex < size - 1)
             return Arrays.asList(previous(userName, firstIndex, lastIndex), next(userName, firstIndex, lastIndex), close());
 
-        if (firstIndex > 0 && firstIndex > remindListMaxLength-1 && lastIndex == size - 1)
+        if (firstIndex > 0 && firstIndex > remindListMaxLength - 1 && lastIndex == size - 1)
             return Arrays.asList(previous(userName, firstIndex, lastIndex), close());
-        if (firstIndex == 0 && lastIndex == size - 1 && size == remindListMaxLength)
+        if (firstIndex.equals(0) && lastIndex.equals(size - 1) && size.equals(remindListMaxLength))
             return Arrays.asList(close());
         return Arrays.asList(next(userName, firstIndex, lastIndex), close());
     }
@@ -417,7 +417,7 @@ public class Options {
         Action action = new Action();
         action.setIntegration(integration);
         Integer indexDifference = lastIndex - firstIndex;
-        if ( indexDifference < remindListMaxLength ) {
+        if (indexDifference < remindListMaxLength) {
             indexDifference -= remindListMaxLength;
             if (indexDifference < 0)
                 indexDifference = remindListMaxLength;

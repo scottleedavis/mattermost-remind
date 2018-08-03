@@ -5,7 +5,7 @@
 
     <groupId>io.github.scottleedavis</groupId>
     <artifactId>mattermost-remind-library</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <packaging>jar</packaging>
 
     <name>mattermost-remind</name>

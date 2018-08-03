@@ -94,7 +94,12 @@ _Requires slash command and webhook integrations_
 * Building for tomcat
   * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
 * Build [Docker](https://www.docker.com/) Image (Optional)
-  * `./mvnw install dockerfile:build`
+```aidl
+export REMIND_SLASH_TOKEN="7q61n4m5mfbebpme4ga5nu1gdh"
+export REMIND_WEBHOOK_URL="http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqyc"
+
+./mvnw install dockerfile:build
+```
 
 ### execution
 * Running via java

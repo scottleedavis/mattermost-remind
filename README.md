@@ -38,6 +38,28 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
 * Run: [Docker](https://www.docker.com/) (Optional)
 * Use: [Mattermost](https://mattermost.com/) 
 
+##### Mattermost Integration
+_Requires slash command and webhook integrations_
+* Ensure Custom Integrations (in System Console) has the following enabled
+  * `Enable Incoming Webhooks`
+  * `Enable Custom Slash Commands`
+  * `Enable integrations to override usernames` & `Enable integrations to override profile picture icons`
+    * OR... create a `mattermost-remind` user to setup the slash command and webhook with system icon
+* create `remind` as slash command
+  * Title & "Autocomplete Description": `Set a reminder`
+  * Leave "Description" blank
+  * Response Username: `mattermost-remind`
+  * Autocomplete hint: `[@someone or ~channel] [what] [when]`
+  * Request URL: `<path_to_mattermost-remind>/remind`
+  * set mattermost system icon
+  * put token in [application.properties](application/src/main/resources/application.properties) `slashCommandToken=<YOUR_TOKEN>`
+* create incoming webhook
+  * Title & Description: `Set a reminder`
+  * Channel: `Town Square`  <= (won't be used)
+  * Username: `mattermost-remind`
+  * set mattermost system icon
+  * put webhook URL in [application.properties](application/src/main/resources/application.properties) `webhookUrl=<YOUR_WEBHOOK>`
+
 ##### Datasources
 * [h2](http://www.h2database.com/html/main.html) is the default database
 * [PostgreSQL](https://www.postgresql.org/) can be used by changing [application.properties](application/src/main/resources/application.properties) and create the reminders & occurrences tables (_[reminders.example.postgresql.sql](scripts/reminders.example.postgresql.sql)_)
@@ -66,28 +88,6 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
     spring.jpa.hibernate.dialect=org.hibernate.dialect.MySQLDialect
   ```  
   
-##### Mattermost Integration
-_Requires slash command and webhook integrations_
-* Ensure Custom Integrations (in System Console) has the following enabled
-  * `Enable Incoming Webhooks`
-  * `Enable Custom Slash Commands`
-  * `Enable integrations to override usernames` & `Enable integrations to override profile picture icons`
-    * OR... create a `mattermost-remind` user to setup the slash command and webhook with system icon
-* create `remind` as slash command
-  * Title & "Autocomplete Description": `Set a reminder`
-  * Leave "Description" blank
-  * Response Username: `mattermost-remind`
-  * Autocomplete hint: `[@someone or ~channel] [what] [when]`
-  * Request URL: `<path_to_mattermost-remind>/remind`
-  * set mattermost system icon
-  * put token in [application.properties](application/src/main/resources/application.properties) `slashCommandToken=<YOUR_TOKEN>`
-* create incoming webhook
-  * Title & Description: `Set a reminder`
-  * Channel: `Town Square`  <= (won't be used)
-  * Username: `mattermost-remind`
-  * set mattermost system icon
-  * put webhook URL in [application.properties](application/src/main/resources/application.properties) `webhookUrl=<YOUR_WEBHOOK>`
-
 ### build
 * Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
   * `./mvnw  package`

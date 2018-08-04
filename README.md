@@ -23,6 +23,7 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
 ### releases
 
 * Tracked in [Github projects](https://github.com/scottleedavis/mattermost-remind/projects)
+* Current Release is [0.0.3](https://github.com/scottleedavis/mattermost-remind/releases/tag/0.0.3)
 * Next release targeted: [Release 0.0.4](https://github.com/scottleedavis/mattermost-remind/projects/3)
 * Want to contribute?  Identify an [issue](https://github.com/scottleedavis/mattermost-remind/issues), [fork](https://help.github.com/articles/fork-a-repo/) this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 

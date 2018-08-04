@@ -29,6 +29,8 @@ public class SlashCommand {
 
     @Autowired
     public SlashCommand(@Value("${remind.SlashCommandToken}") String slashCommandToken) {
+        if (slashCommandToken == null)
+            slashCommandToken = "none";
         this.slashCommandToken = slashCommandToken;
         logger.info("remind.SlashCommandToken = {}", slashCommandToken);
     }

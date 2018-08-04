@@ -30,6 +30,9 @@ public class Webhook {
 
     @Autowired
     public Webhook(@Value("${remind.webhookUrl}") String webhookUrl) {
+        if (webhookUrl == null)
+            webhookUrl = "http://localhost:8065/";
+
         this.webhookUrl = webhookUrl;
         logger.info("remind.webhookUrl = {}", this.webhookUrl);
     }

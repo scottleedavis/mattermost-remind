@@ -93,7 +93,7 @@ _Requires slash command and webhook integrations_
   * `./mvnw  package`
 * Building for tomcat
   * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
-* Build [Docker](https://www.docker.com/) Image (Optional)
+* Build [Docker](https://www.docker.com/) Image 
 ```aidl
 export REMIND_SLASH_TOKEN="7q61n4m5mfbebpme4ga5nu1gdh"
 export REMIND_WEBHOOK_URL="http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqyc"
@@ -103,8 +103,15 @@ export REMIND_WEBHOOK_URL="http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqy
 
 ### execution
 * Running via java
-  * `java -jar target/mattermost-remind-#.#.#.jar`
-* Running via docker (Optional)
-  * Using a locally built version `docker run -p 8080:8080 -t scottleedavis/mattermost-remind`
-  * Using [dockerhub latest image](https://hub.docker.com/r/scottleedavis/mattermost-remind/): `docker run scottleedavis/mattermost-remind`
+```bash
+export REMIND_SLASH_TOKEN="7q61n4m5mfbebpme4ga5nu1gdh"
+export REMIND_WEBHOOK_URL="http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqyc"
 
+java -jar application/target/mattermost-remind-app-0.0.3.jar
+```
+* Running via docker 
+```bash
+docker pull scottleedavis/mattermost-remind-app
+docker run -p 8080:8080 -e "REMIND_SLASH_TOKEN=7q61n4m5mfbebpme4ga5nu1gdh" -e "REMIND_WEBHOOK_URL=http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqyc" scottleedavis/mattermost-remind-app:latest
+
+```

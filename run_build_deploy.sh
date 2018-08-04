@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
-./run_docker_build.sh
+# build docker image
+./mvnw install dockerfile:build
 
-./run_dockerhub_push.sh
+# tag image and push to docker cloud
+docker tag scottleedavis/mattermost-remind-app:latest scottleedavis/mattermost-remind-app
+docker push scottleedavis/mattermost-remind-app
 
-./run_gcloud_push.sh
+# tag image and push to google cloud
+# gcloud docker -- push scottleedavis/mattermost-remind-app:latest
+docker tag scottleedavis/mattermost-remind-app gcr.io/mattermost-remind/scottleedavis/mattermost-remind-app:latest
+docker push gcr.io/mattermost-remind/scottleedavis/mattermost-remind-app:latest
 
-./run_kubernetes_deploy.sh
-
+# deploy image to kubernetes
+kubectl run mattermost-remind --image=scottleedavis/mattermost-remind-app --port 8080

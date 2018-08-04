@@ -91,8 +91,6 @@ _Requires slash command and webhook integrations_
 ### build
 * Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
   * `./mvnw  package`
-* Building for tomcat
-  * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
 * Build [Docker](https://www.docker.com/) Image 
   * `./mvnw install dockerfile:build`
 

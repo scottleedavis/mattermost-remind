@@ -187,7 +187,7 @@ public class Options {
                             channelReminders.stream().reduce("", String::concat) + "\n";
             }
 
-            return reminderOutput + "*Note*:  To interact with these reminders use `/remind list` in your personal user channel";
+            return reminderOutput + "*Note*:  To interact with these reminders use `/remind list` in a direct message with user mattermost-remind";
         }
 
         return noReminderList;

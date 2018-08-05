@@ -107,10 +107,10 @@ public class OptionsTests {
         reminderRepository.save(reminder);
 
         assertEquals(options.listReminders("FOO", null),
-                "*Note*:  To interact with these reminders use `/remind list` in your personal user channel");
+                "*Note*:  To interact with these reminders use `/remind list` in a direct message with user mattermost-remind");
 
         reminder.setCompleted(null);
-        reminderOccurrence.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
+        reminderOccurrence.setOccurrence(LocalDateTime.parse("2020-08-04T10:11:30"));
         reminderOccurrence.setReminder(reminder);
         reminderOccurrences = new ArrayList<>();
         reminderOccurrences.add(reminderOccurrence);
@@ -119,16 +119,16 @@ public class OptionsTests {
 
         assertEquals(options.listReminders("FOO", null),
                 "*Upcoming*:\n" +
-                        "* \"baz\" 10:11AM Saturday, August 4th\n" +
+                        "* \"baz\" 10:11AM Tuesday, August 4th\n" +
                         "\n" +
-                        "*Note*:  To interact with these reminders use `/remind list` in your personal user channel");
+                        "*Note*:  To interact with these reminders use `/remind list` in a direct message with user mattermost-remind");
 
         Reminder reminder2 = new Reminder();
         reminder2.setTarget("foo");
         reminder2.setMessage("baz 2");
         reminder2.setUserName("FOO");
         ReminderOccurrence reminderOccurrence2 = new ReminderOccurrence();
-        reminderOccurrence2.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
+        reminderOccurrence2.setOccurrence(LocalDateTime.parse("2020-08-04T10:11:30"));
         reminderOccurrence2.setReminder(reminder2);
         reminderOccurrence2.setRepeat("every day");
         reminder2.setOccurrences(Arrays.asList(reminderOccurrence2));
@@ -139,12 +139,12 @@ public class OptionsTests {
 
         assertEquals(options.listReminders("FOO", null),
                 "*Upcoming*:\n" +
-                        "* \"baz\" 10:11AM Saturday, August 4th\n" +
+                        "* \"baz\" 10:11AM Tuesday, August 4th\n" +
                         "\n" +
                         "*Recurring*:\n" +
                         "* \"baz 2\" 10:11AM Every Day\n" +
                         "\n" +
-                        "*Note*:  To interact with these reminders use `/remind list` in your personal user channel");
+                        "*Note*:  To interact with these reminders use `/remind list` in a direct message with user mattermost-remind");
 
         Reminder reminder3 = new Reminder();
         reminder3.setTarget("foo");
@@ -161,7 +161,7 @@ public class OptionsTests {
 
         assertEquals(options.listReminders("FOO", null),
                 "*Upcoming*:\n" +
-                        "* \"baz\" 10:11AM Saturday, August 4th\n" +
+                        "* \"baz\" 10:11AM Tuesday, August 4th\n" +
                         "\n" +
                         "*Recurring*:\n" +
                         "* \"baz 2\" 10:11AM Every Day\n" +
@@ -169,7 +169,7 @@ public class OptionsTests {
                         "*Past and incomplete*:\n" +
                         "* \"baz 3\"\n" +
                         "\n" +
-                        "*Note*:  To interact with these reminders use `/remind list` in your personal user channel");
+                        "*Note*:  To interact with these reminders use `/remind list` in a direct message with user mattermost-remind");
 
         reminderRepository.deleteAll();
 
@@ -192,7 +192,7 @@ public class OptionsTests {
                 "*Channel*:\n" +
                 "* \"baz 3\" 10:11AM Thursday, August 4th\n" +
                 "\n" +
-                "*Note*:  To interact with these reminders use `/remind list` in your personal user channel");
+                "*Note*:  To interact with these reminders use `/remind list` in a direct message with user mattermost-remind");
     }
 
     @Test
@@ -205,7 +205,7 @@ public class OptionsTests {
         reminder.setTarget("foo");
         reminder.setMessage("baz");
         reminder.setUserName("FOO");
-        reminder.setCompleted(LocalDateTime.parse("2019-08-04T10:11:30"));
+        reminder.setCompleted(LocalDateTime.parse("2018-08-04T10:11:30"));
         ReminderOccurrence reminderOccurrence = new ReminderOccurrence();
         reminderOccurrence.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
         reminderOccurrence.setReminder(reminder);
@@ -220,7 +220,7 @@ public class OptionsTests {
         reminder2.setMessage("baz 2");
         reminder2.setUserName("FOO");
         ReminderOccurrence reminderOccurrence2 = new ReminderOccurrence();
-        reminderOccurrence2.setOccurrence(LocalDateTime.parse("2018-08-04T10:11:30"));
+        reminderOccurrence2.setOccurrence(LocalDateTime.parse("2020-08-04T10:11:30"));
         reminderOccurrence2.setReminder(reminder2);
         reminderOccurrence2.setRepeat("every day");
         reminder2.setOccurrences(Arrays.asList(reminderOccurrence2));

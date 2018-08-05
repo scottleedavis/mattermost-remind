@@ -97,6 +97,7 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
   * `./mvnw install dockerfile:build`
 
 ### execution
+
 * Running via java
 ```bash
 export REMIND_USER="5okns4uk9ffauy16q8rkhe9zjc"
@@ -105,6 +106,7 @@ export REMIND_WEBHOOK_URL="http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqy
 
 java -jar application/target/mattermost-remind-app-0.0.4.jar
 ```
+
 * Running via docker 
 ```bash
 docker pull scottleedavis/mattermost-remind

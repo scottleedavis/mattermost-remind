@@ -23,8 +23,7 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
 ### releases
 
 * Tracked in [Github projects](https://github.com/scottleedavis/mattermost-remind/projects)
-* Current Release is [0.0.3](https://github.com/scottleedavis/mattermost-remind/releases/tag/0.0.3)
-* Next release targeted: [0.0.4](https://github.com/scottleedavis/mattermost-remind/projects/3)
+* Next release targeted: [Release 0.0.4](https://github.com/scottleedavis/mattermost-remind/projects/3)
 * Want to contribute?  Identify an [issue](https://github.com/scottleedavis/mattermost-remind/issues), [fork](https://help.github.com/articles/fork-a-repo/) this repository and submit a [Pull Request](https://github.com/scottleedavis/mattermost-remind/pulls).
 
 ### bugs & issues
@@ -40,12 +39,12 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
 * Use: [Mattermost](https://mattermost.com/) 
 
 ##### Mattermost Integration
-_Requires slash command and webhook integrations_
+_Note: Requires creating an administrative user named `mattermost-remind` to setup the slash command and webhook integrations_
+
 * Ensure Custom Integrations (in System Console) has the following enabled
   * `Enable Incoming Webhooks`
   * `Enable Custom Slash Commands`
   * `Enable integrations to override usernames` & `Enable integrations to override profile picture icons`
-    * OR... create a `mattermost-remind` user to setup the slash command and webhook with system icon
 * create `remind` as slash command
   * Title & "Autocomplete Description": `Set a reminder`
   * Leave "Description" blank
@@ -53,13 +52,13 @@ _Requires slash command and webhook integrations_
   * Autocomplete hint: `[@someone or ~channel] [what] [when]`
   * Request URL: `<path_to_mattermost-remind>/remind`
   * set mattermost system icon
-  * copy token for ENV variable later
+  * put token in ENV where java/image will run `REMIND_SLASH_TOKEN=<YOUR_TOKEN>`
 * create incoming webhook
   * Title & Description: `Set a reminder`
   * Channel: `Town Square`  <= (won't be used)
   * Username: `mattermost-remind`
   * set mattermost system icon
-  * copy webhook url for ENV variable later
+  * put webhook URL in ENV where java/image will run `REMIND_WEBHOOK_URL=<YOUR_WEBHOOK>`
 
 ##### Datasources
 * [h2](http://www.h2database.com/html/main.html) is the default database
@@ -92,6 +91,8 @@ _Requires slash command and webhook integrations_
 ### build
 * Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
   * `./mvnw  package`
+* Building for tomcat
+  * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
 * Build [Docker](https://www.docker.com/) Image 
   * `./mvnw install dockerfile:build`
 

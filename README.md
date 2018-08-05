@@ -39,8 +39,10 @@ See the full list of [Usage Examples](https://github.com/scottleedavis/mattermos
 * Use: [Mattermost](https://mattermost.com/) 
 
 ##### Mattermost Integration
-_Note: Requires creating an administrative user named `mattermost-remind` to setup the slash command and webhook integrations_
 
+* Create an administrative user named `mattermost-remind`
+  * get userId for mattermost-remind `sudo ./mattermost user search mattermost-remind`
+  * put userId in ENV where java/image will run `REMIND_USER=<USER_ID>`
 * Ensure Custom Integrations (in System Console) has the following enabled
   * `Enable Incoming Webhooks`
   * `Enable Custom Slash Commands`
@@ -91,14 +93,13 @@ _Note: Requires creating an administrative user named `mattermost-remind` to set
 ### build
 * Build: [Maven](https://maven.apache.org/download.cgi) & [Java8](http://openjdk.java.net/install/)
   * `./mvnw  package`
-* Building for tomcat
-  * [Packaging as a .war](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#build-tool-plugins-maven-packaging)
 * Build [Docker](https://www.docker.com/) Image 
   * `./mvnw install dockerfile:build`
 
 ### execution
 * Running via java
 ```bash
+export REMIND_USER="5okns4uk9ffauy16q8rkhe9zjc"
 export REMIND_SLASH_TOKEN="7q61n4m5mfbebpme4ga5nu1gdh"
 export REMIND_WEBHOOK_URL="http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqyc"
 
@@ -107,6 +108,6 @@ java -jar application/target/mattermost-remind-app-0.0.3.jar
 * Running via docker 
 ```bash
 docker pull scottleedavis/mattermost-remind-app
-docker run -p 8080:8080 -e "REMIND_SLASH_TOKEN=7q61n4m5mfbebpme4ga5nu1gdh" -e "REMIND_WEBHOOK_URL=http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqyc" scottleedavis/mattermost-remind-app:latest
+docker run -p 8080:8080 -e "REMIND_USER=5okns4uk9ffauy16q8rkhe9zjc" -e "REMIND_SLASH_TOKEN=7q61n4m5mfbebpme4ga5nu1gdh" -e "REMIND_WEBHOOK_URL=http://127.0.0.1:8065/hooks/jqg3bkxbip8hzgsrsnzep5jqyc" scottleedavis/mattermost-remind-app:latest
 
 ```

@@ -101,8 +101,7 @@ public class UpdateInteractionTests {
         assertTrue(updateResponse.getEphemeralText().startsWith("*Past and incomplete*:\n" +
                 "* \"foo to the bar\"\n" +
                 "\n" +
-                "*Note*:  To interact with these reminders use `/remind list` in your personal user channel"));
-
+                "*Note*:  To interact with these reminders use `/remind list` in a direct message with user mattermost-remind"));
     }
 
     @Test

@@ -27,6 +27,8 @@ public class Scheduler {
     @Value("${version}")
     private String version;
 
+    private String remindUserId;
+
     @Autowired
     private Parser parser;
 
@@ -42,6 +44,14 @@ public class Scheduler {
     @Autowired
     private ReminderService reminderService;
 
+    @Autowired
+    public Scheduler(@Value("${remind.remindUserId}") String remindUserId) {
+        if (remindUserId == null)
+            remindUserId = "none";
+        this.remindUserId = remindUserId;
+        logger.info("remind.remindUserId = {}", remindUserId);
+    }
+
     public Response setReminder(String userName, String payload, String userId, String channelName) {
 
         Response response = new Response();
@@ -53,7 +63,7 @@ public class Scheduler {
                     response.setText(Options.helpMessage);
                     break;
                 case "list":
-                    if (channelName.contains(userId))
+                    if (channelName.equalsIgnoreCase(remindUserId + "__" + userId))
                         response.setAttachments(options.listRemindersAttachments(userName, 0));
                     else
                         response.setText(options.listReminders(userName, channelName));
@@ -89,7 +99,7 @@ public class Scheduler {
             response.setText(options.exceptionText);
         }
 
-        response.setResponseType(channelName.contains(userId) ? Response.ResponseType.IN_CHANNEL : Response.ResponseType.EPHEMERAL);
+        response.setResponseType(channelName.equalsIgnoreCase(remindUserId + "__" + userId) ? Response.ResponseType.IN_CHANNEL : Response.ResponseType.EPHEMERAL);
 
         return response;
     }

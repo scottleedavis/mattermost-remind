@@ -25,7 +25,7 @@ public class Options {
 
     private static Logger logger = LoggerFactory.getLogger(Options.class);
 
-    public static Integer remindListMaxLength = 5;
+    public static Integer remindListMaxLength = 3;
 
     public static String helpMessage = ":wave: Need some help with `/remind`?\n" +
             "Use `/remind` to set a reminder for yourself, someone else, or for a channel. Some examples include:\n" +

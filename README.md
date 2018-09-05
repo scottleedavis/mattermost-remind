@@ -1,4 +1,4 @@
-## _Development on this project has ceased, it will be merged into the core mattermost server & webapp [MM-10580](https://github.com/mattermost/mattermost-server/issues/9283) instead._
+## _Development on this project has ceased, it will be merged into the core mattermost server & webapp.   See [MM-10580](https://github.com/mattermost/mattermost-server/issues/9283)._
 
 # mattermost-remind [![Build Status](https://travis-ci.org/scottleedavis/mattermost-remind.svg?branch=master)](https://travis-ci.org/scottleedavis/mattermost-remind) [![codecov](https://codecov.io/gh/scottleedavis/mattermost-remind/branch/master/graph/badge.svg)](https://codecov.io/gh/scottleedavis/mattermost-remind) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/11948b43df244a46b8f453e59998f488)](https://www.codacy.com/app/scottleedavis/mattermost-remind?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scottleedavis/mattermost-remind&amp;utm_campaign=Badge_Grade)
 
